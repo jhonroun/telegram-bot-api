@@ -13,8 +13,8 @@ jobs:
 
     # Значения по умолчанию — из GitHub Secrets
     env:
-      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      TELEGRAM_TOKEN: ''
+      TELEGRAM_CHAT_ID: ''
 
     steps:
       - uses: actions/checkout@v4
@@ -23,6 +23,19 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: '1.23'
+
+      - name: Load secrets
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          TELEGRAM_TOKEN_SECRET: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID_SECRET: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -n "$TELEGRAM_TOKEN_SECRET" ]; then
+            echo "TELEGRAM_TOKEN=$TELEGRAM_TOKEN_SECRET" >> $GITHUB_ENV
+          fi
+          if [ -n "$TELEGRAM_CHAT_ID_SECRET" ]; then
+            echo "TELEGRAM_CHAT_ID=$TELEGRAM_CHAT_ID_SECRET" >> $GITHUB_ENV
+          fi
 
       # Загружаем .env и пишем его в GITHUB_ENV, чтобы работало в следующих шагах
       - name: Load .env file (if exists)
