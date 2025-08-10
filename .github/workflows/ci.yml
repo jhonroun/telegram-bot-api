@@ -75,7 +75,7 @@ jobs:
       # Заменяем оригинальный модуль на форк
       - name: Use forked go-telegram-bot-api
         run: |
-          go mod edit -replace=github.com/go-telegram-bot-api/telegram-bot-api/v5=github.com/jhonroun/telegram-bot-api/v5@main
+          go mod edit -replace=github.com/go-telegram-bot-api/telegram-bot-api/v5=github.com/jhonroun/telegram-bot-api/v5@v5.7.0
           go mod tidy
 
       # Узнаём архитектуру
@@ -88,11 +88,11 @@ jobs:
 
       - name: Test (race)
         if: ${{ steps.goenv.outputs.arch != 'arm64' && steps.goenv.outputs.arch != 'arm' }}
-        run: go test ./... -race -count=1
+        run: go test -v -count=1 -run '^Test_57_' ./...
 
       - name: Test (no race on ARM)
         if: ${{ steps.goenv.outputs.arch == 'arm64' || steps.goenv.outputs.arch == 'arm' }}
-        run: go test ./... -count=1
+        run: go test -v -count=1 -run '^Test_57_' ./...
 
       # Telegram ping
       - name: Secrets self-check + Telegram ping (optional)

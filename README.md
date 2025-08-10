@@ -3,24 +3,87 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/jhonroun/telegram-bot-api/v5.svg)](https://pkg.go.dev/github.com/jhonroun/telegram-bot-api/v5)
 [![Test](https://github.com/jhonroun/telegram-bot-api/actions/workflows/ci.yml/badge.svg)](https://github.com/jhonroun/telegram-bot-api/actions/workflows/ci.yml)
 
-All methods are fairly self-explanatory, and reading the [godoc](https://pkg.go.dev/github.com/go-telegram-bot-api/telegram-bot-api/v5) page should
-explain everything. If something isn't clear, open an issue or submit
-a pull request.
+Рекомендуем закрепиться на релизе:
 
-There are more tutorials and high-level information on the website, [go-telegram-bot-api.dev](https://go-telegram-bot-api.dev).
+```
+go get github.com/jhonroun/telegram-bot-api/v5@v5.7.0
+```
 
-The scope of this project is just to provide a wrapper around the API
-without any additional features. There are other projects for creating
-something with plugins and command handlers without having to design
-all that yourself.
+## Changelog
 
-Join [the development group](https://telegram.me/go_telegram_bot_api) if
-you want to ask questions or discuss development.
+### v5.7.0 — 2025-08-10
+Поддержка Telegram **Bot API 5.7** (видеостикеры).
+
+#### Added
+- **Video stickers:**
+  - Новые поля:
+    - `Sticker.IsVideo`
+    - `StickerSet.IsVideo`
+  - Новые входные данные для стикер-методов:
+    - `webm_sticker` в `NewStickerSetConfig` и `addStickerToSet`
+    - В библиотеке: `NewStickerSetConfig.WebMSticker`, `AddStickerConfig.WebMSticker`
+- Валидатор конфигов: требуется **ровно один** из `png_sticker` / `tgs_sticker` / `webm_sticker`.
+
+#### Examples
+```go
+	// Создать новый набор с WEBM-стикером
+	c := NewStickerSetConfig{
+		UserID:      1,
+		Name:        "pack_by_bot",
+		Title:       "Pack",
+		Emojis:      "😀",
+		WebMSticker: FilePath("tests/1347045309.webm"),
+	}
+	files := c.files()
+	if len(files) != 1 {
+		t.Fatalf("files len=%d, want 1", len(files))
+	}
+	if files[0].Name != "webm_sticker" {
+		t.Fatalf("file key=%q, want webm_sticker", files[0].Name)
+	}
+_, _ = bot.Request(c)
+
+### v5.6.0 — 2025-08-10
+Поддержка Telegram **Bot API 5.5–5.6** и сопутствующие правки библиотеки.
+
+#### Added
+- **Поля (Bot API 5.5):**
+  - `Message.IsAutomaticForward`
+  - `Message.HasProtectedContent`
+  - `Chat.HasProtectedContent`
+  - `Chat.HasPrivateForwards`
+- **Методы (Bot API 5.5):**
+  - `banChatSenderChat` / `unbanChatSenderChat`  
+    В библиотеке: `BanChatSenderChatConfig` / `UnbanChatSenderChatConfig`, конструкторы `NewBanChatSenderChat` и `NewUnbanChatSenderChat`.
+- **Параметр (Bot API 5.6):**
+  - `protect_content` для всех `send*` методов, а также `copyMessage` и `forwardMessage`.  
+    В библиотеке: поле `ProtectContent bool` в соответствующих `*Config`.
+- **Сущности (Bot API 5.6):**
+  - `MessageEntity{Type: "spoiler"}` — спойлер-сущность поддерживается при (де)сериализации.
+
+#### Examples
+```go
+// Protect content (нельзя переслать/сохранить)
+msg := tgbotapi.NewMessage(chatID, "секрет")
+msg.ProtectContent = true
+_, _ = bot.Send(msg)
+
+// Бан/разбан channel chat в супергруппе/канале
+_, _ = bot.Request(tgbotapi.NewBanChatSenderChat(supergroupID, senderChannelID))
+_, _ = bot.Request(tgbotapi.NewUnbanChatSenderChat(supergroupID, senderChannelID))
+
+// Spoiler entity (через сущности)
+entities := []tgbotapi.MessageEntity{{Type: "spoiler", Offset: 0, Length: 6}}
+m := tgbotapi.NewMessage(chatID, "спойлер")
+m.Entities = &entities
+_, _ = bot.Send(m)
+```
+
 
 ## Example
 
 First, ensure the library is installed and up to date by running
-`go get -u github.com/go-telegram-bot-api/telegram-bot-api/v5`.
+`go get -u github.com/jhonroun/telegram-bot-api/v5`.
 
 This is a very simple bot that just displays any gotten updates,
 then replies it to that chat.
@@ -31,7 +94,7 @@ package main
 import (
 	"log"
 
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	tgbotapi "github.com/jhonroun/telegram-bot-api/v5"
 )
 
 func main() {
@@ -62,60 +125,7 @@ func main() {
 }
 ```
 
-If you need to use webhooks (if you wish to run on Google App Engine),
-you may use a slightly different method.
+Tests
+Добавлены unit-тесты без сети на поля (Message, Chat) и на параметры/методы Ban/UnbanChatSenderChat и ProtectContent.
 
-```go
-package main
-
-import (
-	"log"
-	"net/http"
-
-	"github.com/go-telegram-bot-api/telegram-bot-api/v5"
-)
-
-func main() {
-	bot, err := tgbotapi.NewBotAPI("MyAwesomeBotToken")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	bot.Debug = true
-
-	log.Printf("Authorized on account %s", bot.Self.UserName)
-
-	wh, _ := tgbotapi.NewWebhookWithCert("https://www.example.com:8443/"+bot.Token, "cert.pem")
-
-	_, err = bot.Request(wh)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	info, err := bot.GetWebhookInfo()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if info.LastErrorDate != 0 {
-		log.Printf("Telegram callback failed: %s", info.LastErrorMessage)
-	}
-
-	updates := bot.ListenForWebhook("/" + bot.Token)
-	go http.ListenAndServeTLS("0.0.0.0:8443", "cert.pem", "key.pem", nil)
-
-	for update := range updates {
-		log.Printf("%+v\n", update)
-	}
-}
-```
-
-If you need, you may generate a self-signed certificate, as this requires
-HTTPS / TLS. The above example tells Telegram that this is your
-certificate and that it should be trusted, even though it is not
-properly signed.
-
-    openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 3560 -subj "//O=Org\CN=Test" -nodes
-
-Now that [Let's Encrypt](https://letsencrypt.org) is available,
-you may wish to generate your free TLS certificate there.
+Migration notes: Ломающих изменений нет.

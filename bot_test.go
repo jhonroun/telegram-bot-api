@@ -333,7 +333,7 @@ func TestSendWithExistingAudio(t *testing.T) {
 func TestSendWithNewVoice(t *testing.T) {
 	bot := getBot(t)
 
-	msg := NewVoice(SupergroupChatID, FilePath("tests/voice.ogg"))
+	msg := NewVoice(ChatID, FilePath("tests/voice.ogg"))
 	msg.Duration = 10
 	_, err := bot.Send(msg)
 

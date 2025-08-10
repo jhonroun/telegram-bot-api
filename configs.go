@@ -2038,6 +2038,7 @@ type NewStickerSetConfig struct {
 	Title         string
 	PNGSticker    RequestFileData
 	TGSSticker    RequestFileData
+	WebMSticker   RequestFileData // НОВОЕ: webm_sticker
 	Emojis        string
 	ContainsMasks bool
 	MaskPosition  *MaskPosition
@@ -2060,21 +2061,34 @@ func (config NewStickerSetConfig) params() (Params, error) {
 
 	err := params.AddInterface("mask_position", config.MaskPosition)
 
+	n := 0
+	if config.PNGSticker != nil {
+		n++
+	}
+	if config.TGSSticker != nil {
+		n++
+	}
+	if config.WebMSticker != nil {
+		n++
+	}
+	if n != 1 {
+		err = fmt.Errorf("exactly one of png_sticker, tgs_sticker or webm_sticker must be provided")
+	}
+
 	return params, err
 }
 
 func (config NewStickerSetConfig) files() []RequestFile {
 	if config.PNGSticker != nil {
-		return []RequestFile{{
-			Name: "png_sticker",
-			Data: config.PNGSticker,
-		}}
+		return []RequestFile{{Name: "png_sticker", Data: config.PNGSticker}}
 	}
-
-	return []RequestFile{{
-		Name: "tgs_sticker",
-		Data: config.TGSSticker,
-	}}
+	if config.TGSSticker != nil {
+		return []RequestFile{{Name: "tgs_sticker", Data: config.TGSSticker}}
+	}
+	if config.WebMSticker != nil {
+		return []RequestFile{{Name: "webm_sticker", Data: config.WebMSticker}}
+	}
+	return nil
 }
 
 // AddStickerConfig allows you to add a sticker to a set.
@@ -2083,6 +2097,7 @@ type AddStickerConfig struct {
 	Name         string
 	PNGSticker   RequestFileData
 	TGSSticker   RequestFileData
+	WebMSticker  RequestFileData
 	Emojis       string
 	MaskPosition *MaskPosition
 }
@@ -2100,22 +2115,34 @@ func (config AddStickerConfig) params() (Params, error) {
 
 	err := params.AddInterface("mask_position", config.MaskPosition)
 
+	n := 0
+	if config.PNGSticker != nil {
+		n++
+	}
+	if config.TGSSticker != nil {
+		n++
+	}
+	if config.WebMSticker != nil {
+		n++
+	}
+	if n != 1 {
+		err = fmt.Errorf("exactly one of png_sticker, tgs_sticker or webm_sticker must be provided")
+	}
+
 	return params, err
 }
 
 func (config AddStickerConfig) files() []RequestFile {
 	if config.PNGSticker != nil {
-		return []RequestFile{{
-			Name: "png_sticker",
-			Data: config.PNGSticker,
-		}}
+		return []RequestFile{{Name: "png_sticker", Data: config.PNGSticker}}
 	}
-
-	return []RequestFile{{
-		Name: "tgs_sticker",
-		Data: config.TGSSticker,
-	}}
-
+	if config.TGSSticker != nil {
+		return []RequestFile{{Name: "tgs_sticker", Data: config.TGSSticker}}
+	}
+	if config.WebMSticker != nil {
+		return []RequestFile{{Name: "webm_sticker", Data: config.WebMSticker}}
+	}
+	return nil
 }
 
 // SetStickerPositionConfig allows you to change the position of a sticker in a set.
