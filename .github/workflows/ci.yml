@@ -11,6 +11,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    # Значения по умолчанию — из GitHub Secrets
     env:
       TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -23,17 +24,21 @@ jobs:
         with:
           go-version: '1.23'
 
+      # Загружаем .env и пишем его в GITHUB_ENV, чтобы работало в следующих шагах
       - name: Load .env file (if exists)
         run: |
           if [ -f .env ]; then
             echo "Loading .env…"
-            set -a
-            source .env
-            set +a
+            while IFS= read -r line; do
+              if [[ "$line" != \#* && "$line" == *=* ]]; then
+                echo "$line" >> $GITHUB_ENV
+              fi
+            done < .env
           else
             echo ".env not found, using GitHub Secrets"
           fi
 
+      # Кэш Go
       - name: Cache Go build
         uses: actions/cache@v4
         with:
@@ -44,6 +49,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
+      # Заменяем оригинальный модуль на форк
+      - name: Use forked go-telegram-bot-api
+        run: |
+          go mod edit -replace=github.com/go-telegram-bot-api/telegram-bot-api/v5=github.com/jhonroun/go-telegram-bot-api/v5
+          go mod tidy
+
+      # Узнаём архитектуру
       - name: Detect GOARCH
         id: goenv
         run: echo "arch=$(go env GOARCH)" >> "$GITHUB_OUTPUT"
@@ -59,20 +71,17 @@ jobs:
         if: ${{ steps.goenv.outputs.arch == 'arm64' || steps.goenv.outputs.arch == 'arm' }}
         run: go test ./... -count=1
 
-      # === СЮДА ДОБАВЛЕН ТЕСТ СЕКРЕТОВ ===
+      # Telegram ping
       - name: Secrets self-check + Telegram ping (optional)
-        if: always() # запускаем всегда, но сам шаг внутри пропустит без секретов
+        if: always()
         run: |
-          # Маскируем токен в логах (на случай загрузки из .env)
           if [ -n "${TELEGRAM_TOKEN}" ]; then
             echo "::add-mask::${TELEGRAM_TOKEN}"
           fi
 
-          # Отладочная информация (без значений)
           echo "TELEGRAM_TOKEN set? $([ -n "${TELEGRAM_TOKEN}" ] && echo yes || echo no)"
           echo "TELEGRAM_CHAT_ID set? $([ -n "${TELEGRAM_CHAT_ID}" ] && echo yes || echo no)"
 
-          # Если есть оба — отправим сообщение в Telegram
           if [ -n "${TELEGRAM_TOKEN}" ] && [ -n "${TELEGRAM_CHAT_ID}" ]; then
             MSG="✅ CI secrets OK on $(uname -s)/${{ steps.goenv.outputs.arch }} in $GITHUB_REPOSITORY ($GITHUB_REF_NAME)"
             curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage" \

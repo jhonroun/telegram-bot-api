@@ -745,7 +745,7 @@ func ExampleNewWebhook() {
 	}
 }
 
-/* func ExampleWebhookHandler() {
+func ExampleWebhookHandler() {
 	bot, err := NewBotAPI("MyAwesomeBotToken")
 	if err != nil {
 		panic(err)
@@ -783,7 +783,7 @@ func ExampleNewWebhook() {
 	})
 
 	go http.ListenAndServeTLS("0.0.0.0:8443", "cert.pem", "key.pem", nil)
-} */
+}
 
 func ExampleInlineConfig() {
 	bot, err := NewBotAPI("MyAwesomeBotToken") // create new bot
