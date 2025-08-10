@@ -8,10 +8,45 @@
 Рекомендуем закрепиться на релизе:
 
 ```
-go get github.com/jhonroun/telegram-bot-api/v6
+go get github.com/jhonroun/telegram-bot-api/v6@6.1.0
 ```
 
 ## Changelog
+
+### v6.1.0 — 2025-08-11
+v6.1.0 — 2025-08-11
+Поддержка Telegram Bot API 6.1 (Join Requests & Payments, Premium, Attachment Menu).
+
+#### Added
+ - Join Requests:
+   - Новые поля в Chat:
+     `JoinToSendMessages`
+     `JoinByRequest`
+ - Поддержка заявок на вступление, созданных без invite-ссылки (апдейт ChatJoinRequest).
+ - Payments:
+ - Метод Bot API createInvoiceLink — в библиотеке: CreateInvoiceLinkConfig и BotAPI.CreateInvoiceLink(...).
+ - Поддержка Telegram Stars: валюта CurrencyXTR (для цифровых товаров provider_token можно не передавать).
+ - Telegram Premium:
+    `User.IsPremium`
+    `Sticker.PremiumAnimation`
+ - Attachment Menu:
+    `User.AddedToAttachmentMenu`
+ - Прочее:
+   `SetWebhookConfig.SecretToken` — новый параметр secret_token у setWebhook.
+
+#### Changed
+Currency API: поля валюты переведены со string на тип Currency (ISO-4217 + XTR), добавлен func (Currency) String() string.
+
+- В т.ч. обновлены: InvoiceConfig.Currency, CreateInvoiceLinkConfig.Currency и др.
+   - CreateInvoiceLinkConfig.params():
+    - Больше не добавляет chat_id.
+    - provider_token добавляется только если непустой.
+    - suggested_tip_amounts передаётся только если срез не nil (пустой [] допускается).
+
+#### Fixed
+ - Params.AddInterface: не отправляет null для nil-срезов/карт; пустые срезы сериализуются как [].
+ - Исправлена ошибка suggested_tip_amounts:null в платежах.
+ - Уточнена сериализация prices (JSON-массив []LabeledPrice) и проверки обязательных полей.
 
 ### v6.0.0 — 2025-08-10
 Start Telegram **Bot API 6.0** + переход модуля на `/v6`.

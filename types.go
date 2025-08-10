@@ -217,6 +217,10 @@ type User struct {
 	//
 	// optional
 	SupportsInlineQueries bool `json:"supports_inline_queries,omitempty"`
+	// AddedToAttachmentMenu is true, if the bot was added to an attachment menu.
+	//
+	// optional
+	AddedToAttachmentMenu bool `json:"added_to_attachment_menu,omitempty"` // 6.1
 }
 
 // String displays a simple text version of a user.
@@ -330,6 +334,14 @@ type Chat struct {
 	//
 	// optional
 	Location *ChatLocation `json:"location,omitempty"`
+	// JoinToSendMessages. True, if users need to join the supergroup before they can send messages
+	//
+	// optional
+	JoinToSendMessages bool `json:"join_to_send_messages,omitempty"` // 6.1
+	// True, if all users directly joining the supergroup without using an invite link need to be approved by supergroup administrators
+	//
+	// optional
+	JoinByRequest bool `json:"join_by_request,omitempty"` // 6.1
 }
 
 // IsPrivate returns if the Chat is a private conversation.
@@ -355,6 +367,16 @@ func (c Chat) IsChannel() bool {
 // ChatConfig returns a ChatConfig struct for chat related methods.
 func (c Chat) ChatConfig() ChatConfig {
 	return ChatConfig{ChatID: c.ID}
+}
+
+// NeedJoinToSendMessages returns if users need to join the supergroup before they can send messages
+func (c Chat) NeedJoinToSendMessages() bool {
+	return c.JoinToSendMessages
+}
+
+// NeedJoinByRequest returns if all users directly joining the supergroup without using an invite link need to be approved by supergroup administrators
+func (c Chat) NeedJoinByRequest() bool {
+	return c.JoinByRequest
 }
 
 // Message represents a message.
@@ -3335,3 +3357,224 @@ type PreCheckoutQuery struct {
 	// optional
 	OrderInfo *OrderInfo `json:"order_info,omitempty"`
 }
+
+// ThemeParams describes theme colors for Web Apps.
+type ThemeParams struct {
+	BGColor          string `json:"bg_color,omitempty"`
+	TextColor        string `json:"text_color,omitempty"`
+	HintColor        string `json:"hint_color,omitempty"`
+	LinkColor        string `json:"link_color,omitempty"`
+	ButtonColor      string `json:"button_color,omitempty"`
+	ButtonTextColor  string `json:"button_text_color,omitempty"`
+	SecondaryBGColor string `json:"secondary_bg_color,omitempty"` // NEW in 6.1
+}
+
+// WebAppInitData is the data the Web App passes to the bot (querystring init_data).
+type WebAppInitData struct {
+	QueryID      string `json:"query_id,omitempty"`
+	User         *User  `json:"user,omitempty"`
+	Receiver     *User  `json:"receiver,omitempty"`
+	Chat         *Chat  `json:"chat,omitempty"` // NEW in 6.1
+	StartParam   string `json:"start_param,omitempty"`
+	CanSendAfter int    `json:"can_send_after,omitempty"` // NEW in 6.1 (seconds)
+	AuthDate     int64  `json:"auth_date"`
+	Hash         string `json:"hash"`
+}
+
+type Currency string
+
+const (
+	// United Arab Emirates Dirham
+	CurrencyAED Currency = "AED"
+	// Afghan Afghani
+	CurrencyAFN Currency = "AFN"
+	// Albanian Lek
+	CurrencyALL Currency = "ALL"
+	// Armenian Dram
+	CurrencyAMD Currency = "AMD"
+	// Argentine Peso
+	CurrencyARS Currency = "ARS"
+	// Australian Dollar
+	CurrencyAUD Currency = "AUD"
+	// Azerbaijani Manat
+	CurrencyAZN Currency = "AZN"
+	// Bosnia and Herzegovina Convertible Mark
+	CurrencyBAM Currency = "BAM"
+	// Bangladeshi Taka
+	CurrencyBDT Currency = "BDT"
+	// Bulgarian Lev
+	CurrencyBGN Currency = "BGN"
+	// Bahraini Dinar
+	CurrencyBHD Currency = "BHD"
+	// Brunei Dollar
+	CurrencyBND Currency = "BND"
+	// Bolivian Boliviano
+	CurrencyBOB Currency = "BOB"
+	// Brazilian Real
+	CurrencyBRL Currency = "BRL"
+	// Belarusian Ruble
+	CurrencyBYN Currency = "BYN"
+	// Canadian Dollar
+	CurrencyCAD Currency = "CAD"
+	// Swiss Franc
+	CurrencyCHF Currency = "CHF"
+	// Chilean Peso
+	CurrencyCLP Currency = "CLP"
+	// Chinese Yuan Renminbi
+	CurrencyCNY Currency = "CNY"
+	// Colombian Peso
+	CurrencyCOP Currency = "COP"
+	// Costa Rican Colón
+	CurrencyCRC Currency = "CRC"
+	// Czech Koruna
+	CurrencyCZK Currency = "CZK"
+	// Danish Krone
+	CurrencyDKK Currency = "DKK"
+	// Dominican Peso
+	CurrencyDOP Currency = "DOP"
+	// Algerian Dinar
+	CurrencyDZD Currency = "DZD"
+	// Egyptian Pound
+	CurrencyEGP Currency = "EGP"
+	// Ethiopian Birr
+	CurrencyETB Currency = "ETB"
+	// Euro
+	CurrencyEUR Currency = "EUR"
+	// British Pound Sterling
+	CurrencyGBP Currency = "GBP"
+	// Georgian Lari
+	CurrencyGEL Currency = "GEL"
+	// Ghanaian Cedi
+	CurrencyGHS Currency = "GHS"
+	// Guatemalan Quetzal
+	CurrencyGTQ Currency = "GTQ"
+	// Hong Kong Dollar
+	CurrencyHKD Currency = "HKD"
+	// Honduran Lempira
+	CurrencyHNL Currency = "HNL"
+	// Croatian Kuna
+	CurrencyHRK Currency = "HRK"
+	// Hungarian Forint
+	CurrencyHUF Currency = "HUF"
+	// Indonesian Rupiah
+	CurrencyIDR Currency = "IDR"
+	// Israeli New Shekel
+	CurrencyILS Currency = "ILS"
+	// Indian Rupee
+	CurrencyINR Currency = "INR"
+	// Iraqi Dinar
+	CurrencyIQD Currency = "IQD"
+	// Iranian Rial
+	CurrencyIRR Currency = "IRR"
+	// Icelandic Króna
+	CurrencyISK Currency = "ISK"
+	// Jamaican Dollar
+	CurrencyJMD Currency = "JMD"
+	// Jordanian Dinar
+	CurrencyJOD Currency = "JOD"
+	// Japanese Yen
+	CurrencyJPY Currency = "JPY"
+	// Kenyan Shilling
+	CurrencyKES Currency = "KES"
+	// Kyrgyzstani Som
+	CurrencyKGS Currency = "KGS"
+	// South Korean Won
+	CurrencyKRW Currency = "KRW"
+	// Kazakhstani Tenge
+	CurrencyKZT Currency = "KZT"
+	// Lebanese Pound
+	CurrencyLBP Currency = "LBP"
+	// Sri Lankan Rupee
+	CurrencyLKR Currency = "LKR"
+	// Moroccan Dirham
+	CurrencyMAD Currency = "MAD"
+	// Moldovan Leu
+	CurrencyMDL Currency = "MDL"
+	// Myanmar Kyat
+	CurrencyMMK Currency = "MMK"
+	// Mongolian Tögrög
+	CurrencyMNT Currency = "MNT"
+	// Macanese Pataca
+	CurrencyMOP Currency = "MOP"
+	// Mauritian Rupee
+	CurrencyMUR Currency = "MUR"
+	// Maldivian Rufiyaa
+	CurrencyMVR Currency = "MVR"
+	// Mexican Peso
+	CurrencyMXN Currency = "MXN"
+	// Malaysian Ringgit
+	CurrencyMYR Currency = "MYR"
+	// Mozambican Metical
+	CurrencyMZN Currency = "MZN"
+	// Nigerian Naira
+	CurrencyNGN Currency = "NGN"
+	// Nicaraguan Córdoba
+	CurrencyNIO Currency = "NIO"
+	// Norwegian Krone
+	CurrencyNOK Currency = "NOK"
+	// Nepalese Rupee
+	CurrencyNPR Currency = "NPR"
+	// New Zealand Dollar
+	CurrencyNZD Currency = "NZD"
+	// Panamanian Balboa
+	CurrencyPAB Currency = "PAB"
+	// Peruvian Sol
+	CurrencyPEN Currency = "PEN"
+	// Philippine Peso
+	CurrencyPHP Currency = "PHP"
+	// Pakistani Rupee
+	CurrencyPKR Currency = "PKR"
+	// Polish Złoty
+	CurrencyPLN Currency = "PLN"
+	// Paraguayan Guaraní
+	CurrencyPYG Currency = "PYG"
+	// Qatari Riyal
+	CurrencyQAR Currency = "QAR"
+	// Romanian Leu
+	CurrencyRON Currency = "RON"
+	// Serbian Dinar
+	CurrencyRSD Currency = "RSD"
+	// Russian Ruble
+	CurrencyRUB Currency = "RUB"
+	// Saudi Riyal
+	CurrencySAR Currency = "SAR"
+	// Swedish Krona
+	CurrencySEK Currency = "SEK"
+	// Singapore Dollar
+	CurrencySGD Currency = "SGD"
+	// Syrian Pound
+	CurrencySYP Currency = "SYP"
+	// Thai Baht
+	CurrencyTHB Currency = "THB"
+	// Tajikistani Somoni
+	CurrencyTJS Currency = "TJS"
+	// Turkish Lira
+	CurrencyTRY Currency = "TRY"
+	// Trinidad and Tobago Dollar
+	CurrencyTTD Currency = "TTD"
+	// New Taiwan Dollar
+	CurrencyTWD Currency = "TWD"
+	// Tanzanian Shilling
+	CurrencyTZS Currency = "TZS"
+	// Ukrainian Hryvnia
+	CurrencyUAH Currency = "UAH"
+	// Ugandan Shilling
+	CurrencyUGX Currency = "UGX"
+	// United States Dollar
+	CurrencyUSD Currency = "USD"
+	// Uruguayan Peso
+	CurrencyUYU Currency = "UYU"
+	// Uzbekistani Soʻm
+	CurrencyUZS Currency = "UZS"
+	// Vietnamese Đồng
+	CurrencyVND Currency = "VND"
+	// Yemeni Rial
+	CurrencyYER Currency = "YER"
+	// South African Rand
+	CurrencyZAR Currency = "ZAR"
+	// Telegram Stars (virtual currency in Telegram ecosystem)
+	CurrencyXTR Currency = "XTR"
+)
+
+// String implements fmt.Stringer for Currency.
+func (c Currency) String() string { return string(c) }

@@ -1164,6 +1164,7 @@ type WebhookConfig struct {
 	MaxConnections     int
 	AllowedUpdates     []string
 	DropPendingUpdates bool
+	SecretToken        string
 }
 
 func (config WebhookConfig) method() string {
@@ -1181,6 +1182,7 @@ func (config WebhookConfig) params() (Params, error) {
 	params.AddNonZero("max_connections", config.MaxConnections)
 	err := params.AddInterface("allowed_updates", config.AllowedUpdates)
 	params.AddBool("drop_pending_updates", config.DropPendingUpdates)
+	params.AddNonEmpty("secret_token", config.SecretToken)
 
 	return params, err
 }
@@ -1723,11 +1725,13 @@ func (GetChatMemberConfig) method() string {
 // InvoiceConfig contains information for sendInvoice request.
 type InvoiceConfig struct {
 	BaseChat
-	Title                     string         // required
-	Description               string         // required
-	Payload                   string         // required
-	ProviderToken             string         // required
-	Currency                  string         // required
+	Title         string // required
+	Description   string // required
+	Payload       string // required
+	ProviderToken string // required
+	// not string
+	// Three-letter ISO 4217 currency code. Pass “XTR” for payments in Telegram Stars.
+	Currency                  Currency       // required
 	Prices                    []LabeledPrice // required
 	MaxTipAmount              int
 	SuggestedTipAmounts       []int
@@ -1756,7 +1760,7 @@ func (config InvoiceConfig) params() (Params, error) {
 	params["description"] = config.Description
 	params["payload"] = config.Payload
 	params["provider_token"] = config.ProviderToken
-	params["currency"] = config.Currency
+	params.AddNonEmpty("currency", config.Currency.String())
 	if err = params.AddInterface("prices", config.Prices); err != nil {
 		return params, err
 	}
@@ -1782,6 +1786,71 @@ func (config InvoiceConfig) params() (Params, error) {
 
 func (config InvoiceConfig) method() string {
 	return "sendInvoice"
+}
+
+// CreateInvoiceLinkConfig contains information for createInvoiceLink request
+// Use this to create a link for an invoice. Returns the created invoice link as String on success.
+type CreateInvoiceLinkConfig struct {
+	BaseChat
+	Title         string
+	Description   string
+	Payload       string
+	ProviderToken string
+	// not string
+	// Three-letter ISO 4217 currency code. Pass “XTR” for payments in Telegram Stars.
+	Currency                  Currency
+	Prices                    []LabeledPrice
+	MaxTipAmount              int
+	SuggestedTipAmounts       []int
+	StartParameter            string
+	ProviderData              string
+	PhotoURL                  string
+	PhotoSize                 int
+	PhotoWidth                int
+	PhotoHeight               int
+	NeedName                  bool
+	NeedPhoneNumber           bool
+	NeedEmail                 bool
+	NeedShippingAddress       bool
+	SendPhoneNumberToProvider bool
+	SendEmailToProvider       bool
+	IsFlexible                bool
+}
+
+func (c CreateInvoiceLinkConfig) method() string { return "createInvoiceLink" }
+
+func (config CreateInvoiceLinkConfig) params() (Params, error) {
+	params, err := config.BaseChat.params()
+	if err != nil {
+		return params, err
+	}
+
+	params["title"] = config.Title
+	params["description"] = config.Description
+	params["payload"] = config.Payload
+	params["provider_token"] = config.ProviderToken
+	params.AddNonEmpty("currency", config.Currency.String())
+	if err = params.AddInterface("prices", config.Prices); err != nil {
+		return params, err
+	}
+
+	params.AddNonZero("max_tip_amount", config.MaxTipAmount)
+	err = params.AddInterface("suggested_tip_amounts", config.SuggestedTipAmounts)
+	params.AddNonEmpty("start_parameter", config.StartParameter)
+	params.AddNonEmpty("provider_data", config.ProviderData)
+	params.AddNonEmpty("photo_url", config.PhotoURL)
+	params.AddNonZero("photo_size", config.PhotoSize)
+	params.AddNonZero("photo_width", config.PhotoWidth)
+	params.AddNonZero("photo_height", config.PhotoHeight)
+	params.AddBool("need_name", config.NeedName)
+	params.AddBool("need_phone_number", config.NeedPhoneNumber)
+	params.AddBool("need_email", config.NeedEmail)
+	params.AddBool("need_shipping_address", config.NeedShippingAddress)
+	params.AddBool("is_flexible", config.IsFlexible)
+	params.AddBool("send_phone_number_to_provider", config.SendPhoneNumberToProvider)
+	params.AddBool("send_email_to_provider", config.SendEmailToProvider)
+
+	return params, err
 }
 
 // ShippingConfig contains information for answerShippingQuery request.
