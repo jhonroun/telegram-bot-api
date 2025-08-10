@@ -1,12 +1,12 @@
 # Golang bindings for the Telegram Bot API
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/jhonroun/telegram-bot-api/v5.svg)](https://pkg.go.dev/github.com/jhonroun/telegram-bot-api/v5)
+[![Go Reference](https://pkg.go.dev/badge/github.com/jhonroun/telegram-bot-api/v6.svg)](https://pkg.go.dev/github.com/jhonroun/telegram-bot-api/v6)
 [![Test](https://github.com/jhonroun/telegram-bot-api/actions/workflows/ci.yml/badge.svg)](https://github.com/jhonroun/telegram-bot-api/actions/workflows/ci.yml)
 
 Рекомендуем закрепиться на релизе:
 
 ```
-go get github.com/jhonroun/telegram-bot-api/v5@v5.7.0
+go get github.com/jhonroun/telegram-bot-api/v6@v5.7.0
 ```
 
 ## Changelog
@@ -83,7 +83,7 @@ _, _ = bot.Send(m)
 ## Example
 
 First, ensure the library is installed and up to date by running
-`go get -u github.com/jhonroun/telegram-bot-api/v5`.
+`go get -u github.com/jhonroun/telegram-bot-api/v6`.
 
 This is a very simple bot that just displays any gotten updates,
 then replies it to that chat.
@@ -94,7 +94,7 @@ package main
 import (
 	"log"
 
-	tgbotapi "github.com/jhonroun/telegram-bot-api/v5"
+	tgbotapi "github.com/jhonroun/telegram-bot-api/v6"
 )
 
 func main() {
