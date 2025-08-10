@@ -65,7 +65,8 @@ jobs:
       # Заменяем оригинальный модуль на форк
       - name: Use forked go-telegram-bot-api
         run: |
-          go mod edit -replace=github.com/go-telegram-bot-api/telegram-bot-api/v5=github.com/jhonroun/go-telegram-bot-api/v5@<commit>
+          COMMIT="$(git ls-remote https://github.com/jhonroun/go-telegram-bot-api.git refs/heads/main | cut -f1)"
+          go mod edit -replace=github.com/go-telegram-bot-api/telegram-bot-api/v5=github.com/jhonroun/go-telegram-bot-api/v5@${COMMIT}
           go mod tidy
 
       # Узнаём архитектуру
