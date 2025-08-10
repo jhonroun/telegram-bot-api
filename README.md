@@ -3,6 +3,8 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/jhonroun/telegram-bot-api/v6.svg)](https://pkg.go.dev/github.com/jhonroun/telegram-bot-api/v6)
 [![Test](https://github.com/jhonroun/telegram-bot-api/actions/workflows/ci.yml/badge.svg)](https://github.com/jhonroun/telegram-bot-api/actions/workflows/ci.yml)
 
+Репа создана для изучения и проверки актульность модуля для работы с Bot API, что называется step-by-step
+
 Рекомендуем закрепиться на релизе:
 
 ```
@@ -10,6 +12,36 @@ go get github.com/jhonroun/telegram-bot-api/v6
 ```
 
 ## Changelog
+
+### v6.0.0 — 2025-08-10
+Start Telegram **Bot API 6.0** + переход модуля на `/v6`.
+
+#### Added
+- **Web Apps**
+  - `WebAppInfo` и поле `web_app` в `KeyboardButton`, `InlineKeyboardButton`.
+  - `WebAppData` и поле `Message.WebAppData`.
+  - `answerWebAppQuery` + тип результата `SentWebAppMessage`.
+  - `setChatMenuButton` / `getChatMenuButton` + типы `MenuButtonDefault`, `MenuButtonCommands`, `MenuButtonWebApp`.
+- **Default admin rights**
+  - `ChatAdministratorRights`
+  - `setMyDefaultAdministratorRights` / `getMyDefaultAdministratorRights`.
+- **Webhook**
+  - `WebhookInfo.LastSynchronizationErrorDate`.
+
+#### Changed
+- Переименования, как в Bot API 6.0:
+  - В `Message`: `voice_chat_*` → `video_chat_*` (новые поля добавлены, старые оставлены как deprecated).
+  - В `ChatMemberAdministrator`: `can_manage_voice_chats` → `can_manage_video_chats` (старое поле оставлено).
+  - В `promoteChatMember`: параметр `can_manage_voice_chats` → `can_manage_video_chats`.  
+    В конфиге приоритет у нового флага; legacy отправляется только если новый не задан.
+
+#### Migration notes
+- **Импорт**:  
+  ```go
+  // было
+  import tgbotapi "github.com/jhonroun/telegram-bot-api/v5"
+  // стало
+  import tgbotapi "github.com/jhonroun/telegram-bot-api/v6"
 
 ### v5.7.0 — 2025-08-10
 Поддержка Telegram **Bot API 5.7** (видеостикеры).
