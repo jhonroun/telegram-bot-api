@@ -6,7 +6,7 @@
 Рекомендуем закрепиться на релизе:
 
 ```
-go get github.com/jhonroun/telegram-bot-api/v6@v5.7.0
+go get github.com/jhonroun/telegram-bot-api/v6
 ```
 
 ## Changelog

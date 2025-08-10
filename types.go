@@ -1255,6 +1255,13 @@ type WebAppInfo struct {
 	URL string `json:"url"`
 }
 
+// NewMenuButtonDefault creates a new MenuButtonDefault.
+func NewMenuButtonDefault() *MenuButton  { return &MenuButton{Type: "default"} }
+func NewMenuButtonCommands() *MenuButton { return &MenuButton{Type: "commands"} }
+func NewMenuButtonWebApp(text, url string) *MenuButton {
+	return &MenuButton{Type: "web_app", Text: text, WebApp: &WebAppInfo{URL: url}}
+}
+
 // ReplyKeyboardMarkup represents a custom keyboard with reply options.
 type ReplyKeyboardMarkup struct {
 	// Keyboard is an array of button rows, each represented by an Array of KeyboardButton objects
