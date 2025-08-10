@@ -2102,15 +2102,16 @@ func (config UploadStickerConfig) files() []RequestFile {
 //
 // You must set either PNGSticker or TGSSticker.
 type NewStickerSetConfig struct {
-	UserID        int64
-	Name          string
-	Title         string
-	PNGSticker    RequestFileData
-	TGSSticker    RequestFileData
-	WebMSticker   RequestFileData // НОВОЕ: webm_sticker
-	Emojis        string
-	ContainsMasks bool
-	MaskPosition  *MaskPosition
+	UserID      int64
+	Name        string
+	Title       string
+	PNGSticker  RequestFileData
+	TGSSticker  RequestFileData
+	WebMSticker RequestFileData // НОВОЕ: webm_sticker
+	Emojis      string
+	// Type of stickers in the set, pass “regular”, “mask”, or “custom_emoji”. By default, a regular sticker set is created.
+	Sticker_type StickerType
+	MaskPosition *MaskPosition
 }
 
 func (config NewStickerSetConfig) method() string {
@@ -2126,7 +2127,7 @@ func (config NewStickerSetConfig) params() (Params, error) {
 
 	params["emojis"] = config.Emojis
 
-	params.AddBool("contains_masks", config.ContainsMasks)
+	params.AddNonEmpty("sticker_type", config.Sticker_type.String())
 
 	err := params.AddInterface("mask_position", config.MaskPosition)
 
@@ -2661,4 +2662,28 @@ func prepareInputMediaForFiles(inputMedia []interface{}) []RequestFile {
 	}
 
 	return files
+}
+
+// GetCustomEmojiStickersConfig — for methods getCustomEmojiStickers.
+// custom_emoji_ids: must be an array, maximum 200 custom emoji identifiers.
+type GetCustomEmojiStickersConfig struct {
+	CustomEmojiIDs []string
+}
+
+func (config GetCustomEmojiStickersConfig) method() string { return "getCustomEmojiStickers" }
+
+func (config GetCustomEmojiStickersConfig) params() (Params, error) {
+	p := make(Params)
+
+	n := len(config.CustomEmojiIDs)
+	if n == 0 {
+		return p, fmt.Errorf("custom_emoji_ids required")
+	}
+	if n > 200 {
+		return p, fmt.Errorf("too many custom_emoji_ids: %d > 200", n)
+	}
+	if err := p.AddInterface("custom_emoji_ids", config.CustomEmojiIDs); err != nil {
+		return p, err
+	}
+	return p, nil
 }

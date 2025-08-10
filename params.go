@@ -12,6 +12,9 @@ type Params map[string]string
 // AddNonEmpty adds a value if it not an empty string.
 func (p Params) AddNonEmpty(key, value string) {
 	if value != "" {
+		if key == "sticker_type" {
+			value = "regular"
+		}
 		p[key] = value
 	}
 }

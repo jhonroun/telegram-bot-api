@@ -342,6 +342,10 @@ type Chat struct {
 	//
 	// optional
 	JoinByRequest bool `json:"join_by_request,omitempty"` // 6.1
+	// True if the privacy settings of the other party restrict sending voice and video note messages in the private chat
+	//
+	// optional
+	HasRestrictedVoiceAndVideoMessages bool `json:"has_restricted_voice_and_video_messages,omitempty"`
 }
 
 // IsPrivate returns if the Chat is a private conversation.
@@ -377,6 +381,11 @@ func (c Chat) NeedJoinToSendMessages() bool {
 // NeedJoinByRequest returns if all users directly joining the supergroup without using an invite link need to be approved by supergroup administrators
 func (c Chat) NeedJoinByRequest() bool {
 	return c.JoinByRequest
+}
+
+// HasRestrictedVoiceAndVideoMessages returns if the privacy settings of the other party restrict sending voice and video note messages in the private chat
+func (c Chat) HasRestrictedVoiceAndVideoMessagesInChat() bool {
+	return c.HasRestrictedVoiceAndVideoMessages
 }
 
 // Message represents a message.
@@ -752,6 +761,7 @@ type MessageEntity struct {
 	//  “pre” (monowidth block),
 	//  “text_link” (for clickable text URLs),
 	//  “text_mention” (for users without usernames)
+	//  “custom_emoji” (for inline custom emoji messages)
 	Type string `json:"type"`
 	// Offset in UTF-16 code units to the start of the entity
 	Offset int `json:"offset"`
@@ -769,6 +779,10 @@ type MessageEntity struct {
 	//
 	// optional
 	Language string `json:"language,omitempty"`
+	// For “custom_emoji” only, unique identifier of the custom emoji. Use getCustomEmojiStickers to get full information about the sticker
+	//
+	// optional
+	CustomEmojiID string `json:"custom_emoji_id,omitempty"`
 }
 
 // ParseURL attempts to parse a URL contained within a MessageEntity.
@@ -783,6 +797,10 @@ func (e MessageEntity) ParseURL() (*url.URL, error) {
 // IsMention returns true if the type of the message entity is "mention" (@username).
 func (e MessageEntity) IsMention() bool {
 	return e.Type == "mention"
+}
+
+func (e MessageEntity) IsCustomEmoji() bool {
+	return e.Type == "custom_emoji" && e.CustomEmojiID != ""
 }
 
 // IsTextMention returns true if the type of the message entity is "text_mention"
@@ -2063,6 +2081,15 @@ type Sticker struct {
 	//
 	// optional
 	FileSize int `json:"file_size,omitempty"`
+	// StickerType of stickers in the set, currently one of “regular”, “mask”, “custom_emoji”
+	//
+	// optional
+	Type StickerType `json:"type,omitempty"`
+}
+
+// IsCustomEmoji returns true if the sticker is a custom emoji
+func (s Sticker) IsCustomEmoji() bool {
+	return s.Type == StickerTypeCustomEmoji && s.CustomEmojiID != ""
 }
 
 // StickerSet represents a sticker set.
@@ -2072,13 +2099,11 @@ type StickerSet struct {
 	// Title sticker set title
 	Title string `json:"title"`
 	// StickerType of stickers in the set, currently one of “regular”, “mask”, “custom_emoji”
-	StickerType string `json:"sticker_type"`
+	StickerType StickerType `json:"sticker_type,omitempty"`
 	// IsAnimated true, if the sticker set contains animated stickers
 	IsAnimated bool `json:"is_animated"`
 	// IsVideo true, if the sticker set contains video stickers
 	IsVideo bool `json:"is_video"`
-	// ContainsMasks true, if the sticker set contains masks
-	ContainsMasks bool `json:"contains_masks"`
 	// Stickers list of all set stickers
 	Stickers []Sticker `json:"stickers"`
 	// Thumb is the sticker set thumbnail in the .WEBP or .TGS format
@@ -3379,6 +3404,8 @@ type WebAppInitData struct {
 	CanSendAfter int    `json:"can_send_after,omitempty"` // NEW in 6.1 (seconds)
 	AuthDate     int64  `json:"auth_date"`
 	Hash         string `json:"hash"`
+	ChatType     string `json:"chat_type,omitempty"` // если у тебя он уже есть — оставь
+	ChatInstance string `json:"chat_instance,omitempty"`
 }
 
 type Currency string
@@ -3578,3 +3605,15 @@ const (
 
 // String implements fmt.Stringer for Currency.
 func (c Currency) String() string { return string(c) }
+
+// StickerType describes the type of stickers in a set.
+type StickerType string
+
+const (
+	StickerTypeRegular     StickerType = "regular"
+	StickerTypeMask        StickerType = "mask"
+	StickerTypeCustomEmoji StickerType = "custom_emoji"
+)
+
+// String implements fmt.Stringer for StickerType.
+func (s StickerType) String() string { return string(s) }

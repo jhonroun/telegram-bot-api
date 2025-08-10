@@ -761,3 +761,16 @@ func EscapeText(parseMode string, text string) string {
 
 	return replacer.Replace(text)
 }
+
+func (b *BotAPI) GetCustomEmojiStickers(ids []string) ([]Sticker, error) {
+	cfg := GetCustomEmojiStickersConfig{CustomEmojiIDs: ids}
+	resp, err := b.Request(cfg)
+	if err != nil {
+		return nil, err
+	}
+	var out []Sticker
+	if err := json.Unmarshal(resp.Result, &out); err != nil {
+		return nil, err
+	}
+	return out, nil
+}

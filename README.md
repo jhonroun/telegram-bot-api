@@ -13,6 +13,25 @@ go get github.com/jhonroun/telegram-bot-api/v6@6.1.0
 
 ## Changelog
 
+### v6.2.0 - 2025-08-11
+
+#### Added
+- **Chat:**
+  - `HasRestrictedVoiceAndVideoMessages` (`has_restricted_voice_and_video_messages`) — поддержка новой настройки ограничения голосовых и видеосообщений.
+- **Sticker**
+  - `contains_masks` удален из метода `createNewStickerSet`. Вместо этого используем `sticker_type `. “regular”, “mask”, or “custom_emoji”.
+  - `contains_masks` удален из `StickerSet`. Вместо этого используем `sticker_type `. “regular”, “mask”, or “custom_emoji”.
+  - getCustomEmojiStickers — в библиотеке: GetCustomEmojiStickersConfig и BotAPI.GetCustomEmojiStickers(ids []string) ([]Sticker, error)
+
+- **MessageEntity:**
+  - Новый тип custom_emoji.
+  - Поле custom_emoji_id для сущностей типа custom_emoji. (Ограничение: не более 200 custom_emoji_ids.)
+  - IsCustomEmoji() bool 
+
+- **Bot**
+  - Bot.GetCustomEmojiStickers(ids []string) ([]Sticker, error)
+
+
 ### v6.1.0 — 2025-08-11
 v6.1.0 — 2025-08-11
 Поддержка Telegram Bot API 6.1 (Join Requests & Payments, Premium, Attachment Menu).
