@@ -8,7 +8,7 @@ import "github.com/jhonroun/telegram-bot-api"
 
 Package tgbotapi has functions and types used for interacting with the Telegram Bot API.
 
-Package tgbotapi — Go\-client Telegram Bot API. Support: sending messages, inline\-mode, webhooks, etc. Actual Bot API Version: 6.2.0
+Package tgbotapi — Go\-client Telegram Bot API. Support: sending messages, inline\-mode, webhooks, etc. Actual Bot API Version: :::api\_coverage\_6.2.0\_test.go
 
 Fast start:
 
