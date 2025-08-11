@@ -85,16 +85,16 @@ ROOT_README="README.md"
 INTRO_START="<!-- BEGIN README INTRO -->"
 INTRO_END="<!-- END README INTRO -->"
 
-INTRO_BLOCK=$(cat <<'EOF'
+INTRO_BLOCK=$(cat <<EOF
 <!-- BEGIN README INTRO -->
-# Golang bindings for the Telegram Bot API
+# Golang bindings for the Telegram Bot API v${MAJOR}.${MINOR}
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/jhonroun/telegram-bot-api.svg)](https://pkg.go.dev/github.com/jhonroun/telegram-bot-api) 
 [![Test](https://github.com/jhonroun/telegram-bot-api/actions/workflows/ci.yml/badge.svg)](https://github.com/jhonroun/telegram-bot-api/actions/workflows/ci.yml)
 
-The repo was created to study and check the relevance of the module for working with the Bot API \(https://github.com/go-telegram-bot-api/telegram-bot-api\), which is called step-by-step. Many thanks to the author for the awesome experience and idea. Initially, I wanted to create a tool for writing modern bots. But in the process of adding functionality, I thought that I was writing it for myself first and foremost. There are quite enough forms with an updated version of the Bot API on github.com.
+The repo was created to study and check the relevance of the module for working with the Bot API (https://github.com/go-telegram-bot-api/telegram-bot-api), which is called step-by-step. Many thanks to the author for the awesome experience and idea. Initially, I wanted to create a tool for writing modern bots. But in the process of adding functionality, I thought that I was writing it for myself first and foremost. There are quite enough forms with an updated version of the Bot API on github.com.
 
-From now on, the abandonment of versioning like v0.\*/v1.\*
+From now on, the abandonment of versioning like v0./v1.
 <!-- END README INTRO -->
 EOF
 )
