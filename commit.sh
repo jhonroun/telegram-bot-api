@@ -14,9 +14,9 @@ if ! command -v gomarkdoc >/dev/null 2>&1; then
   die "gomarkdoc not found. install: go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest"
 fi
 
-# Запуск ssh-agent и добавление ключа
+# --- SSH-agent (один раз спросит пароль к ключу) ---
 eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_rsa
+ssh-add ~/.ssh/id_ed25519
 
 # --- 1) найти актуальную версию по файлам api_coverage_X.Y(.Z)_test.go ---
 LATEST_VER=$(
@@ -117,6 +117,21 @@ awk -v s="$INTRO_START" -v e="$INTRO_END" '
 rm -f "$TMP_README"
 echo "🧷 README intro block updated"
 
+# --- 4b) обновить маску тестов в .github/workflows/ci.yml ---
+CI_FILE=".github/workflows/ci.yml"
+if [[ -f "$CI_FILE" ]]; then
+  # В CI нужна форма '^Test_<MAJOR><MINOR>_' (пример: ^Test_62_)
+  CI_MASK="^Test_${MAJOR}${MINOR}_"
+
+  # Заменяем любые существующие '^Test_<digits>_' на актуальную
+  # Учитываем как одинарные, так и двойные кавычки
+  sed -E -i.bak "s@(-run[[:space:]]*['\"])\\^Test_[0-9]+_@\1${CI_MASK}@g" "$CI_FILE" && rm -f "${CI_FILE}.bak"
+
+  echo "🛠  CI test mask set to: ${CI_MASK}"
+else
+  echo "ℹ️  ${CI_FILE} not found, skipping CI mask update"
+fi
+
 # --- 5) коммитим дифф и пушим ---
 git fetch "$REMOTE" "$MAIN_BRANCH" || true
 
@@ -137,6 +152,7 @@ COMMIT_BODY=$(
 - Tests: go test -run '${TEST_REGEX}' ./...
 - Regenerate docs with gomarkdoc
 - Prepend README intro block
+- Update CI test mask to '^Test_${MAJOR}${MINOR}_'
 
 Diff vs ${REMOTE}/${MAIN_BRANCH}:
 
