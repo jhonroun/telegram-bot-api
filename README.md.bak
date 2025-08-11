@@ -1,6 +1,6 @@
 # Golang bindings for the Telegram Bot API
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/jhonroun/telegram-bot-api.svg)](https://pkg.go.dev/github.com/jhonroun/telegram-bot-api)
+[![Go Reference](https://pkg.go.dev/badge/github.com/jhonroun/telegram-bot-api/v6.svg)](https://pkg.go.dev/github.com/jhonroun/telegram-bot-api/v6)
 [![Test](https://github.com/jhonroun/telegram-bot-api/actions/workflows/ci.yml/badge.svg)](https://github.com/jhonroun/telegram-bot-api/actions/workflows/ci.yml)
 
 Репа создана для изучения и проверки актульность модуля для работы с Bot API (https://github.com/go-telegram-bot-api/telegram-bot-api), что называется step-by-step. Большое спасибо автору за шикарный опыт и идею.
@@ -97,9 +97,9 @@ Start Telegram **Bot API 6.0** + переход модуля на `/v6`.
 - **Импорт**:  
   ```go
   // было
-  import tgbotapi "github.com/jhonroun/telegram-bot-api"
+  import tgbotapi "github.com/jhonroun/telegram-bot-api/v5"
   // стало
-  import tgbotapi "github.com/jhonroun/telegram-bot-api"
+  import tgbotapi "github.com/jhonroun/telegram-bot-api/v6"
 
 ### v5.7.0 — 2025-08-10
 Поддержка Telegram **Bot API 5.7** (видеостикеры).
@@ -173,7 +173,7 @@ _, _ = bot.Send(m)
 ## Example
 
 First, ensure the library is installed and up to date by running
-`go get -u github.com/jhonroun/telegram-bot-api`.
+`go get -u github.com/jhonroun/telegram-bot-api/v6`.
 
 This is a very simple bot that just displays any gotten updates,
 then replies it to that chat.
@@ -184,7 +184,7 @@ package main
 import (
 	"log"
 
-	tgbotapi "github.com/jhonroun/telegram-bot-api"
+	tgbotapi "github.com/jhonroun/telegram-bot-api/v6"
 )
 
 func main() {
