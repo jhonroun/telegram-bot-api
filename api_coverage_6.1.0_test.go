@@ -152,14 +152,7 @@ func Test61_CreateInvoiceLink_ResponseError(t *testing.T) {
 
 // Кросс‑проверка сериализации/десериализации prices.
 func Test61_CreateInvoiceLink_PricesJSONRoundTrip(t *testing.T) {
-	cfg := CreateInvoiceLinkConfig{
-		Title:         "t",
-		Description:   "d",
-		Payload:       "p",
-		ProviderToken: "prov",
-		Currency:      CurrencyRUB,
-		Prices:        []LabeledPrice{{Label: "X", Amount: 100}, {Label: "Y", Amount: 2500}},
-	}
+	cfg := NewCreateInvoiceLinkConfig(ChatID, "t", "d", "p", "prov", []LabeledPrice{{Label: "X", Amount: 100}, {Label: "Y", Amount: 2500}}, CurrencyRUB)
 
 	p, err := cfg.params()
 	if err != nil {
@@ -283,16 +276,7 @@ func Test61_Live_CreateInvoiceLink(t *testing.T) {
 
 	bot := getBot(t)
 
-	cfg := CreateInvoiceLinkConfig{
-		Title:       "Test Item",
-		Description: "Test description",
-		Payload:     "test-payload-123",
-		//ProviderToken: provider,
-		Currency: CurrencyXTR,
-		Prices: []LabeledPrice{
-			{Label: "Test item", Amount: 100}, // копейки
-		},
-	}
+	cfg := NewCreateInvoiceLinkConfig(ChatID, "Test Item", "Test description", "test-payload-123", "", []LabeledPrice{{Label: "Test item", Amount: 100}}, CurrencyXTR)
 
 	link, err := bot.CreateInvoiceLink(cfg)
 	if err != nil {
@@ -310,17 +294,7 @@ func Test61_Live_SendInvoice(t *testing.T) {
 
 	bot := getBot(t)
 
-	cfg := InvoiceConfig{
-		BaseChat:    BaseChat{ChatID: ChatID},
-		Title:       "Test Item",
-		Description: "Test description",
-		Payload:     "test-payload-456",
-		//	ProviderToken: provider,
-		Currency: CurrencyXTR,
-		Prices: []LabeledPrice{
-			{Label: "Test item", Amount: 100},
-		},
-	}
+	cfg := NewInvoice(ChatID, "Test Item", "Test description", "test-payload-123", "", "", CurrencyXTR, []LabeledPrice{{Label: "Test item", Amount: 100}})
 
 	msg, err := bot.Send(cfg)
 	if err != nil {

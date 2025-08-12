@@ -362,6 +362,14 @@ type Chat struct {
 	//
 	// optional
 	IsForum bool `json:"is_forum,omitempty"` // 6.3
+	// True, if the supergroup chat has hidden members
+	//
+	// optional
+	HasHiddenMembers bool `json:"has_hidden_members,omitempty"` // 6.4
+	// rue, if aggressive anti-spam checks are enabled in the supergroup. The field is only available to chat administrators.
+	//
+	// optional
+	HasAgressiveAntiSpamEnabled bool `json:"has_aggressive_anti_spam_enabled,omitempty"`
 }
 
 // IsPrivate returns if the Chat is a private conversation.
@@ -701,6 +709,26 @@ type Message struct {
 	//
 	// optional
 	ForumTopicReopened *ForumTopicReopened `json:"forum_topic_reopened,omitempty"`
+	// ForumTopicEdited service message field
+	//
+	// optional
+	ForumTopicEdited *ForumTopicEdited `json:"forum_topic_edited,omitempty"`
+	// GeneralForumTopicHidden service message field
+	//
+	// optional
+	GeneralForumTopicHidden *GeneralForumTopicHidden `json:"general_forum_topic_hidden,omitempty"`
+	// GeneralForumTopicUnhidden service message field
+	//
+	// optional
+	GeneralForumTopicUnhidden *GeneralForumTopicUnhidden `json:"general_forum_topic_unhidden,omitempty"`
+	// WriteAccessAllowed service message field
+	//
+	// optional
+	WriteAccessAllowed *WriteAccessAllowed `json:"write_access_allowed,omitempty"`
+	// True, if the message media is covered by a spoiler animation
+	//
+	// optional
+	HasMediaSpoiler bool `json:"has_media_spoiler,omitempty"`
 }
 
 // Time converts the message timestamp into a Time.
@@ -1357,6 +1385,10 @@ type ReplyKeyboardMarkup struct {
 	//
 	// optional
 	OneTimeKeyboard bool `json:"one_time_keyboard,omitempty"`
+	// IsPersistent requests clients to always show the custom keyboard when the regular keyboard is hidden
+	//
+	// optional
+	IsPersistent bool `json:"is_persistent,omitempty"` // 6.4
 	// InputFieldPlaceholder is the placeholder to be shown in the input field when
 	// the keyboard is active; 1-64 characters.
 	//
@@ -1991,6 +2023,10 @@ type BaseInputMedia struct {
 // InputMediaPhoto is a photo to send as part of a media group.
 type InputMediaPhoto struct {
 	BaseInputMedia
+	// Pass True if the photo needs to be covered with a spoiler animation
+	//
+	// optional
+	HasSpoiler bool `json:"has_spoiler,omitempty"`
 }
 
 // InputMediaVideo is a video to send as part of a media group.
@@ -2017,6 +2053,10 @@ type InputMediaVideo struct {
 	//
 	// optional
 	SupportsStreaming bool `json:"supports_streaming,omitempty"`
+	// Pass True if the photo needs to be covered with a spoiler animation
+	//
+	// optional
+	HasSpoiler bool `json:"has_spoiler,omitempty"`
 }
 
 // InputMediaAnimation is an animation to send as part of a media group.
@@ -2039,6 +2079,10 @@ type InputMediaAnimation struct {
 	//
 	// optional
 	Duration int `json:"duration,omitempty"`
+	// Pass True if the photo needs to be covered with a spoiler animation
+	//
+	// optional
+	HasSpoiler bool `json:"has_spoiler,omitempty"`
 }
 
 // InputMediaAudio is an audio to send as part of a media group.
@@ -3701,3 +3745,25 @@ type ForumTopicClosed struct{}
 
 // ForumTopicReopened represents a service message about a forum topic reopened in the chat
 type ForumTopicReopened struct{}
+
+// ForumTopicEdited represents a service message about an edited forum topic
+type ForumTopicEdited struct {
+	// Name of the topic, if it was edited
+	//
+	// optional
+	Name string `json:"name,omitempty"`
+	// IconCustomEmojiID is the unique identifier of the custom emoji shown as the topic icon, if it was edited
+	//
+	// optional
+	IconCustomEmojiID string `json:"icon_custom_emoji_id,omitempty"`
+}
+
+// GeneralForumTopicHidden represents a service message about General forum topic hidden in the chat
+type GeneralForumTopicHidden struct{}
+
+// GeneralForumTopicUnhidden represents a service message about General forum topic unhidden in the chat
+type GeneralForumTopicUnhidden struct{}
+
+// WriteAccessAllowed represents a service message: the user allowed the bot added to the attachment menu to write messages
+// 6.4: initially holds no additional information
+type WriteAccessAllowed struct{}

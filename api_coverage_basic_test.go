@@ -39,3 +39,12 @@ func Test_getChatInfo(t *testing.T) {
 
 	t.Log(ch)
 }
+
+func Test_chatActions(t *testing.T) {
+	bot := getBot(t)
+
+	_, err := bot.Typing(ChatID)
+	if err != nil {
+		t.Fatal(err)
+	}
+}

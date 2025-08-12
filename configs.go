@@ -418,6 +418,7 @@ type PhotoConfig struct {
 	Caption         string
 	ParseMode       string
 	CaptionEntities []MessageEntity
+	HasSpoiler      bool
 }
 
 func (config PhotoConfig) params() (Params, error) {
@@ -428,6 +429,7 @@ func (config PhotoConfig) params() (Params, error) {
 
 	params.AddNonEmpty("caption", config.Caption)
 	params.AddNonEmpty("parse_mode", config.ParseMode)
+	params.AddBool("has_spoiler", config.HasSpoiler)
 	err = params.AddInterface("caption_entities", config.CaptionEntities)
 
 	return params, err
@@ -570,6 +572,7 @@ type VideoConfig struct {
 	ParseMode         string
 	CaptionEntities   []MessageEntity
 	SupportsStreaming bool
+	HasSpoiler        bool
 }
 
 func (config VideoConfig) params() (Params, error) {
@@ -582,6 +585,7 @@ func (config VideoConfig) params() (Params, error) {
 	params.AddNonEmpty("caption", config.Caption)
 	params.AddNonEmpty("parse_mode", config.ParseMode)
 	params.AddBool("supports_streaming", config.SupportsStreaming)
+	params.AddBool("has_spoiler", config.HasSpoiler)
 	err = params.AddInterface("caption_entities", config.CaptionEntities)
 
 	return params, err
@@ -615,6 +619,7 @@ type AnimationConfig struct {
 	Caption         string
 	ParseMode       string
 	CaptionEntities []MessageEntity
+	HasSpoiler      bool
 }
 
 func (config AnimationConfig) params() (Params, error) {
@@ -626,6 +631,7 @@ func (config AnimationConfig) params() (Params, error) {
 	params.AddNonZero("duration", config.Duration)
 	params.AddNonEmpty("caption", config.Caption)
 	params.AddNonEmpty("parse_mode", config.ParseMode)
+	params.AddBool("has_spoiler", config.HasSpoiler)
 	err = params.AddInterface("caption_entities", config.CaptionEntities)
 
 	return params, err
@@ -983,13 +989,13 @@ func (config GetGameHighScoresConfig) method() string {
 // ChatActionConfig contains information about a SendChatAction request.
 type ChatActionConfig struct {
 	BaseChat
-	Action string // required
+	Action ChatAction // required
 }
 
 func (config ChatActionConfig) params() (Params, error) {
 	params, err := config.BaseChat.params()
 
-	params["action"] = config.Action
+	params["action"] = config.Action.String()
 
 	return params, err
 }
@@ -2853,4 +2859,68 @@ func (cfg GetForumTopicIconStickersConfig) method() string {
 // Since no parameters are required, the method always returns an empty Params.
 func (cfg GetForumTopicIconStickersConfig) params() (Params, error) {
 	return make(Params), nil
+}
+
+type EditGeneralForumTopicConfig struct {
+	ChatID            int64
+	Name              string
+	IconCustomEmojiID string
+}
+
+func (config EditGeneralForumTopicConfig) method() string { return "editGeneralForumTopic" }
+
+func (config EditGeneralForumTopicConfig) params() (Params, error) {
+	params := make(Params)
+	params.AddNonZero64("chat_id", config.ChatID)
+	params.AddNonEmpty("name", config.Name)
+	params.AddNonEmpty("icon_custom_emoji_id", config.IconCustomEmojiID)
+	return params, nil
+}
+
+type CloseGeneralForumTopicConfig struct {
+	ChatID int64
+}
+
+func (config CloseGeneralForumTopicConfig) method() string { return "closeGeneralForumTopic" }
+
+func (config CloseGeneralForumTopicConfig) params() (Params, error) {
+	params := make(Params)
+	params.AddNonZero64("chat_id", config.ChatID)
+	return params, nil
+}
+
+type ReopenGeneralForumTopicConfig struct {
+	ChatID int64
+}
+
+func (config ReopenGeneralForumTopicConfig) method() string { return "reopenGeneralForumTopic" }
+
+func (config ReopenGeneralForumTopicConfig) params() (Params, error) {
+	params := make(Params)
+	params.AddNonZero64("chat_id", config.ChatID)
+	return params, nil
+}
+
+type HideGeneralForumTopicConfig struct {
+	ChatID int64
+}
+
+func (config HideGeneralForumTopicConfig) method() string { return "hideGeneralForumTopic" }
+
+func (config HideGeneralForumTopicConfig) params() (Params, error) {
+	params := make(Params)
+	params.AddNonZero64("chat_id", config.ChatID)
+	return params, nil
+}
+
+type UnhideGeneralForumTopicConfig struct {
+	ChatID int64
+}
+
+func (config UnhideGeneralForumTopicConfig) method() string { return "unhideGeneralForumTopic" }
+
+func (config UnhideGeneralForumTopicConfig) params() (Params, error) {
+	params := make(Params)
+	params.AddNonZero64("chat_id", config.ChatID)
+	return params, nil
 }

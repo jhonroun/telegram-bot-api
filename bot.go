@@ -619,6 +619,7 @@ func (bot *BotAPI) GetChatMembersCount(config ChatMemberCountConfig) (int, error
 }
 
 // GetChatMember gets a specific chat member.
+// Note that the method is only guaranteed to work if the bot is an administrator in the chat.
 func (bot *BotAPI) GetChatMember(config GetChatMemberConfig) (ChatMember, error) {
 	resp, err := bot.Request(config)
 	if err != nil {
@@ -824,10 +825,10 @@ func (bot *BotAPI) UnpinAllForumTopicMessages(config UnpinAllForumTopicMessagesC
 }
 
 // GetForumTopicIconStickers returns stickers that can be used as forum topic icons.
-func (bot *BotAPI) GetForumTopicIconStickers(config GetForumTopicIconStickersConfig) ([]Sticker, error) {
+func (bot *BotAPI) GetForumTopicIconStickers() ([]Sticker, error) {
 	var stickers []Sticker
 
-	resp, err := bot.Request(config)
+	resp, err := bot.Request(GetCustomEmojiStickersConfig{})
 	if err != nil {
 		return stickers, err
 	}
@@ -835,4 +836,137 @@ func (bot *BotAPI) GetForumTopicIconStickers(config GetForumTopicIconStickersCon
 	err = json.Unmarshal(resp.Result, &stickers)
 
 	return stickers, err
+}
+
+// SendAction — universal methods sendChatAction.
+func (bot *BotAPI) SendAction(to any, action ChatAction) (*APIResponse, error) {
+	toID := getChatID(to)
+	var config ChatActionConfig
+
+	if val, ok := to.(ChatActionConfig); ok {
+		config = val
+	} else {
+		config = NewChatActionConfig(toID, action)
+	}
+
+	resp, err := bot.Request(config)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
+
+// Send to chat action that bot typing text.
+func (bot *BotAPI) Typing(to any) (*APIResponse, error) {
+	return bot.SendAction(to, ChatActionTyping)
+}
+
+// Send to chat action that bot upload photo.
+func (bot *BotAPI) UploadPhoto(to any) (*APIResponse, error) {
+	return bot.SendAction(to, ChatActionUploadPhoto)
+}
+
+// Send to chat action that bot record video.
+func (bot *BotAPI) RecordVideo(to any) (*APIResponse, error) {
+	return bot.SendAction(to, ChatActionRecordVideo)
+}
+
+// Send to chat action that bot upload video.
+func (bot *BotAPI) UploadVideo(to any) (*APIResponse, error) {
+	return bot.SendAction(to, ChatActionUploadVideo)
+}
+
+// Send to chat action that bot record audio.
+func (bot *BotAPI) RecordVoice(to any) (*APIResponse, error) {
+	return bot.SendAction(to, ChatActionRecordVoice)
+}
+
+// Send to chat action that bot upload audio.
+func (bot *BotAPI) UploadVoice(to any) (*APIResponse, error) {
+	return bot.SendAction(to, ChatActionUploadVoice)
+}
+
+// Send to chat action that bot upload document.
+func (bot *BotAPI) UploadDocument(to any) (*APIResponse, error) {
+	return bot.SendAction(to, ChatActionUploadDocument)
+}
+
+// Send to chat action that bot choose sticker.
+func (bot *BotAPI) ChooseSticker(to any) (*APIResponse, error) {
+	return bot.SendAction(to, ChatActionChooseSticker)
+}
+
+// Send to chat action that bot find location.
+func (bot *BotAPI) FindLocation(to any) (*APIResponse, error) {
+	return bot.SendAction(to, ChatActionFindLocation)
+}
+
+// Send to chat action that bot record video note.
+func (bot *BotAPI) RecordVideoNote(to any) (*APIResponse, error) {
+	return bot.SendAction(to, ChatActionRecordVideoNote)
+}
+
+// Send to chat action that bot upload video note.
+func (bot *BotAPI) UploadVideoNote(to any) (*APIResponse, error) {
+	return bot.SendAction(to, ChatActionUploadVideoNote)
+}
+
+// GetCustomEmojiStickers returns an array of stickers belonging to a set of custom emoji identifiers.
+func (b *BotAPI) GetCustomEmojiStickers(ids []string) ([]Sticker, error) {
+	cfg := GetCustomEmojiStickersConfig{CustomEmojiIDs: ids}
+	resp, err := b.Request(cfg)
+	if err != nil {
+		return nil, err
+	}
+	var out []Sticker
+	if err := json.Unmarshal(resp.Result, &out); err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// EditGeneralForumTopic calls Telegram Bot API editGeneralForumTopic method.
+func (bot *BotAPI) EditGeneralForumTopic(config EditGeneralForumTopicConfig) (APIResponse, error) {
+	resp, err := bot.Request(config)
+	if err != nil {
+		return APIResponse{}, err
+	}
+	return *resp, nil
+}
+
+// CloseGeneralForumTopic calls Telegram Bot API closeGeneralForumTopic method.
+func (bot *BotAPI) CloseGeneralForumTopic(config CloseGeneralForumTopicConfig) (APIResponse, error) {
+	resp, err := bot.Request(config)
+	if err != nil {
+		return APIResponse{}, err
+	}
+	return *resp, nil
+}
+
+// ReopenGeneralForumTopic calls Telegram Bot API reopenGeneralForumTopic method.
+func (bot *BotAPI) ReopenGeneralForumTopic(config ReopenGeneralForumTopicConfig) (APIResponse, error) {
+	resp, err := bot.Request(config)
+	if err != nil {
+		return APIResponse{}, err
+	}
+	return *resp, nil
+}
+
+// HideGeneralForumTopic calls Telegram Bot API hideGeneralForumTopic method.
+func (bot *BotAPI) HideGeneralForumTopic(config HideGeneralForumTopicConfig) (APIResponse, error) {
+	resp, err := bot.Request(config)
+	if err != nil {
+		return APIResponse{}, err
+	}
+	return *resp, nil
+}
+
+// UnhideGeneralForumTopic calls Telegram Bot API unhideGeneralForumTopic method.
+func (bot *BotAPI) UnhideGeneralForumTopic(config UnhideGeneralForumTopicConfig) (APIResponse, error) {
+	resp, err := bot.Request(config)
+	if err != nil {
+		return APIResponse{}, err
+	}
+	return *resp, nil
 }

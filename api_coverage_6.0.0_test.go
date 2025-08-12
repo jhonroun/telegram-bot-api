@@ -188,13 +188,9 @@ func Test60_Message_WebAppData_JSON_Marshal(t *testing.T) {
 }
 
 func Test60_AnswerWebAppQuery_Params(t *testing.T) {
-	res := InlineQueryResultArticle{
-		Type:  "article",
-		ID:    "1",
-		Title: "ok",
-		InputMessageContent: InputTextMessageContent{
-			Text: "hi from web app",
-		},
+	res := NewInlineQueryResultArticle("1", "ok", "hi from web app")
+	res.InputMessageContent = InputTextMessageContent{
+		Text: "hi from web app",
 	}
 
 	cfg := AnswerWebAppQueryConfig{

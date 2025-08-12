@@ -96,7 +96,10 @@ The repo was created to study and check the relevance of the module for working 
  - Added new method bot.GetUserIDbyUsername(username). This method obtain ChatID by username. 
  Example:
  `bot.GetUserIDbyUsername("@tggobotapitest")`
- 
+ - Now chatID in construct New... (helpers) can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
+ - Added universal methods sendChatAction and short form. Example usage:
+ `_, _ = bot.Typing(chatID)`
+
 ## NOTE: It's not obvious:
 
  - message_thread_id as part of BaseChat type because sendMessage, sendPhoto, sendVideo, sendAnimation, sendAudio, sendDocument, sendSticker, sendVideoNote, sendVoice, sendLocation, sendVenue, sendContact, sendDice, sendInvoice, sendGame, copyMessage, forwardMessage - used it.

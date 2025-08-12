@@ -4,7 +4,6 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/url"
@@ -15,10 +14,12 @@ import (
 // NewMessage creates a new Message.
 //
 // chatID is where to send it, text is the message text.
-func NewMessage(chatID int64, text string) MessageConfig {
+// Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
+func NewMessage(chatID any, text string) MessageConfig {
+	toID := getChatID(chatID)
 	return MessageConfig{
 		BaseChat: BaseChat{
-			ChatID:           chatID,
+			ChatID:           toID,
 			ReplyToMessageID: 0,
 		},
 		Text:                  text,
@@ -39,6 +40,7 @@ func NewDeleteMessage(chatID int64, messageID int) DeleteMessageConfig {
 //
 // username is the username of the channel, text is the message text,
 // and the username should be in the form of `@username`.
+// Or you can use bot.GetUserIDbyUsername("@username") and simple NewMessage
 func NewMessageToChannel(username string, text string) MessageConfig {
 	return MessageConfig{
 		BaseChat: BaseChat{
@@ -75,13 +77,16 @@ func NewCopyMessage(chatID int64, fromChatID int64, messageID int) CopyMessageCo
 // NewPhoto creates a new sendPhoto request.
 //
 // chatID is where to send it, file is a string path to the file,
+// Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
+//
 // FileReader, or FileBytes.
 //
 // Note that you must send animated GIFs as a document.
-func NewPhoto(chatID int64, file RequestFileData) PhotoConfig {
+func NewPhoto(chatID any, file RequestFileData) PhotoConfig {
+	toID := getChatID(chatID)
 	return PhotoConfig{
 		BaseFile: BaseFile{
-			BaseChat: BaseChat{ChatID: chatID},
+			BaseChat: BaseChat{ChatID: toID},
 			File:     file,
 		},
 	}
@@ -90,6 +95,7 @@ func NewPhoto(chatID int64, file RequestFileData) PhotoConfig {
 // NewPhotoToChannel creates a new photo uploader to send a photo to a channel.
 //
 // Note that you must send animated GIFs as a document.
+// Or you can use bot.GetUserIDbyUsername("@username") and simple NewMessage
 func NewPhotoToChannel(username string, file RequestFileData) PhotoConfig {
 	return PhotoConfig{
 		BaseFile: BaseFile{
@@ -102,50 +108,60 @@ func NewPhotoToChannel(username string, file RequestFileData) PhotoConfig {
 }
 
 // NewAudio creates a new sendAudio request.
-func NewAudio(chatID int64, file RequestFileData) AudioConfig {
+// Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
+func NewAudio(chatID any, file RequestFileData) AudioConfig {
+	toID := getChatID(chatID)
 	return AudioConfig{
 		BaseFile: BaseFile{
-			BaseChat: BaseChat{ChatID: chatID},
+			BaseChat: BaseChat{ChatID: toID},
 			File:     file,
 		},
 	}
 }
 
 // NewDocument creates a new sendDocument request.
-func NewDocument(chatID int64, file RequestFileData) DocumentConfig {
+// Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
+func NewDocument(chatID any, file RequestFileData) DocumentConfig {
+	toID := getChatID(chatID)
 	return DocumentConfig{
 		BaseFile: BaseFile{
-			BaseChat: BaseChat{ChatID: chatID},
+			BaseChat: BaseChat{ChatID: toID},
 			File:     file,
 		},
 	}
 }
 
 // NewSticker creates a new sendSticker request.
-func NewSticker(chatID int64, file RequestFileData) StickerConfig {
+// Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
+func NewSticker(chatID any, file RequestFileData) StickerConfig {
+	toID := getChatID(chatID)
 	return StickerConfig{
 		BaseFile: BaseFile{
-			BaseChat: BaseChat{ChatID: chatID},
+			BaseChat: BaseChat{ChatID: toID},
 			File:     file,
 		},
 	}
 }
 
 // NewVideo creates a new sendVideo request.
-func NewVideo(chatID int64, file RequestFileData) VideoConfig {
+// Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
+func NewVideo(chatID any, file RequestFileData) VideoConfig {
+	toID := getChatID(chatID)
 	return VideoConfig{
 		BaseFile: BaseFile{
-			BaseChat: BaseChat{ChatID: chatID},
+			BaseChat: BaseChat{ChatID: toID},
 			File:     file,
 		},
 	}
 }
 
 // NewAnimation creates a new sendAnimation request.
-func NewAnimation(chatID int64, file RequestFileData) AnimationConfig {
+// Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
+func NewAnimation(chatID any, file RequestFileData) AnimationConfig {
+	toID := getChatID(chatID)
 	return AnimationConfig{
 		BaseFile: BaseFile{
-			BaseChat: BaseChat{ChatID: chatID},
+			BaseChat: BaseChat{ChatID: toID},
 			File:     file,
 		},
 	}
@@ -153,12 +169,15 @@ func NewAnimation(chatID int64, file RequestFileData) AnimationConfig {
 
 // NewVideoNote creates a new sendVideoNote request.
 //
+// # Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
+//
 // chatID is where to send it, file is a string path to the file,
 // FileReader, or FileBytes.
-func NewVideoNote(chatID int64, length int, file RequestFileData) VideoNoteConfig {
+func NewVideoNote(chatID any, length int, file RequestFileData) VideoNoteConfig {
+	toID := getChatID(chatID)
 	return VideoNoteConfig{
 		BaseFile: BaseFile{
-			BaseChat: BaseChat{ChatID: chatID},
+			BaseChat: BaseChat{ChatID: toID},
 			File:     file,
 		},
 		Length: length,
@@ -166,10 +185,12 @@ func NewVideoNote(chatID int64, length int, file RequestFileData) VideoNoteConfi
 }
 
 // NewVoice creates a new sendVoice request.
-func NewVoice(chatID int64, file RequestFileData) VoiceConfig {
+// Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
+func NewVoice(chatID any, file RequestFileData) VoiceConfig {
+	toID := getChatID(chatID)
 	return VoiceConfig{
 		BaseFile: BaseFile{
-			BaseChat: BaseChat{ChatID: chatID},
+			BaseChat: BaseChat{ChatID: toID},
 			File:     file,
 		},
 	}
@@ -177,9 +198,11 @@ func NewVoice(chatID int64, file RequestFileData) VoiceConfig {
 
 // NewMediaGroup creates a new media group. Files should be an array of
 // two to ten InputMediaPhoto or InputMediaVideo.
-func NewMediaGroup(chatID int64, files []interface{}) MediaGroupConfig {
+// Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
+func NewMediaGroup(chatID any, files []interface{}) MediaGroupConfig {
+	toID := getChatID(chatID)
 	return MediaGroupConfig{
-		ChatID: chatID,
+		ChatID: toID,
 		Media:  files,
 	}
 }
@@ -187,10 +210,11 @@ func NewMediaGroup(chatID int64, files []interface{}) MediaGroupConfig {
 // NewInputMediaPhoto creates a new InputMediaPhoto.
 func NewInputMediaPhoto(media RequestFileData) InputMediaPhoto {
 	return InputMediaPhoto{
-		BaseInputMedia{
+		BaseInputMedia: BaseInputMedia{
 			Type:  "photo",
 			Media: media,
 		},
+		HasSpoiler: false,
 	}
 }
 
@@ -235,10 +259,12 @@ func NewInputMediaDocument(media RequestFileData) InputMediaDocument {
 }
 
 // NewContact allows you to send a shared contact.
-func NewContact(chatID int64, phoneNumber, firstName string) ContactConfig {
+// Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
+func NewContact(chatID any, phoneNumber, firstName string) ContactConfig {
+	toID := getChatID(chatID)
 	return ContactConfig{
 		BaseChat: BaseChat{
-			ChatID: chatID,
+			ChatID: toID,
 		},
 		PhoneNumber: phoneNumber,
 		FirstName:   firstName,
@@ -248,10 +274,12 @@ func NewContact(chatID int64, phoneNumber, firstName string) ContactConfig {
 // NewLocation shares your location.
 //
 // chatID is where to send it, latitude and longitude are coordinates.
-func NewLocation(chatID int64, latitude float64, longitude float64) LocationConfig {
+// Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
+func NewLocation(chatID any, latitude float64, longitude float64) LocationConfig {
+	toID := getChatID(chatID)
 	return LocationConfig{
 		BaseChat: BaseChat{
-			ChatID: chatID,
+			ChatID: toID,
 		},
 		Latitude:  latitude,
 		Longitude: longitude,
@@ -259,10 +287,12 @@ func NewLocation(chatID int64, latitude float64, longitude float64) LocationConf
 }
 
 // NewVenue allows you to send a venue and its location.
-func NewVenue(chatID int64, title, address string, latitude, longitude float64) VenueConfig {
+// Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
+func NewVenue(chatID any, title, address string, latitude, longitude float64) VenueConfig {
+	toID := getChatID(chatID)
 	return VenueConfig{
 		BaseChat: BaseChat{
-			ChatID: chatID,
+			ChatID: toID,
 		},
 		Title:     title,
 		Address:   address,
@@ -274,10 +304,12 @@ func NewVenue(chatID int64, title, address string, latitude, longitude float64) 
 // NewChatAction sets a chat action.
 // Actions last for 5 seconds, or until your next action.
 //
-// chatID is where to send it, action should be set via Chat constants.
-func NewChatAction(chatID int64, action string) ChatActionConfig {
+// chatID is where to send it, action should be set via ChatAction constants.
+// Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
+func NewChatAction(chatID any, action ChatAction) ChatActionConfig {
+	toID := getChatID(chatID)
 	return ChatActionConfig{
-		BaseChat: BaseChat{ChatID: chatID},
+		BaseChat: BaseChat{ChatID: toID},
 		Action:   action,
 	}
 }
@@ -285,9 +317,11 @@ func NewChatAction(chatID int64, action string) ChatActionConfig {
 // NewUserProfilePhotos gets user profile photos.
 //
 // userID is the ID of the user you wish to get profile photos from.
-func NewUserProfilePhotos(userID int64) UserProfilePhotosConfig {
+// Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
+func NewUserProfilePhotos(userID any) UserProfilePhotosConfig {
+	toID := getChatID(userID)
 	return UserProfilePhotosConfig{
-		UserID: userID,
+		UserID: toID,
 		Offset: 0,
 		Limit:  0,
 	}
@@ -565,10 +599,11 @@ func NewInlineQueryResultVenue(id, title, address string, latitude, longitude fl
 }
 
 // NewEditMessageText allows you to edit the text of a message.
-func NewEditMessageText(chatID int64, messageID int, text string) EditMessageTextConfig {
+func NewEditMessageText(chatID any, messageID int, text string) EditMessageTextConfig {
+	toID := getChatID(chatID)
 	return EditMessageTextConfig{
 		BaseEdit: BaseEdit{
-			ChatID:    chatID,
+			ChatID:    toID,
 			MessageID: messageID,
 		},
 		Text: text,
@@ -576,10 +611,11 @@ func NewEditMessageText(chatID int64, messageID int, text string) EditMessageTex
 }
 
 // NewEditMessageTextAndMarkup allows you to edit the text and reply markup of a message.
-func NewEditMessageTextAndMarkup(chatID int64, messageID int, text string, replyMarkup InlineKeyboardMarkup) EditMessageTextConfig {
+func NewEditMessageTextAndMarkup(chatID any, messageID int, text string, replyMarkup InlineKeyboardMarkup) EditMessageTextConfig {
+	toID := getChatID(chatID)
 	return EditMessageTextConfig{
 		BaseEdit: BaseEdit{
-			ChatID:      chatID,
+			ChatID:      toID,
 			MessageID:   messageID,
 			ReplyMarkup: &replyMarkup,
 		},
@@ -588,10 +624,11 @@ func NewEditMessageTextAndMarkup(chatID int64, messageID int, text string, reply
 }
 
 // NewEditMessageCaption allows you to edit the caption of a message.
-func NewEditMessageCaption(chatID int64, messageID int, caption string) EditMessageCaptionConfig {
+func NewEditMessageCaption(chatID any, messageID int, caption string) EditMessageCaptionConfig {
+	toID := getChatID(chatID)
 	return EditMessageCaptionConfig{
 		BaseEdit: BaseEdit{
-			ChatID:    chatID,
+			ChatID:    toID,
 			MessageID: messageID,
 		},
 		Caption: caption,
@@ -600,10 +637,11 @@ func NewEditMessageCaption(chatID int64, messageID int, caption string) EditMess
 
 // NewEditMessageReplyMarkup allows you to edit the inline
 // keyboard markup.
-func NewEditMessageReplyMarkup(chatID int64, messageID int, replyMarkup InlineKeyboardMarkup) EditMessageReplyMarkupConfig {
+func NewEditMessageReplyMarkup(chatID any, messageID int, replyMarkup InlineKeyboardMarkup) EditMessageReplyMarkupConfig {
+	toID := getChatID(chatID)
 	return EditMessageReplyMarkupConfig{
 		BaseEdit: BaseEdit{
-			ChatID:      chatID,
+			ChatID:      toID,
 			MessageID:   messageID,
 			ReplyMarkup: &replyMarkup,
 		},
@@ -766,9 +804,10 @@ func NewCallbackWithAlert(id, text string) CallbackConfig {
 }
 
 // NewInvoice creates a new Invoice request to the user.
-func NewInvoice(chatID int64, title, description, payload, providerToken, startParameter string, currency Currency, prices []LabeledPrice) InvoiceConfig {
+func NewInvoice(chatID any, title, description, payload, providerToken, startParameter string, currency Currency, prices []LabeledPrice) InvoiceConfig {
+	toID := getChatID(chatID)
 	return InvoiceConfig{
-		BaseChat:       BaseChat{ChatID: chatID},
+		BaseChat:       BaseChat{ChatID: toID},
 		Title:          title,
 		Description:    description,
 		Payload:        payload,
@@ -779,27 +818,30 @@ func NewInvoice(chatID int64, title, description, payload, providerToken, startP
 }
 
 // NewChatTitle allows you to update the title of a chat.
-func NewChatTitle(chatID int64, title string) SetChatTitleConfig {
+func NewChatTitle(chatID any, title string) SetChatTitleConfig {
+	toID := getChatID(chatID)
 	return SetChatTitleConfig{
-		ChatID: chatID,
+		ChatID: toID,
 		Title:  title,
 	}
 }
 
 // NewChatDescription allows you to update the description of a chat.
-func NewChatDescription(chatID int64, description string) SetChatDescriptionConfig {
+func NewChatDescription(chatID any, description string) SetChatDescriptionConfig {
+	toID := getChatID(chatID)
 	return SetChatDescriptionConfig{
-		ChatID:      chatID,
+		ChatID:      toID,
 		Description: description,
 	}
 }
 
 // NewChatPhoto allows you to update the photo for a chat.
-func NewChatPhoto(chatID int64, photo RequestFileData) SetChatPhotoConfig {
+func NewChatPhoto(chatID any, photo RequestFileData) SetChatPhotoConfig {
+	toID := getChatID(chatID)
 	return SetChatPhotoConfig{
 		BaseFile: BaseFile{
 			BaseChat: BaseChat{
-				ChatID: chatID,
+				ChatID: toID,
 			},
 			File: photo,
 		},
@@ -807,17 +849,19 @@ func NewChatPhoto(chatID int64, photo RequestFileData) SetChatPhotoConfig {
 }
 
 // NewDeleteChatPhoto allows you to delete the photo for a chat.
-func NewDeleteChatPhoto(chatID int64) DeleteChatPhotoConfig {
+func NewDeleteChatPhoto(chatID any) DeleteChatPhotoConfig {
+	toID := getChatID(chatID)
 	return DeleteChatPhotoConfig{
-		ChatID: chatID,
+		ChatID: toID,
 	}
 }
 
 // NewPoll allows you to create a new poll.
-func NewPoll(chatID int64, question string, options ...string) SendPollConfig {
+func NewPoll(chatID any, question string, options ...string) SendPollConfig {
+	toID := getChatID(chatID)
 	return SendPollConfig{
 		BaseChat: BaseChat{
-			ChatID: chatID,
+			ChatID: toID,
 		},
 		Question:    question,
 		Options:     options,
@@ -826,20 +870,22 @@ func NewPoll(chatID int64, question string, options ...string) SendPollConfig {
 }
 
 // NewStopPoll allows you to stop a poll.
-func NewStopPoll(chatID int64, messageID int) StopPollConfig {
+func NewStopPoll(chatID any, messageID int) StopPollConfig {
+	toID := getChatID(chatID)
 	return StopPollConfig{
 		BaseEdit{
-			ChatID:    chatID,
+			ChatID:    toID,
 			MessageID: messageID,
 		},
 	}
 }
 
 // NewDice allows you to send a random dice roll.
-func NewDice(chatID int64) DiceConfig {
+func NewDice(chatID any) DiceConfig {
+	toID := getChatID(chatID)
 	return DiceConfig{
 		BaseChat: BaseChat{
-			ChatID: chatID,
+			ChatID: toID,
 		},
 	}
 }
@@ -847,10 +893,11 @@ func NewDice(chatID int64) DiceConfig {
 // NewDiceWithEmoji allows you to send a random roll of one of many types.
 //
 // Emoji may be 🎲 (1-6), 🎯 (1-6), or 🏀 (1-5).
-func NewDiceWithEmoji(chatID int64, emoji string) DiceConfig {
+func NewDiceWithEmoji(chatID any, emoji string) DiceConfig {
+	toID := getChatID(chatID)
 	return DiceConfig{
 		BaseChat: BaseChat{
-			ChatID: chatID,
+			ChatID: toID,
 		},
 		Emoji: emoji,
 	}
@@ -881,19 +928,21 @@ func NewBotCommandScopeAllChatAdministrators() BotCommandScope {
 
 // NewBotCommandScopeChat represents the scope of bot commands, covering a
 // specific chat.
-func NewBotCommandScopeChat(chatID int64) BotCommandScope {
+func NewBotCommandScopeChat(chatID any) BotCommandScope {
+	toID := getChatID(chatID)
 	return BotCommandScope{
 		Type:   "chat",
-		ChatID: chatID,
+		ChatID: toID,
 	}
 }
 
 // NewBotCommandScopeChatAdministrators represents the scope of bot commands,
 // covering all administrators of a specific group or supergroup chat.
-func NewBotCommandScopeChatAdministrators(chatID int64) BotCommandScope {
+func NewBotCommandScopeChatAdministrators(chatID any) BotCommandScope {
+	toID := getChatID(chatID)
 	return BotCommandScope{
 		Type:   "chat_administrators",
-		ChatID: chatID,
+		ChatID: toID,
 	}
 }
 
@@ -987,16 +1036,270 @@ func ValidateWebAppData(token, telegramInitData string) (bool, error) {
 	return true, nil
 }
 
-// GetCustomEmojiStickers returns an array of stickers belonging to a set of custom emoji identifiers.
-func (b *BotAPI) GetCustomEmojiStickers(ids []string) ([]Sticker, error) {
-	cfg := GetCustomEmojiStickersConfig{CustomEmojiIDs: ids}
-	resp, err := b.Request(cfg)
-	if err != nil {
-		return nil, err
+// NewCreateInvoiceLinkConfig creates a new CreateInvoiceLinkConfig with the given parameters.
+//
+// The ProviderToken must be obtained from the Telegram BotFather.
+// The Currency must be a valid ISO 4217 3-letter currency code. Use Currency constant list. XTR for payments in Telegram Stars.
+// The Prices must contain at least one LabeledPrice.
+//
+// The returned CreateInvoiceLinkConfig can be passed to the BotAPI.CreateInvoiceLink
+// method to create an invoice link.
+func NewCreateInvoiceLinkConfig(chatID any, title, description, payload, providerToken string, prices []LabeledPrice, currency Currency) CreateInvoiceLinkConfig {
+	toID := getChatID(chatID)
+	return CreateInvoiceLinkConfig{
+		BaseChat:      BaseChat{ChatID: toID},
+		Title:         title,
+		Description:   description,
+		Payload:       payload,
+		ProviderToken: providerToken,
+		Currency:      currency,
+		Prices:        prices,
 	}
-	var out []Sticker
-	if err := json.Unmarshal(resp.Result, &out); err != nil {
-		return nil, err
+}
+
+// NewGetCustomEmojiStickersConfig creates a new GetCustomEmojiStickersConfig with the specified custom emoji IDs.
+// It accepts a variable number of string arguments, each representing a custom emoji ID.
+func NewGetCustomEmojiStickersConfig(val ...string) GetCustomEmojiStickersConfig {
+	return GetCustomEmojiStickersConfig{CustomEmojiIDs: val}
+}
+
+// ChatAction — enum actions for sendChatAction.
+type ChatAction string
+
+const (
+	// typing text
+	ChatActionTyping ChatAction = "typing"
+	// uploading photo
+	ChatActionUploadPhoto ChatAction = "upload_photo"
+	// recording video
+	ChatActionRecordVideo ChatAction = "record_video"
+	// uploading video
+	ChatActionUploadVideo ChatAction = "upload_video"
+	// recording audio
+	ChatActionRecordVoice ChatAction = "record_voice"
+	// uploading audio
+	ChatActionUploadVoice ChatAction = "upload_voice"
+	// uploading document
+	ChatActionUploadDocument ChatAction = "upload_document"
+	// choosing sticker
+	ChatActionChooseSticker ChatAction = "choose_sticker"
+	// finding location
+	ChatActionFindLocation ChatAction = "find_location"
+	// recording video note
+	ChatActionRecordVideoNote ChatAction = "record_video_note"
+	// uploading video note
+	ChatActionUploadVideoNote ChatAction = "upload_video_note"
+)
+
+// ToString возвращает строковое представление действия
+func (a ChatAction) String() string {
+	return string(a)
+}
+
+// NewChatActionConfig creates a new ChatActionConfig for sending a chat action.
+// Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User, Message
+func NewChatActionConfig(to any, act ChatAction) ChatActionConfig {
+	base := BaseChat{}
+	var action ChatAction
+	switch val := to.(type) {
+	case int64:
+		action = act
+		base = BaseChat{ChatID: val}
+	case BaseChat:
+		action = act
+		base = val
+	case ChatConfig:
+		action = act
+		base = BaseChat{ChatID: val.ChatID}
+	case ChatActionConfig:
+		return val
+	case Chat:
+		action = act
+		base = BaseChat{
+			ChatID:          val.ID,
+			ProtectContent:  val.HasProtectedContent,
+			ChannelUsername: val.UserName,
+		}
+	case User:
+		action = act
+		base = BaseChat{ChatID: val.ID}
+	case Message:
+		action = act
+		base = BaseChat{
+			ChatID:           val.Chat.ID,
+			ProtectContent:   val.HasProtectedContent,
+			ChannelUsername:  val.Chat.UserName,
+			ReplyToMessageID: val.ReplyToMessage.MessageID,
+			ReplyMarkup:      val.ReplyMarkup,
+			MessageThreadID:  val.Message_thread_id,
+		}
+	default:
+		action = act
+		base = BaseChat{ChatID: 0}
 	}
-	return out, nil
+	return ChatActionConfig{BaseChat: base,
+		Action: action,
+	}
+}
+
+// NewCreateForumTopicConfig creates a new CreateForumTopicConfig with the specified parameters.
+// chatID can be of any type that can be converted to a valid ChatID for the forum topic.
+// name is the name of the forum topic, which must be between 1 and 128 characters.
+// iconColor is the RGB color of the topic icon and must be one of the allowed values.
+// Optional iconCustomEmojiID is the ID of the custom emoji to use as the topic icon.
+func NewCreateForumTopicConfig(chatID any, name string, iconColor int) CreateForumTopicConfig {
+	toID := getChatID(chatID)
+	return CreateForumTopicConfig{
+		ChatID:    toID,
+		Name:      "Test",
+		IconColor: 2,
+	}
+}
+
+// NewCreateForumTopicConfig creates a new CreateForumTopicConfig with the specified parameters.
+// chatID can be of any type that can be converted to a valid ChatID for the forum topic.
+// name is the name of the forum topic, which must be between 1 and 128 characters.
+// iconColor is the RGB color of the topic icon and must be one of the allowed values.
+// iconCustomEmojiID is the ID of the custom emoji to use as the topic icon.
+func NewEditForumTopicConfig(chatID any, messageThreadID int, name string, iconCustomEmojiID string) EditForumTopicConfig {
+	toID := getChatID(chatID)
+	return EditForumTopicConfig{
+		ChatID:            toID,
+		MessageThreadID:   messageThreadID,
+		Name:              name,
+		IconCustomEmojiID: iconCustomEmojiID,
+	}
+}
+
+// NewEditForumTopicConfigWithotIcon creates a new EditForumTopicConfig without specifying an icon.
+// chatID can be of any type that can be converted to a valid ChatID for the forum topic.
+// messageThreadID is the unique identifier of the forum topic thread.
+// name is the name of the forum topic, which must be non-empty.
+func NewEditForumTopicConfigWithotIcon(chatID any, messageThreadID int, name string) EditForumTopicConfig {
+	toID := getChatID(chatID)
+	return EditForumTopicConfig{
+		ChatID:          toID,
+		MessageThreadID: messageThreadID,
+		Name:            name,
+	}
+}
+
+// NewCloseForumTopicConfig creates a configuration to close a forum topic.
+// chatID can be of any type that can be converted to a valid ChatID for the forum topic.
+// messageThreadID is the unique identifier of the forum topic thread to be closed.
+func NewCloseForumTopicConfig(chatID any, messageThreadID int) CloseForumTopicConfig {
+	toID := getChatID(chatID)
+	return CloseForumTopicConfig{
+		ChatID:          toID,
+		MessageThreadID: messageThreadID,
+	}
+}
+
+// NewDeleteForumTopicConfig creates a configuration to delete a forum topic.
+// chatID can be of any type that can be converted to a valid ChatID for the forum topic.
+// messageThreadID is the unique identifier of the forum topic thread to be deleted.
+func NewDeleteForumTopicConfig(chatID any, messageThreadID int) DeleteForumTopicConfig {
+	toID := getChatID(chatID)
+	return DeleteForumTopicConfig{
+		ChatID:          toID,
+		MessageThreadID: messageThreadID,
+	}
+}
+
+// NewReopenForumTopicConfig creates a configuration to reopen a forum topic.
+// chatID can be of any type that can be converted to a valid ChatID for the forum topic.
+// messageThreadID is the unique identifier of the forum topic thread to be reopened.
+func NewReopenForumTopicConfig(chatID any, messageThreadID int) ReopenForumTopicConfig {
+	toID := getChatID(chatID)
+	return ReopenForumTopicConfig{
+		ChatID:          toID,
+		MessageThreadID: messageThreadID,
+	}
+}
+
+// NewUnpinAllForumTopicMessagesConfig creates a configuration to unpin all pinned messages in a forum topic.
+// chatID can be of any type that can be converted to a valid ChatID for the forum topic.
+// messageThreadID is the unique identifier of the forum topic thread to be unpinned.
+func NewUnpinAllForumTopicMessagesConfig(chatID any, messageThreadID int) UnpinAllForumTopicMessagesConfig {
+	toID := getChatID(chatID)
+	return UnpinAllForumTopicMessagesConfig{
+		ChatID:          toID,
+		MessageThreadID: messageThreadID,
+	}
+}
+
+// getChatID returns the chat ID of the given argument.
+//
+// The argument can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User.
+// If the argument is not one of the above types, it returns 0.
+func getChatID(chatID any) int64 {
+	var toID int64
+	switch val := chatID.(type) {
+	case int64:
+		toID = val
+	case BaseChat:
+		toID = val.ChatID
+	case ChatConfig:
+		toID = val.ChatID
+	case ChatActionConfig:
+		toID = val.ChatID
+	case Chat:
+		toID = val.ID
+	case User:
+		toID = val.ID
+	case Message:
+		toID = val.Chat.ID
+	default:
+		toID = 0
+	}
+	return toID
+}
+
+// NewEditGeneralForumTopicConfig creates a configuration to edit a general forum topic.
+// chatID can be of any type that can be converted to a valid ChatID for the forum topic.
+// name is the new name of the general forum topic.
+// iconCustomEmojiID is the ID of the custom emoji to use as the new icon of the general forum topic.
+func NewEditGeneralForumTopicConfig(chatID any, name string, iconCustomEmojiID string) EditGeneralForumTopicConfig {
+	toID := getChatID(chatID)
+	return EditGeneralForumTopicConfig{
+		ChatID:            toID,
+		Name:              name,
+		IconCustomEmojiID: iconCustomEmojiID,
+	}
+}
+
+// NewCloseGeneralForumTopicConfig creates a configuration to close a general forum topic.
+// chatID can be of any type that can be converted to a valid ChatID for the forum topic.
+func NewCloseGeneralForumTopicConfig(chatID any) CloseGeneralForumTopicConfig {
+	toID := getChatID(chatID)
+	return CloseGeneralForumTopicConfig{
+		ChatID: toID,
+	}
+}
+
+// NewReopenGeneralForumTopicConfig creates a configuration to reopen a general forum topic.
+// chatID can be of any type that can be converted to a valid ChatID for the forum topic.
+func NewReopenGeneralForumTopicConfig(chatID any) ReopenGeneralForumTopicConfig {
+	toID := getChatID(chatID)
+	return ReopenGeneralForumTopicConfig{
+		ChatID: toID,
+	}
+}
+
+// NewHideGeneralForumTopicConfig creates a configuration to hide a general forum topic in a chat.
+// chatID can be of any type that can be converted to a valid ChatID for the forum topic.
+func NewHideGeneralForumTopicConfig(chatID any) HideGeneralForumTopicConfig {
+	toID := getChatID(chatID)
+	return HideGeneralForumTopicConfig{
+		ChatID: toID,
+	}
+}
+
+// NewUnhideGeneralForumTopicConfig creates a configuration to unhide a general forum topic in a chat.
+// chatID can be of any type that can be converted to a valid ChatID for the forum topic.
+func NewUnhideGeneralForumTopicConfig(chatID any) UnhideGeneralForumTopicConfig {
+	toID := getChatID(chatID)
+	return UnhideGeneralForumTopicConfig{
+		ChatID: toID,
+	}
 }

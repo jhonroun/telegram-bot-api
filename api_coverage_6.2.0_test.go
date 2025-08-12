@@ -145,7 +145,7 @@ func Test62_Sticker_Marshal_OmitEmpty(t *testing.T) {
 }
 
 func Test62_GetCustomEmojiStickers_Params_OK(t *testing.T) {
-	cfg := GetCustomEmojiStickersConfig{CustomEmojiIDs: []string{"ID1", "ID2"}}
+	cfg := NewGetCustomEmojiStickersConfig("ID1", "ID2")
 
 	if got, want := cfg.method(), "getCustomEmojiStickers"; got != want {
 		t.Fatalf("method mismatch: got %q want %q", got, want)
