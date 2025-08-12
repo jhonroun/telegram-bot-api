@@ -586,7 +586,7 @@ func (bot *BotAPI) GetUserIDbyUsername(username string) (int64, error) {
 
 	err = json.Unmarshal(resp.Result, &chat)
 
-	return chat.ID, nil
+	return chat.ID, err
 }
 
 // GetChatAdministrators gets a list of administrators in the chat.
