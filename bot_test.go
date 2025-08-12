@@ -1,8 +1,10 @@
 package tgbotapi
 
 import (
+	"encoding/json"
 	"net/http"
 	"os"
+	"reflect"
 	"strconv"
 	"testing"
 	"time"
@@ -27,6 +29,14 @@ var (
 
 	SupergroupChatID = func() int64 {
 		if v := os.Getenv("TELEGRAM_SUPERGROUP_CHAT_ID"); v != "" {
+			id, _ := strconv.ParseInt(v, 10, 64)
+			return id
+		}
+		return 0
+	}()
+
+	GroupWithTopicsChatID = func() int64 {
+		if v := os.Getenv("TELEGRAM_GROUP_WITH_TOPIC_CHATID"); v != "" {
 			id, _ := strconv.ParseInt(v, 10, 64)
 			return id
 		}
@@ -60,6 +70,27 @@ func (t testLogger) Println(v ...interface{}) {
 
 func (t testLogger) Printf(format string, v ...interface{}) {
 	t.t.Logf(format, v...)
+}
+
+func (t testLogger) PrintStruct(v ...interface{}) {
+	b, _ := json.MarshalIndent(v, "", "  ")
+	t.t.Log(string(b))
+}
+
+func TypeName(i any) string {
+	t := reflect.TypeOf(i)
+	// если это указатель — разворачиваем до базового типа
+	for t.Kind() == reflect.Ptr {
+		t = t.Elem()
+	}
+	if t.Name() != "" { // имя типа (без пакета), напр. "User"
+		return t.Name()
+	}
+	return t.String() // для анонимных структур вернёт описание
+}
+func PrintStruct(t *testing.T, v ...interface{}) {
+	b, _ := json.MarshalIndent(v, "", "  ")
+	t.Log(string(b))
 }
 
 func getBot(t *testing.T) *BotAPI {

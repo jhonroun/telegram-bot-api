@@ -338,6 +338,7 @@ func (bot *BotAPI) Request(c Chattable) (*APIResponse, error) {
 // Send will send a Chattable item to Telegram and provides the
 // returned Message.
 // NOTE: doesn't check if text is markdown mode, but murkdown does set.
+// NOTE: Service messages about forum topic creation can't be deleted with the deleteMessage method.
 func (bot *BotAPI) Send(c Chattable) (Message, error) {
 	resp, err := bot.Request(c)
 	if err != nil {
@@ -566,6 +567,28 @@ func (bot *BotAPI) GetChat(config ChatInfoConfig) (Chat, error) {
 	return chat, err
 }
 
+// GetUserIDbyUsername gets user ID by username
+// username or groupname of supergroup must be passed by @...
+// Example: @tggobotapitest
+func (bot *BotAPI) GetUserIDbyUsername(username string) (int64, error) {
+	var chat Chat
+
+	config := ChatInfoConfig{
+		ChatConfig: ChatConfig{
+			SuperGroupUsername: username,
+		},
+	}
+
+	resp, err := bot.Request(config)
+	if err != nil {
+		return -1, err
+	}
+
+	err = json.Unmarshal(resp.Result, &chat)
+
+	return chat.ID, nil
+}
+
 // GetChatAdministrators gets a list of administrators in the chat.
 //
 // If none have been appointed, only the creator will be returned.
@@ -732,4 +755,84 @@ func (bot *BotAPI) CreateInvoiceLink(config CreateInvoiceLinkConfig) (string, er
 		return "", err
 	}
 	return link, nil
+}
+
+// CreateForumTopic creates a topic in a forum supergroup.
+// Be cearful, you can't create more than 20 topics in a forum supergroup. This methods can create the same topics name.
+// If you want set custom sticker to Topic use before bot.GetForumTopicIconStickers(GetForumTopicIconStickersConfig{}).
+func (bot *BotAPI) CreateForumTopic(config CreateForumTopicConfig) (ForumTopic, error) {
+	var topic ForumTopic
+
+	resp, err := bot.Request(config)
+	if err != nil {
+		return topic, err
+	}
+
+	err = json.Unmarshal(resp.Result, &topic)
+	return topic, err
+}
+
+// EditForumTopic calls Telegram Bot API EditForumTopic method.
+// If you try to change topic to the same, you'll get an error.
+func (bot *BotAPI) EditForumTopic(config EditForumTopicConfig) (*APIResponse, error) {
+	resp, err := bot.Request(config)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, err
+}
+
+// CloseForumTopic calls Telegram Bot API CloseForumTopic method.
+func (bot *BotAPI) CloseForumTopic(config CloseForumTopicConfig) (*APIResponse, error) {
+	resp, err := bot.Request(config)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, err
+}
+
+// ReopenForumTopic calls Telegram Bot API ReopenForumTopic method.
+func (bot *BotAPI) ReopenForumTopic(config ReopenForumTopicConfig) (*APIResponse, error) {
+	resp, err := bot.Request(config)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, err
+}
+
+// DeleteForumTopic calls Telegram Bot API DeleteForumTopic method.
+func (bot *BotAPI) DeleteForumTopic(config DeleteForumTopicConfig) (*APIResponse, error) {
+	resp, err := bot.Request(config)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, err
+}
+
+// UnpinAllForumTopicMessages calls Telegram Bot API UnpinAllForumTopicMessages method.
+func (bot *BotAPI) UnpinAllForumTopicMessages(config UnpinAllForumTopicMessagesConfig) (*APIResponse, error) {
+	resp, err := bot.Request(config)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, err
+}
+
+// GetForumTopicIconStickers returns stickers that can be used as forum topic icons.
+func (bot *BotAPI) GetForumTopicIconStickers(config GetForumTopicIconStickersConfig) ([]Sticker, error) {
+	var stickers []Sticker
+
+	resp, err := bot.Request(config)
+	if err != nil {
+		return stickers, err
+	}
+
+	err = json.Unmarshal(resp.Result, &stickers)
+
+	return stickers, err
 }

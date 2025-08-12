@@ -221,6 +221,10 @@ type User struct {
 	//
 	// optional
 	AddedToAttachmentMenu bool `json:"added_to_attachment_menu,omitempty"` // 6.1
+	// Has main WebApp
+	//
+	// optional, only for bots
+	HasWebApp bool `json:"has_main_web_app,omitempty"`
 }
 
 // String displays a simple text version of a user.
@@ -346,6 +350,18 @@ type Chat struct {
 	//
 	// optional
 	HasRestrictedVoiceAndVideoMessages bool `json:"has_restricted_voice_and_video_messages,omitempty"`
+	// Custom emoji identifier of the emoji status of the chat or the other party in a private chat
+	//
+	// optional
+	EmojiStatusCustomEmojiID string `json:"emoji_status_custom_emoji_id,omitempty"` // 6.3
+	// ActiveUsernames is the list of all active chat usernames; for private chats, supergroups and channels
+	//
+	// optional
+	ActiveUsernames []string `json:"active_usernames,omitempty"` // 6.3
+	// True, if the supergroup chat is a forum (has topics enabled).
+	//
+	// optional
+	IsForum bool `json:"is_forum,omitempty"` // 6.3
 }
 
 // IsPrivate returns if the Chat is a private conversation.
@@ -665,6 +681,26 @@ type Message struct {
 	//
 	// optional
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	// Unique identifier of a message thread to which the message belongs; for supergroups only
+	//
+	// optional
+	Message_thread_id int `json:"message_thread_id,omitempty"`
+	// True, if the message is sent to a forum topic
+	//
+	// optional
+	IsTopicMessage bool `json:"is_topic_message,omitempty"`
+	// ForumTopicCreated is a service message about a new forum topic created in the chat
+	//
+	// optional
+	ForumTopicCreated *ForumTopicCreated `json:"forum_topic_created,omitempty"`
+	// ForumTopicClosed is a service message about a forum topic closed in the chat
+	//
+	// optional
+	ForumTopicClosed *ForumTopicClosed `json:"forum_topic_closed,omitempty"`
+	// ForumTopicReopened is a service message about a forum topic reopened in the chat
+	//
+	// optional
+	ForumTopicReopened *ForumTopicReopened `json:"forum_topic_reopened,omitempty"`
 }
 
 // Time converts the message timestamp into a Time.
@@ -1638,6 +1674,10 @@ type ChatAdministratorRights struct {
 	CanPostMessages     bool `json:"can_post_messages"`
 	CanEditMessages     bool `json:"can_edit_messages"`
 	CanPinMessages      bool `json:"can_pin_messages"`
+	// CanManageTopics true, if the administrator can manage topics in the forum
+	//
+	// optional
+	CanManageTopics bool `json:"can_manage_topics,omitempty"`
 }
 
 // ChatMember contains information about one member of a chat.
@@ -1758,6 +1798,10 @@ type ChatMember struct {
 	//
 	// optional
 	CanAddWebPagePreviews bool `json:"can_add_web_page_previews,omitempty"`
+	// CanManageTopics true, if the administrator can manage topics in the forum
+	//
+	// optional
+	CanManageTopics bool `json:"can_manage_topics,omitempty"`
 }
 
 // IsCreator returns if the ChatMember was the creator of the chat.
@@ -1853,6 +1897,10 @@ type ChatPermissions struct {
 	//
 	// optional
 	CanPinMessages bool `json:"can_pin_messages,omitempty"`
+	// CanManageTopics true, if the administrator can manage topics in the forum
+	//
+	// optional
+	CanManageTopics bool `json:"can_manage_topics,omitempty"`
 }
 
 // ChatLocation represents a location to which a chat is connected.
@@ -3617,3 +3665,39 @@ const (
 
 // String implements fmt.Stringer for StickerType.
 func (s StickerType) String() string { return string(s) }
+
+// ForumTopic describes a topic created in a forum supergroup.
+type ForumTopic struct {
+	// MessageThreadID is the unique identifier of the forum topic thread
+	MessageThreadID int `json:"message_thread_id"`
+	// Name is the topic name
+	Name string `json:"name"`
+	// IconColor is the color of the topic icon in RGB format
+	//
+	// optional
+	IconColor int `json:"icon_color,omitempty"`
+	// IconCustomEmojiID is a unique identifier of the custom emoji shown as the topic icon
+	//
+	// optional
+	IconCustomEmojiID string `json:"icon_custom_emoji_id,omitempty"`
+}
+
+// ForumTopicCreated represents a service message about a new forum topic created in the chat
+type ForumTopicCreated struct {
+	// Name of the topic
+	Name string `json:"name"`
+	// IconColor is the color of the topic icon in RGB format
+	//
+	// optional
+	IconColor int `json:"icon_color,omitempty"`
+	// IconCustomEmojiID is the unique identifier of the custom emoji shown as the topic icon
+	//
+	// optional
+	IconCustomEmojiID string `json:"icon_custom_emoji_id,omitempty"`
+}
+
+// ForumTopicClosed represents a service message about a forum topic closed in the chat
+type ForumTopicClosed struct{}
+
+// ForumTopicReopened represents a service message about a forum topic reopened in the chat
+type ForumTopicReopened struct{}

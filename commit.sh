@@ -90,9 +90,17 @@ The repo was created to study and check the relevance of the module for working 
  - From now the abandonment of versioning like v0/v1.
  - Added AST for render makdown messages. Example see at [murkups_test](https://github.com/jhonroun/telegram-bot-api/blob/main/markups_test.go).
   For render programming language code block added const list of supported languages. Supported list see at [programming languages supported](https://github.com/jhonroun/telegram-bot-api/blob/main/programm_laguage.go).
- - Added supports [more info in Telegram Docs](https://core.telegram.org/bots/payments). Example usage at [test api coverage](https://github.com/jhonroun/telegram-bot-api/blob/main/api_coverage_6.1.0_test.go).
+ - Added supports for create Invoice and supported currencies. See at [test api coverage](https://github.com/jhonroun/telegram-bot-api/blob/main/api_coverage_6.1.0_test.go). [more info in Telegram Docs](https://core.telegram.org/bots/payments). Example usage at [test api coverage](https://github.com/jhonroun/telegram-bot-api/blob/main/api_coverage_6.1.0_test.go).
  - Added supports of protected content. At Bot API v5.7.
  - Added supports of WebM sticker. See at [test api coverage](https://github.com/jhonroun/telegram-bot-api/blob/main/api_coverage_5.7.0_test.go)
+ - Added new method bot.GetUserIDbyUsername(username). This method obtain ChatID by username. 
+ Example:
+ `bot.GetUserIDbyUsername("@tggobotapitest")`
+ 
+## NOTE: It's not obvious:
+
+ - message_thread_id as part of BaseChat type because sendMessage, sendPhoto, sendVideo, sendAnimation, sendAudio, sendDocument, sendSticker, sendVideoNote, sendVoice, sendLocation, sendVenue, sendContact, sendDice, sendInvoice, sendGame, copyMessage, forwardMessage - used it.
+And addition in type MediaGroupConfig.
 
 # Getting Started
 

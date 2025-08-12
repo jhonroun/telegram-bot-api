@@ -267,13 +267,18 @@ func (CloseConfig) params() (Params, error) {
 
 // BaseChat is base type for all chat config types.
 type BaseChat struct {
-	ChatID                   int64 // required
+	ChatID                   int64 // required. Unique identifier for the target chat or username of the target channel (in the format @channelusername).
 	ChannelUsername          string
 	ProtectContent           bool
 	ReplyToMessageID         int
 	ReplyMarkup              interface{}
 	DisableNotification      bool
 	AllowSendingWithoutReply bool
+	// Unique identifier of a message thread to which the message belongs; for supergroups only.
+	//
+	// In BaseChat because sendMessage, sendPhoto, sendVideo, sendAnimation, sendAudio, sendDocument, sendSticker, sendVideoNote, sendVoice, sendLocation, sendVenue, sendContact, sendDice, sendInvoice, sendGame, copyMessage, forwardMessage — used BaseChat.
+	// Optional.
+	MessageThreadID int
 }
 
 func (chat *BaseChat) params() (Params, error) {
@@ -284,6 +289,7 @@ func (chat *BaseChat) params() (Params, error) {
 	params.AddBool("disable_notification", chat.DisableNotification)
 	params.AddBool("allow_sending_without_reply", chat.AllowSendingWithoutReply)
 	params.AddBool("protect_content", chat.ProtectContent)
+	params.AddNonZero("message_thread_id", chat.MessageThreadID)
 
 	err := params.AddInterface("reply_markup", chat.ReplyMarkup)
 
@@ -1388,6 +1394,8 @@ type PromoteChatMemberConfig struct {
 	CanRestrictMembers  bool
 	CanPinMessages      bool
 	CanPromoteMembers   bool
+	// CanManageTopics gives the user the right to create, rename, close, and reopen forum topics
+	CanManageTopics bool
 }
 
 func (config PromoteChatMemberConfig) method() string {
@@ -1411,6 +1419,7 @@ func (config PromoteChatMemberConfig) params() (Params, error) {
 	params.AddBool("can_restrict_members", config.CanRestrictMembers)
 	params.AddBool("can_pin_messages", config.CanPinMessages)
 	params.AddBool("can_promote_members", config.CanPromoteMembers)
+	params.AddBool("can_manage_topics", config.CanManageTopics)
 
 	return params, nil
 }
@@ -2330,6 +2339,7 @@ type MediaGroupConfig struct {
 	Media               []interface{}
 	DisableNotification bool
 	ReplyToMessageID    int
+	MessageThreadID     int
 }
 
 func (config MediaGroupConfig) method() string {
@@ -2342,6 +2352,7 @@ func (config MediaGroupConfig) params() (Params, error) {
 	params.AddFirstValid("chat_id", config.ChatID, config.ChannelUsername)
 	params.AddBool("disable_notification", config.DisableNotification)
 	params.AddNonZero("reply_to_message_id", config.ReplyToMessageID)
+	params.AddNonZero("message_thread_id", config.MessageThreadID)
 
 	err := params.AddInterface("media", prepareInputMediaForParams(config.Media))
 
@@ -2675,6 +2686,9 @@ type GetCustomEmojiStickersConfig struct {
 
 func (config GetCustomEmojiStickersConfig) method() string { return "getCustomEmojiStickers" }
 
+// params validates the CustomEmojiIDs field in the GetCustomEmojiStickersConfig.
+// It ensures that the number of custom emoji IDs is between 1 and 200, inclusive.
+// Returns an error if validation fails or populates the Params with the custom emoji IDs.
 func (config GetCustomEmojiStickersConfig) params() (Params, error) {
 	p := make(Params)
 
@@ -2689,4 +2703,154 @@ func (config GetCustomEmojiStickersConfig) params() (Params, error) {
 		return p, err
 	}
 	return p, nil
+}
+
+// CreateForumTopicConfig configures createForumTopic method.
+type CreateForumTopicConfig struct {
+	ChatID int64
+	// Topic name, 1-128 characters
+	Name string
+	// Color of the topic icon in RGB format. Currently, must be one of 7322096 (0x6FB9F0), 16766590 (0xFFD67E), 13338331 (0xCB86DB), 9367192 (0x8EEE98), 16749490 (0xFF93B2), or 16478047 (0xFB6F5F)
+	IconColor int // optional
+	// Unique identifier of the custom emoji shown as the topic icon. Use getForumTopicIconStickers to get all allowed custom emoji identifiers.
+	IconCustomEmojiID string // optional
+}
+
+// method returns the name of the Telegram API method for this config.
+func (cfg CreateForumTopicConfig) method() string {
+	return "createForumTopic"
+}
+
+// params validates the CreateForumTopicConfig and returns a Params for the Telegram API.
+// It ensures that the ChatID is non-zero and the Name is non-empty.
+// It also adds the IconColor and IconCustomEmojiID to the Params.
+// Returns an error if validation fails or populates the Params.
+func (cfg CreateForumTopicConfig) params() (Params, error) {
+	params := make(Params)
+	params.AddNonZero64("chat_id", cfg.ChatID)
+	if len(cfg.Name) > 128 {
+		return params, fmt.Errorf("name too long: %d > 128", len(cfg.Name))
+	}
+	params.AddNonEmpty("name", cfg.Name)
+	params.AddNonZero("icon_color", cfg.IconColor)
+	params.AddNonEmpty("icon_custom_emoji_id", cfg.IconCustomEmojiID)
+	return params, nil
+}
+
+// EditForumTopicConfig configures editForumTopic method.
+type EditForumTopicConfig struct {
+	ChatID            int64
+	MessageThreadID   int
+	Name              string
+	IconCustomEmojiID string
+}
+
+// method returns the name of the Telegram API method for this config.
+func (cfg EditForumTopicConfig) method() string {
+	return "editForumTopic"
+}
+
+// params validates the EditForumTopicConfig and returns a Params for the Telegram API.
+// It ensures that the ChatID and MessageThreadID are non-zero and the Name and IconCustomEmojiID are non-empty.
+func (cfg EditForumTopicConfig) params() (Params, error) {
+	params := make(Params)
+	params.AddNonZero64("chat_id", cfg.ChatID)
+	params.AddNonZero("message_thread_id", cfg.MessageThreadID)
+	params.AddNonEmpty("name", cfg.Name)
+	params.AddNonEmpty("icon_custom_emoji_id", cfg.IconCustomEmojiID)
+	return params, nil
+}
+
+// CloseForumTopicConfig configures closeForumTopic method.
+type CloseForumTopicConfig struct {
+	ChatID          int64
+	MessageThreadID int
+}
+
+// method returns the name of the Telegram API method for this config, which is "closeForumTopic" for CloseForumTopicConfig.
+func (cfg CloseForumTopicConfig) method() string {
+	return "closeForumTopic"
+}
+
+// params validates the CloseForumTopicConfig and returns a Params for the Telegram API.
+// It ensures that the ChatID and MessageThreadID are non-zero, adding them to the Params.
+func (cfg CloseForumTopicConfig) params() (Params, error) {
+	params := make(Params)
+	params.AddNonZero64("chat_id", cfg.ChatID)
+	params.AddNonZero("message_thread_id", cfg.MessageThreadID)
+	return params, nil
+}
+
+// ReopenForumTopicConfig configures reopenForumTopic method.
+type ReopenForumTopicConfig struct {
+	ChatID          int64
+	MessageThreadID int
+}
+
+// method returns the name of the Telegram API method for this config, which is "reopenForumTopic".
+func (cfg ReopenForumTopicConfig) method() string {
+	return "reopenForumTopic"
+}
+
+// params validates the ReopenForumTopicConfig and returns a Params for the Telegram API.
+// It ensures that the ChatID and MessageThreadID are non-zero, adding them to the Params.
+func (cfg ReopenForumTopicConfig) params() (Params, error) {
+	params := make(Params)
+	params.AddNonZero64("chat_id", cfg.ChatID)
+	params.AddNonZero("message_thread_id", cfg.MessageThreadID)
+	return params, nil
+}
+
+// DeleteForumTopicConfig configures deleteForumTopic method.
+type DeleteForumTopicConfig struct {
+	ChatID          int64
+	MessageThreadID int
+}
+
+// method returns the name of the Telegram API method for this config, which is "deleteForumTopic".
+func (cfg DeleteForumTopicConfig) method() string {
+	return "deleteForumTopic"
+}
+
+// params validates the DeleteForumTopicConfig and returns a Params for the Telegram API.
+// It ensures that the ChatID and MessageThreadID are non-zero, adding them to the Params.
+func (cfg DeleteForumTopicConfig) params() (Params, error) {
+	params := make(Params)
+	params.AddNonZero64("chat_id", cfg.ChatID)
+	params.AddNonZero("message_thread_id", cfg.MessageThreadID)
+	return params, nil
+}
+
+// UnpinAllForumTopicMessagesConfig configures unpinAllForumTopicMessages method.
+type UnpinAllForumTopicMessagesConfig struct {
+	ChatID          int64
+	MessageThreadID int
+}
+
+// method returns the name of the Telegram API method for this config.
+// It is "unpinAllForumTopicMessages".
+func (cfg UnpinAllForumTopicMessagesConfig) method() string {
+	return "unpinAllForumTopicMessages"
+}
+
+// params returns request parameters for unpinAllForumTopicMessages method.
+func (cfg UnpinAllForumTopicMessagesConfig) params() (Params, error) {
+	params := make(Params)
+	params.AddNonZero64("chat_id", cfg.ChatID)
+	params.AddNonZero("message_thread_id", cfg.MessageThreadID)
+	return params, nil
+}
+
+// GetForumTopicIconStickersConfig configures getForumTopicIconStickers method.
+type GetForumTopicIconStickersConfig struct{}
+
+// method implements MethodConfig.method by returning the Telegram API method name, which is "getForumTopicIconStickers" for GetForumTopicIconStickersConfig.
+func (cfg GetForumTopicIconStickersConfig) method() string {
+	return "getForumTopicIconStickers"
+}
+
+// params validates the GetForumTopicIconStickersConfig and returns a Params for the Telegram API.
+// Since no parameters are required, the method always returns an empty Params.
+func (cfg GetForumTopicIconStickersConfig) params() (Params, error) {
+	return make(Params), nil
 }

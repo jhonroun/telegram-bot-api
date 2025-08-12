@@ -87,11 +87,11 @@ jobs:
 
       - name: Test (race)
         if: ${{ steps.goenv.outputs.arch != 'arm64' && steps.goenv.outputs.arch != 'arm' }}
-        run: go test -v -count=1 -run '^Test_62_' ./...
+        run: go test -v -count=1 -run '^Test_63_' ./...
 
       - name: Test (no race on ARM)
         if: ${{ steps.goenv.outputs.arch == 'arm64' || steps.goenv.outputs.arch == 'arm' }}
-        run: go test -v -count=1 -run '^Test_62_' ./...
+        run: go test -v -count=1 -run '^Test_63_' ./...
 
       # Telegram ping
       - name: Secrets self-check + Telegram ping (optional)
