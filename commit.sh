@@ -85,7 +85,8 @@ INTRO_BLOCK=$(cat <<'EOF'
 
 The repo was created to study and check the relevance of the module for working with the Bot API (https://github.com/go-telegram-bot-api/telegram-bot-api), which is called step-by-step. Many thanks to the author for the awesome experience and idea. Initially, I wanted to create a tool for writing modern bots. But in the process of adding functionality, I thought that I was writing it for myself first and foremost. There are quite enough forms with an updated version of the Bot API on github.com.
 
-From now on, the abandonment of versioning like v0/v1.
+ - From now the abandonment of versioning like v0/v1.
+ - Added AST for render makdown messages. Example see at [murkups_test](https://github.com/jhonroun/telegram-bot-api/markups_test.go).
 
 # Getting Started
 
@@ -356,6 +357,8 @@ file := tgbotapi.FileBytes{
     Bytes: data,
 }
 ```
+
+Another Examples see into api_coverage tests.
 
 <!-- END README INTRO -->
 EOF

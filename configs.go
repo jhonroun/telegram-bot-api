@@ -41,9 +41,12 @@ const (
 
 // Constant values for ParseMode in MessageConfig
 const (
-	ModeMarkdown   = "Markdown"
+	// ModeMarkdown is Markdown parse mode for pass in the parse_mode field
+	ModeMarkdown = "Markdown"
+	// ModeMarkdownV2 is MarkdownV2 parse mode for pass in the parse_mode field
 	ModeMarkdownV2 = "MarkdownV2"
-	ModeHTML       = "HTML"
+	// ModeHTML is HTML parse mode for pass in the parse_mode field
+	ModeHTML = "HTML"
 )
 
 // Constant values for update types

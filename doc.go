@@ -8,4 +8,6 @@
 //
 //	bot, _ := tgbotapi.NewBotAPI("TOKEN")
 //	bot.Send(tgbotapi.NewMessage(chatID, "hi"))
+//
+// Minimal example:
 package tgbotapi

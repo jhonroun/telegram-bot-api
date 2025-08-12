@@ -337,6 +337,7 @@ func (bot *BotAPI) Request(c Chattable) (*APIResponse, error) {
 
 // Send will send a Chattable item to Telegram and provides the
 // returned Message.
+// NOTE: doesn't check if text is markdown mode, but murkdown does set.
 func (bot *BotAPI) Send(c Chattable) (Message, error) {
 	resp, err := bot.Request(c)
 	if err != nil {
@@ -731,46 +732,4 @@ func (bot *BotAPI) CreateInvoiceLink(config CreateInvoiceLinkConfig) (string, er
 		return "", err
 	}
 	return link, nil
-}
-
-// EscapeText takes an input text and escape Telegram markup symbols.
-// In this way we can send a text without being afraid of having to escape the characters manually.
-// Note that you don't have to include the formatting style in the input text, or it will be escaped too.
-// If there is an error, an empty string will be returned.
-//
-// parseMode is the text formatting mode (ModeMarkdown, ModeMarkdownV2 or ModeHTML)
-// text is the input string that will be escaped
-func EscapeText(parseMode string, text string) string {
-	var replacer *strings.Replacer
-
-	switch parseMode {
-	case ModeHTML:
-		replacer = strings.NewReplacer("<", "&lt;", ">", "&gt;", "&", "&amp;")
-	case ModeMarkdown:
-		replacer = strings.NewReplacer("_", "\\_", "*", "\\*", "`", "\\`", "[", "\\[")
-	case ModeMarkdownV2:
-		replacer = strings.NewReplacer(
-			"_", "\\_", "*", "\\*", "[", "\\[", "]", "\\]", "(", "\\(",
-			")", "\\)", "~", "\\~", "`", "\\`", ">", "\\>",
-			"#", "\\#", "+", "\\+", "-", "\\-", "=", "\\=", "|",
-			"\\|", "{", "\\{", "}", "\\}", ".", "\\.", "!", "\\!",
-		)
-	default:
-		return ""
-	}
-
-	return replacer.Replace(text)
-}
-
-func (b *BotAPI) GetCustomEmojiStickers(ids []string) ([]Sticker, error) {
-	cfg := GetCustomEmojiStickersConfig{CustomEmojiIDs: ids}
-	resp, err := b.Request(cfg)
-	if err != nil {
-		return nil, err
-	}
-	var out []Sticker
-	if err := json.Unmarshal(resp.Result, &out); err != nil {
-		return nil, err
-	}
-	return out, nil
 }

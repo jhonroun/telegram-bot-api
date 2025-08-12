@@ -4,6 +4,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/url"
@@ -984,4 +985,18 @@ func ValidateWebAppData(token, telegramInitData string) (bool, error) {
 	}
 
 	return true, nil
+}
+
+// GetCustomEmojiStickers returns an array of stickers belonging to a set of custom emoji identifiers.
+func (b *BotAPI) GetCustomEmojiStickers(ids []string) ([]Sticker, error) {
+	cfg := GetCustomEmojiStickersConfig{CustomEmojiIDs: ids}
+	resp, err := b.Request(cfg)
+	if err != nil {
+		return nil, err
+	}
+	var out []Sticker
+	if err := json.Unmarshal(resp.Result, &out); err != nil {
+		return nil, err
+	}
+	return out, nil
 }
