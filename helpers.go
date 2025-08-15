@@ -664,6 +664,49 @@ func NewKeyboardButton(text string) KeyboardButton {
 	}
 }
 
+// NewButton creates a RequestUser keyboard button.
+// request_id: The user id to be passed to the bot as message.Update. request_id must be me unic. Else it will be cahshed.
+// only_prmium: Pass True to request only premium users, pass False to request only non-premium users or leave empty to request all users.
+// only_bots: Pass True to request only bot users, pass False to request only regular users or leave empty to request all users.
+func NewButtonRequestUser(request_id int, only_premium bool, only_bots bool) KeyboardButtonRequestUser {
+	return KeyboardButtonRequestUser{
+		RequestID:     request_id,
+		UserIsPremium: only_premium,
+		UserIsBot:     only_bots,
+	}
+}
+
+// NewKeyboardButtonRequestUser creates a keyboard button with text
+// and RequestUser for a callback.
+func NewKeyboardButtonRequestUser(text string, button KeyboardButtonRequestUser) KeyboardButton {
+	return KeyboardButton{
+		Text:        text,
+		RequestUser: &button,
+	}
+}
+
+// NewButton creates a RequestChat keyboard button.
+// request_id: The user id to be passed to the bot as message.Update. request_id must be me unic. Else it will be cahshed.
+
+func NewButtonRequestChat(request_id int, is_channel bool, is_forum bool, bot_is_member bool) KeyboardButtonRequestChat {
+	return KeyboardButtonRequestChat{
+		RequestID: request_id,
+		// request_id: The user id to be passed to the bot as message.Update. request_id must be me unic. Else it will be cahshed.
+		ChatIsChannel: is_channel,
+		ChatIsForum:   is_forum,
+		BotIsMember:   bot_is_member,
+	}
+}
+
+// NewKeyboardButtonRequestUser creates a keyboard button with text
+// and RequestUser for a callback.
+func NewKeyboardButtonRequestChat(text string, button KeyboardButtonRequestChat) KeyboardButton {
+	return KeyboardButton{
+		Text:        text,
+		RequestChat: &button,
+	}
+}
+
 // NewKeyboardButtonWebApp creates a keyboard button with text
 // which goes to a WebApp.
 func NewKeyboardButtonWebApp(text string, webapp WebAppInfo) KeyboardButton {

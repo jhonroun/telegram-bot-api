@@ -1,5 +1,5 @@
 <!-- BEGIN README INTRO -->
-# Golang bindings for the Telegram Bot API v6.4
+# Golang bindings for the Telegram Bot API v6.5
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/jhonroun/telegram-bot-api.svg)](https://pkg.go.dev/github.com/jhonroun/telegram-bot-api) 
 [![Test](https://github.com/jhonroun/telegram-bot-api/actions/workflows/ci.yml/badge.svg)](https://github.com/jhonroun/telegram-bot-api/actions/workflows/ci.yml)
@@ -463,6 +463,7 @@ Minimal example:
 - [type ChatMemberUpdated](<#ChatMemberUpdated>)
 - [type ChatPermissions](<#ChatPermissions>)
 - [type ChatPhoto](<#ChatPhoto>)
+- [type ChatShared](<#ChatShared>)
 - [type Chattable](<#Chattable>)
 - [type ChosenInlineResult](<#ChosenInlineResult>)
 - [type CloseConfig](<#CloseConfig>)
@@ -652,9 +653,15 @@ Minimal example:
   - [func NewKeyboardButton\(text string\) KeyboardButton](<#NewKeyboardButton>)
   - [func NewKeyboardButtonContact\(text string\) KeyboardButton](<#NewKeyboardButtonContact>)
   - [func NewKeyboardButtonLocation\(text string\) KeyboardButton](<#NewKeyboardButtonLocation>)
+  - [func NewKeyboardButtonRequestChat\(text string, button KeyboardButtonRequestChat\) KeyboardButton](<#NewKeyboardButtonRequestChat>)
+  - [func NewKeyboardButtonRequestUser\(text string, button KeyboardButtonRequestUser\) KeyboardButton](<#NewKeyboardButtonRequestUser>)
   - [func NewKeyboardButtonRow\(buttons ...KeyboardButton\) \[\]KeyboardButton](<#NewKeyboardButtonRow>)
   - [func NewKeyboardButtonWebApp\(text string, webapp WebAppInfo\) KeyboardButton](<#NewKeyboardButtonWebApp>)
 - [type KeyboardButtonPollType](<#KeyboardButtonPollType>)
+- [type KeyboardButtonRequestChat](<#KeyboardButtonRequestChat>)
+  - [func NewButtonRequestChat\(request\_id int, is\_channel bool, is\_forum bool, bot\_is\_member bool\) KeyboardButtonRequestChat](<#NewButtonRequestChat>)
+- [type KeyboardButtonRequestUser](<#KeyboardButtonRequestUser>)
+  - [func NewButtonRequestUser\(request\_id int, only\_premium bool, only\_bots bool\) KeyboardButtonRequestUser](<#NewButtonRequestUser>)
 - [type KickChatMemberConfig](<#KickChatMemberConfig>)
 - [type LabeledPrice](<#LabeledPrice>)
 - [type Language](<#Language>)
@@ -791,6 +798,7 @@ Minimal example:
 - [type SetMyDefaultAdministratorRightsConfig](<#SetMyDefaultAdministratorRightsConfig>)
 - [type SetStickerPositionConfig](<#SetStickerPositionConfig>)
 - [type SetStickerSetThumbConfig](<#SetStickerSetThumbConfig>)
+- [type SharedUser](<#SharedUser>)
 - [type ShippingAddress](<#ShippingAddress>)
 - [type ShippingConfig](<#ShippingConfig>)
 - [type ShippingOption](<#ShippingOption>)
@@ -829,6 +837,7 @@ Minimal example:
 - [type UserProfilePhotos](<#UserProfilePhotos>)
 - [type UserProfilePhotosConfig](<#UserProfilePhotosConfig>)
   - [func NewUserProfilePhotos\(userID any\) UserProfilePhotosConfig](<#NewUserProfilePhotos>)
+- [type UserShared](<#UserShared>)
 - [type Venue](<#Venue>)
 - [type VenueConfig](<#VenueConfig>)
   - [func NewVenue\(chatID any, title, address string, latitude, longitude float64\) VenueConfig](<#NewVenue>)
@@ -1017,7 +1026,7 @@ func SetLogger(logger BotLogger) error
 SetLogger specifies the logger that the package should use.
 
 <a name="ValidateWebAppData"></a>
-## func [ValidateWebAppData](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1006>)
+## func [ValidateWebAppData](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1049>)
 
 ```go
 func ValidateWebAppData(token, telegramInitData string) (bool, error)
@@ -1054,7 +1063,7 @@ type APIResponse struct {
 ```
 
 <a name="AddStickerConfig"></a>
-## type [AddStickerConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2183-L2191>)
+## type [AddStickerConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2187-L2195>)
 
 AddStickerConfig allows you to add a sticker to a set.
 
@@ -1071,7 +1080,7 @@ type AddStickerConfig struct {
 ```
 
 <a name="Animation"></a>
-## type [Animation](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L941-L971>)
+## type [Animation](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L993-L1023>)
 
 Animation represents an animation file.
 
@@ -1150,7 +1159,7 @@ type AnswerWebAppQueryConfig struct {
 ```
 
 <a name="ApproveChatJoinRequestConfig"></a>
-## type [ApproveChatJoinRequestConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1663-L1666>)
+## type [ApproveChatJoinRequestConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1667-L1670>)
 
 ApproveChatJoinRequestConfig allows you to approve a chat join request.
 
@@ -1162,7 +1171,7 @@ type ApproveChatJoinRequestConfig struct {
 ```
 
 <a name="Audio"></a>
-## type [Audio](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L974-L1008>)
+## type [Audio](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1026-L1060>)
 
 Audio represents an audio file to be treated as music by the Telegram clients.
 
@@ -1245,7 +1254,7 @@ type BanChatMemberConfig struct {
 ```
 
 <a name="BanChatSenderChatConfig"></a>
-## type [BanChatSenderChatConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1459-L1464>)
+## type [BanChatSenderChatConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1461-L1466>)
 
 BanChatSenderChatConfig bans a channel chat in a supergroup or a channel. The owner of the chat will not be able to send messages and join live streams on behalf of the chat, unless it is unbanned first. The bot must be an administrator in the supergroup or channel for this to work and must have the appropriate administrator rights.
 
@@ -1308,7 +1317,7 @@ type BaseFile struct {
 ```
 
 <a name="BaseInputMedia"></a>
-## type [BaseInputMedia](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1995-L2021>)
+## type [BaseInputMedia](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2114-L2140>)
 
 BaseInputMedia is a base type for the InputMedia types.
 
@@ -1970,7 +1979,7 @@ func (bot *BotAPI) UploadVoice(to any) (*APIResponse, error)
 Send to chat action that bot upload audio.
 
 <a name="BotCommand"></a>
-## type [BotCommand](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1949-L1955>)
+## type [BotCommand](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2068-L2074>)
 
 BotCommand represents a bot command.
 
@@ -1985,7 +1994,7 @@ type BotCommand struct {
 ```
 
 <a name="BotCommandScope"></a>
-## type [BotCommandScope](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1961-L1965>)
+## type [BotCommandScope](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2080-L2084>)
 
 BotCommandScope represents the scope to which bot commands are applied.
 
@@ -2000,7 +2009,7 @@ type BotCommandScope struct {
 ```
 
 <a name="NewBotCommandScopeAllChatAdministrators"></a>
-### func [NewBotCommandScopeAllChatAdministrators](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L925>)
+### func [NewBotCommandScopeAllChatAdministrators](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L968>)
 
 ```go
 func NewBotCommandScopeAllChatAdministrators() BotCommandScope
@@ -2009,7 +2018,7 @@ func NewBotCommandScopeAllChatAdministrators() BotCommandScope
 NewBotCommandScopeAllChatAdministrators represents the scope of bot commands, covering all group and supergroup chat administrators.
 
 <a name="NewBotCommandScopeAllGroupChats"></a>
-### func [NewBotCommandScopeAllGroupChats](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L919>)
+### func [NewBotCommandScopeAllGroupChats](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L962>)
 
 ```go
 func NewBotCommandScopeAllGroupChats() BotCommandScope
@@ -2018,7 +2027,7 @@ func NewBotCommandScopeAllGroupChats() BotCommandScope
 NewBotCommandScopeAllGroupChats represents the scope of bot commands, covering all group and supergroup chats.
 
 <a name="NewBotCommandScopeAllPrivateChats"></a>
-### func [NewBotCommandScopeAllPrivateChats](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L913>)
+### func [NewBotCommandScopeAllPrivateChats](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L956>)
 
 ```go
 func NewBotCommandScopeAllPrivateChats() BotCommandScope
@@ -2027,7 +2036,7 @@ func NewBotCommandScopeAllPrivateChats() BotCommandScope
 NewBotCommandScopeAllPrivateChats represents the scope of bot commands, covering all private chats.
 
 <a name="NewBotCommandScopeChat"></a>
-### func [NewBotCommandScopeChat](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L931>)
+### func [NewBotCommandScopeChat](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L974>)
 
 ```go
 func NewBotCommandScopeChat(chatID any) BotCommandScope
@@ -2036,7 +2045,7 @@ func NewBotCommandScopeChat(chatID any) BotCommandScope
 NewBotCommandScopeChat represents the scope of bot commands, covering a specific chat.
 
 <a name="NewBotCommandScopeChatAdministrators"></a>
-### func [NewBotCommandScopeChatAdministrators](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L941>)
+### func [NewBotCommandScopeChatAdministrators](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L984>)
 
 ```go
 func NewBotCommandScopeChatAdministrators(chatID any) BotCommandScope
@@ -2045,7 +2054,7 @@ func NewBotCommandScopeChatAdministrators(chatID any) BotCommandScope
 NewBotCommandScopeChatAdministrators represents the scope of bot commands, covering all administrators of a specific group or supergroup chat.
 
 <a name="NewBotCommandScopeChatMember"></a>
-### func [NewBotCommandScopeChatMember](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L951>)
+### func [NewBotCommandScopeChatMember](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L994>)
 
 ```go
 func NewBotCommandScopeChatMember(chatID, userID int64) BotCommandScope
@@ -2054,7 +2063,7 @@ func NewBotCommandScopeChatMember(chatID, userID int64) BotCommandScope
 NewBotCommandScopeChatMember represents the scope of bot commands, covering a specific member of a group or supergroup chat.
 
 <a name="NewBotCommandScopeDefault"></a>
-### func [NewBotCommandScopeDefault](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L907>)
+### func [NewBotCommandScopeDefault](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L950>)
 
 ```go
 func NewBotCommandScopeDefault() BotCommandScope
@@ -2092,7 +2101,7 @@ type CallbackConfig struct {
 ```
 
 <a name="NewCallback"></a>
-### func [NewCallback](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L788>)
+### func [NewCallback](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L831>)
 
 ```go
 func NewCallback(id, text string) CallbackConfig
@@ -2101,7 +2110,7 @@ func NewCallback(id, text string) CallbackConfig
 NewCallback creates a new callback message.
 
 <a name="NewCallbackWithAlert"></a>
-### func [NewCallbackWithAlert](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L798>)
+### func [NewCallbackWithAlert](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L841>)
 
 ```go
 func NewCallbackWithAlert(id, text string) CallbackConfig
@@ -2110,7 +2119,7 @@ func NewCallbackWithAlert(id, text string) CallbackConfig
 NewCallbackWithAlert creates a new callback message that alerts the user.
 
 <a name="CallbackGame"></a>
-## type [CallbackGame](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2260>)
+## type [CallbackGame](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2379>)
 
 CallbackGame is for starting a game in an inline keyboard button.
 
@@ -2119,7 +2128,7 @@ type CallbackGame struct{}
 ```
 
 <a name="CallbackQuery"></a>
-## type [CallbackQuery](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1586-L1615>)
+## type [CallbackQuery](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1722-L1751>)
 
 CallbackQuery represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be present. If the button was attached to a message sent via the bot \(in inline mode\), the field inline\_message\_id will be present. Exactly one of the fields data or game\_short\_name will be present.
 
@@ -2360,7 +2369,7 @@ func (c Chat) NeedJoinToSendMessages() bool
 NeedJoinToSendMessages returns if users need to join the supergroup before they can send messages
 
 <a name="ChatAction"></a>
-## type [ChatAction](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1067>)
+## type [ChatAction](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1110>)
 
 ChatAction — enum actions for sendChatAction.
 
@@ -2398,7 +2407,7 @@ const (
 ```
 
 <a name="ChatAction.String"></a>
-### func \(ChatAction\) [String](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1095>)
+### func \(ChatAction\) [String](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1138>)
 
 ```go
 func (a ChatAction) String() string
@@ -2430,7 +2439,7 @@ NewChatAction sets a chat action. Actions last for 5 seconds, or until your next
 chatID is where to send it, action should be set via ChatAction constants. Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
 
 <a name="NewChatActionConfig"></a>
-### func [NewChatActionConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1101>)
+### func [NewChatActionConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1144>)
 
 ```go
 func NewChatActionConfig(to any, act ChatAction) ChatActionConfig
@@ -2439,7 +2448,7 @@ func NewChatActionConfig(to any, act ChatAction) ChatActionConfig
 NewChatActionConfig creates a new ChatActionConfig for sending a chat action. Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User, Message
 
 <a name="ChatAdministratorRights"></a>
-## type [ChatAdministratorRights](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1697-L1713>)
+## type [ChatAdministratorRights](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1833-L1849>)
 
 
 
@@ -2464,7 +2473,7 @@ type ChatAdministratorRights struct {
 ```
 
 <a name="ChatAdministratorsConfig"></a>
-## type [ChatAdministratorsConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1535-L1537>)
+## type [ChatAdministratorsConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1537-L1539>)
 
 ChatAdministratorsConfig contains information about getting chat administrators.
 
@@ -2475,7 +2484,7 @@ type ChatAdministratorsConfig struct {
 ```
 
 <a name="ChatConfig"></a>
-## type [ChatConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1503-L1506>)
+## type [ChatConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1505-L1508>)
 
 ChatConfig contains information about getting information on a chat.
 
@@ -2487,7 +2496,7 @@ type ChatConfig struct {
 ```
 
 <a name="ChatConfigWithUser"></a>
-## type [ChatConfigWithUser](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1719-L1723>)
+## type [ChatConfigWithUser](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1723-L1727>)
 
 ChatConfigWithUser contains information about a chat and a user.
 
@@ -2500,7 +2509,7 @@ type ChatConfigWithUser struct {
 ```
 
 <a name="ChatInfoConfig"></a>
-## type [ChatInfoConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1517-L1519>)
+## type [ChatInfoConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1519-L1521>)
 
 ChatInfoConfig contains information about getting chat information.
 
@@ -2511,7 +2520,7 @@ type ChatInfoConfig struct {
 ```
 
 <a name="ChatInviteLink"></a>
-## type [ChatInviteLink](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1661-L1695>)
+## type [ChatInviteLink](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1797-L1831>)
 
 ChatInviteLink represents an invite link for a chat.
 
@@ -2554,7 +2563,7 @@ type ChatInviteLink struct {
 ```
 
 <a name="ChatInviteLinkConfig"></a>
-## type [ChatInviteLinkConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1567-L1569>)
+## type [ChatInviteLinkConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1571-L1573>)
 
 ChatInviteLinkConfig contains information about getting a chat link.
 
@@ -2567,7 +2576,7 @@ type ChatInviteLinkConfig struct {
 ```
 
 <a name="ChatJoinRequest"></a>
-## type [ChatJoinRequest](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1871-L1886>)
+## type [ChatJoinRequest](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1998-L2020>)
 
 ChatJoinRequest represents a join request sent to a chat.
 
@@ -2587,11 +2596,18 @@ type ChatJoinRequest struct {
     //
     // optional
     InviteLink *ChatInviteLink `json:"invite_link,omitempty"`
+    // Identifier of a private chat with the user who sent the join request.
+    // This number may have more than 32 significant bits and some programming languages
+    // may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits,
+    // so a 64-bit integer or double-precision float type are safe for storing this identifier.
+    // The bot can use this identifier for 24 hours to send messages until the join request is processed,
+    // assuming no other administrator contacted the user.
+    UserChatID int64 `json:"user_chat_id,omitempty"`
 }
 ```
 
 <a name="ChatLocation"></a>
-## type [ChatLocation](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1939-L1946>)
+## type [ChatLocation](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2058-L2065>)
 
 ChatLocation represents a location to which a chat is connected.
 
@@ -2607,9 +2623,9 @@ type ChatLocation struct {
 ```
 
 <a name="ChatMember"></a>
-## type [ChatMember](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1716-L1837>)
+## type [ChatMember](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1854-L1964>)
 
-ChatMember contains information about one member of a chat.
+ChatMember contains information about one member of a chat. As ChatMemberRestricted. since API v6.5: Replaced the fields \`can\_send\_media\_messages\` with separate fields can\_send\_audios, can\_send\_documents, can\_send\_photos, can\_send\_videos, can\_send\_video\_notes, and can\_send\_voice\_notes for different media types.
 
 ```go
 type ChatMember struct {
@@ -2696,48 +2712,37 @@ type ChatMember struct {
     //
     // optional
     CanInviteUsers bool `json:"can_invite_users,omitempty"`
-    // CanPinMessages administrators and restricted only.
-    // True, if the user is allowed to pin messages; groups and supergroups only
-    //
-    // optional
+    // CanPinMessages. True, if the user is allowed to pin messages.
     CanPinMessages bool `json:"can_pin_messages,omitempty"`
-    // IsMember is true, if the user is a member of the chat at the moment of
-    // the request
+    // IsMember. True, if the user is a member of the chat at the moment of the request.
     IsMember bool `json:"is_member"`
-    // CanSendMessages
-    //
-    // optional
+    // CanSendMessages. True, if the user is allowed to send text messages, contacts, invoices, locations and venues.
     CanSendMessages bool `json:"can_send_messages,omitempty"`
-    // CanSendMediaMessages restricted only.
-    // True, if the user is allowed to send text messages, contacts, locations and venues
-    //
-    // optional
-    CanSendMediaMessages bool `json:"can_send_media_messages,omitempty"`
-    // CanSendPolls restricted only.
-    // True, if the user is allowed to send polls
-    //
-    // optional
+    // CanSendMediaMessages. True, if the user is allowed to send audios.
+    CanSendAudios bool `json:"can_send_audios,omitempty"`
+    // CanSendDocuments. True, if the user is allowed to send documents.
+    CanSendDocuments bool `json:"can_send_documents,omitempty"`
+    // CanSendPhotos. True, if the user is allowed to send photos.
+    CanSendPhotos bool `json:"can_send_photos,omitempty"`
+    // CanSendVideos. True, if the user is allowed to send videos.
+    CanSendVideos bool `json:"can_send_videos,omitempty"`
+    // CanSendVideoNotes. True, if the user is allowed to send video notes.
+    CanSendVideoNotes bool `json:"can_send_video_notes,omitempty"`
+    // CanSendVoiceNotes. True, if the user is allowed to send voice notes.
+    CanSendVoiceNotes bool `json:"can_send_voice_notes,omitempty"`
+    // CanSendPolls. True, if the user is allowed to send polls.
     CanSendPolls bool `json:"can_send_polls,omitempty"`
-    // CanSendOtherMessages restricted only.
-    // True, if the user is allowed to send audios, documents,
-    // photos, videos, video notes and voice notes.
-    //
-    // optional
+    // CanSendOtherMessages. True, if the user is allowed to send animations, games, stickers and use inline bots.
     CanSendOtherMessages bool `json:"can_send_other_messages,omitempty"`
-    // CanAddWebPagePreviews restricted only.
-    // True, if the user is allowed to add web page previews to their messages.
-    //
-    // optional
+    // CanAddWebPagePreviews. True, if the user is allowed to add web page previews to their messages.
     CanAddWebPagePreviews bool `json:"can_add_web_page_previews,omitempty"`
-    // CanManageTopics true, if the administrator can manage topics in the forum
-    //
-    // optional
+    // CanManageTopics. True, if the user is allowed to create forum topics.
     CanManageTopics bool `json:"can_manage_topics,omitempty"`
 }
 ```
 
 <a name="ChatMember.HasLeft"></a>
-### func \(ChatMember\) [HasLeft](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1846>)
+### func \(ChatMember\) [HasLeft](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1973>)
 
 ```go
 func (chat ChatMember) HasLeft() bool
@@ -2746,7 +2751,7 @@ func (chat ChatMember) HasLeft() bool
 HasLeft returns if the ChatMember left the chat.
 
 <a name="ChatMember.IsAdministrator"></a>
-### func \(ChatMember\) [IsAdministrator](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1843>)
+### func \(ChatMember\) [IsAdministrator](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1970>)
 
 ```go
 func (chat ChatMember) IsAdministrator() bool
@@ -2755,7 +2760,7 @@ func (chat ChatMember) IsAdministrator() bool
 IsAdministrator returns if the ChatMember is a chat administrator.
 
 <a name="ChatMember.IsCreator"></a>
-### func \(ChatMember\) [IsCreator](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1840>)
+### func \(ChatMember\) [IsCreator](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1967>)
 
 ```go
 func (chat ChatMember) IsCreator() bool
@@ -2764,7 +2769,7 @@ func (chat ChatMember) IsCreator() bool
 IsCreator returns if the ChatMember was the creator of the chat.
 
 <a name="ChatMember.WasKicked"></a>
-### func \(ChatMember\) [WasKicked](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1849>)
+### func \(ChatMember\) [WasKicked](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1976>)
 
 ```go
 func (chat ChatMember) WasKicked() bool
@@ -2787,7 +2792,7 @@ type ChatMemberConfig struct {
 ```
 
 <a name="ChatMemberCountConfig"></a>
-## type [ChatMemberCountConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1526-L1528>)
+## type [ChatMemberCountConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1528-L1530>)
 
 ChatMemberCountConfig contains information about getting the number of users in a chat.
 
@@ -2798,7 +2803,7 @@ type ChatMemberCountConfig struct {
 ```
 
 <a name="ChatMemberUpdated"></a>
-## type [ChatMemberUpdated](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1852-L1868>)
+## type [ChatMemberUpdated](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1979-L1995>)
 
 ChatMemberUpdated represents changes in the status of a chat member.
 
@@ -2823,62 +2828,47 @@ type ChatMemberUpdated struct {
 ```
 
 <a name="ChatPermissions"></a>
-## type [ChatPermissions](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1890-L1936>)
+## type [ChatPermissions](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2024-L2055>)
 
 ChatPermissions describes actions that a non\-administrator user is allowed to take in a chat. All fields are optional.
 
 ```go
 type ChatPermissions struct {
-    // CanSendMessages is true, if the user is allowed to send text messages,
-    // contacts, locations and venues
-    //
-    // optional
+    // CanPinMessages. True, if the user is allowed to pin messages.
+    CanPinMessages bool `json:"can_pin_messages,omitempty"`
+    // IsMember. True, if the user is a member of the chat at the moment of the request.
+    IsMember bool `json:"is_member"`
+    // CanSendMessages. True, if the user is allowed to send text messages, contacts, invoices, locations and venues.
     CanSendMessages bool `json:"can_send_messages,omitempty"`
-    // CanSendMediaMessages is true, if the user is allowed to send audios,
-    // documents, photos, videos, video notes and voice notes, implies
-    // can_send_messages
-    //
-    // optional
-    CanSendMediaMessages bool `json:"can_send_media_messages,omitempty"`
-    // CanSendPolls is true, if the user is allowed to send polls, implies
-    // can_send_messages
-    //
-    // optional
+    // CanSendMediaMessages. True, if the user is allowed to send audios.
+    CanSendAudios bool `json:"can_send_audios,omitempty"`
+    // CanSendDocuments. True, if the user is allowed to send documents.
+    CanSendDocuments bool `json:"can_send_documents,omitempty"`
+    // CanSendPhotos. True, if the user is allowed to send photos.
+    CanSendPhotos bool `json:"can_send_photos,omitempty"`
+    // CanSendVideos. True, if the user is allowed to send videos.
+    CanSendVideos bool `json:"can_send_videos,omitempty"`
+    // CanSendVideoNotes. True, if the user is allowed to send video notes.
+    CanSendVideoNotes bool `json:"can_send_video_notes,omitempty"`
+    // CanSendVoiceNotes. True, if the user is allowed to send voice notes.
+    CanSendVoiceNotes bool `json:"can_send_voice_notes,omitempty"`
+    // CanSendPolls. True, if the user is allowed to send polls.
     CanSendPolls bool `json:"can_send_polls,omitempty"`
-    // CanSendOtherMessages is true, if the user is allowed to send animations,
-    // games, stickers and use inline bots, implies can_send_media_messages
-    //
-    // optional
+    // CanSendOtherMessages. True, if the user is allowed to send animations, games, stickers and use inline bots.
     CanSendOtherMessages bool `json:"can_send_other_messages,omitempty"`
-    // CanAddWebPagePreviews is true, if the user is allowed to add web page
-    // previews to their messages, implies can_send_media_messages
-    //
-    // optional
+    // CanAddWebPagePreviews. True, if the user is allowed to add web page previews to their messages.
     CanAddWebPagePreviews bool `json:"can_add_web_page_previews,omitempty"`
-    // CanChangeInfo is true, if the user is allowed to change the chat title,
-    // photo and other settings. Ignored in public supergroups
-    //
-    // optional
-    CanChangeInfo bool `json:"can_change_info,omitempty"`
+    // CanManageTopics. True, if the user is allowed to create forum topics.
+    CanManageTopics bool `json:"can_manage_topics,omitempty"`
+    CanChangeInfo   bool `json:"can_change_info,omitempty"`
     // CanInviteUsers is true, if the user is allowed to invite new users to the
     // chat
-    //
-    // optional
     CanInviteUsers bool `json:"can_invite_users,omitempty"`
-    // CanPinMessages is true, if the user is allowed to pin messages. Ignored
-    // in public supergroups
-    //
-    // optional
-    CanPinMessages bool `json:"can_pin_messages,omitempty"`
-    // CanManageTopics true, if the administrator can manage topics in the forum
-    //
-    // optional
-    CanManageTopics bool `json:"can_manage_topics,omitempty"`
 }
 ```
 
 <a name="ChatPhoto"></a>
-## type [ChatPhoto](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1641-L1658>)
+## type [ChatPhoto](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1777-L1794>)
 
 ChatPhoto represents a chat photo.
 
@@ -2903,6 +2893,26 @@ type ChatPhoto struct {
 }
 ```
 
+<a name="ChatShared"></a>
+## type [ChatShared](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L960-L971>)
+
+This object contains information about the chat whose identifier was shared with the bot using a KeyboardButtonRequestChat button.
+
+```go
+type ChatShared struct {
+    // Identifier of the request
+    RequestID int `json:"request_id"`
+    // Identifier of the shared user.
+    // This number may have more than 32 significant bits and some
+    // programming languages may have difficulty/silent defects in interpreting it.
+    // But it has at most 52 significant bits, so a 64-bit integer
+    // or double-precision float type are safe for storing this identifier.
+    // The bot may not have access to the user and could be unable to use this identifier,
+    // unless the user is already known to the bot by some other means.
+    ChatID int64 `json:"chat_id"`
+}
+```
+
 <a name="Chattable"></a>
 ## type [Chattable](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L106-L109>)
 
@@ -2915,7 +2925,7 @@ type Chattable interface {
 ```
 
 <a name="ChosenInlineResult"></a>
-## type [ChosenInlineResult](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3121-L3138>)
+## type [ChosenInlineResult](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3240-L3257>)
 
 ChosenInlineResult is an inline query result chosen by a User
 
@@ -2952,7 +2962,7 @@ type CloseConfig struct{}
 ```
 
 <a name="CloseForumTopicConfig"></a>
-## type [CloseForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2771-L2774>)
+## type [CloseForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2775-L2778>)
 
 CloseForumTopicConfig configures closeForumTopic method.
 
@@ -2964,7 +2974,7 @@ type CloseForumTopicConfig struct {
 ```
 
 <a name="NewCloseForumTopicConfig"></a>
-### func [NewCloseForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1190>)
+### func [NewCloseForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1233>)
 
 ```go
 func NewCloseForumTopicConfig(chatID any, messageThreadID int) CloseForumTopicConfig
@@ -2973,7 +2983,7 @@ func NewCloseForumTopicConfig(chatID any, messageThreadID int) CloseForumTopicCo
 NewCloseForumTopicConfig creates a configuration to close a forum topic. chatID can be of any type that can be converted to a valid ChatID for the forum topic. messageThreadID is the unique identifier of the forum topic thread to be closed.
 
 <a name="CloseGeneralForumTopicConfig"></a>
-## type [CloseGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2880-L2882>)
+## type [CloseGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2884-L2886>)
 
 
 
@@ -2984,7 +2994,7 @@ type CloseGeneralForumTopicConfig struct {
 ```
 
 <a name="NewCloseGeneralForumTopicConfig"></a>
-### func [NewCloseGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1273>)
+### func [NewCloseGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1316>)
 
 ```go
 func NewCloseGeneralForumTopicConfig(chatID any) CloseGeneralForumTopicConfig
@@ -2993,7 +3003,7 @@ func NewCloseGeneralForumTopicConfig(chatID any) CloseGeneralForumTopicConfig
 NewCloseGeneralForumTopicConfig creates a configuration to close a general forum topic. chatID can be of any type that can be converted to a valid ChatID for the forum topic.
 
 <a name="Contact"></a>
-## type [Contact](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1115-L1132>)
+## type [Contact](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1167-L1184>)
 
 Contact represents a phone contact.
 
@@ -3073,7 +3083,7 @@ NewCopyMessage creates a new copy message.
 chatID is where to send it, fromChatID is the source chat, and messageID is the ID of the original message.
 
 <a name="CreateChatInviteLinkConfig"></a>
-## type [CreateChatInviteLinkConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1587-L1593>)
+## type [CreateChatInviteLinkConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1591-L1597>)
 
 CreateChatInviteLinkConfig allows you to create an additional invite link for a chat. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. The link can be revoked using the RevokeChatInviteLinkConfig.
 
@@ -3088,7 +3098,7 @@ type CreateChatInviteLinkConfig struct {
 ```
 
 <a name="CreateForumTopicConfig"></a>
-## type [CreateForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2715-L2723>)
+## type [CreateForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2719-L2727>)
 
 CreateForumTopicConfig configures createForumTopic method.
 
@@ -3105,7 +3115,7 @@ type CreateForumTopicConfig struct {
 ```
 
 <a name="NewCreateForumTopicConfig"></a>
-### func [NewCreateForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1150>)
+### func [NewCreateForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1193>)
 
 ```go
 func NewCreateForumTopicConfig(chatID any, name string, iconColor int) CreateForumTopicConfig
@@ -3114,7 +3124,7 @@ func NewCreateForumTopicConfig(chatID any, name string, iconColor int) CreateFor
 NewCreateForumTopicConfig creates a new CreateForumTopicConfig with the specified parameters. chatID can be of any type that can be converted to a valid ChatID for the forum topic. name is the name of the forum topic, which must be between 1 and 128 characters. iconColor is the RGB color of the topic icon and must be one of the allowed values. Optional iconCustomEmojiID is the ID of the custom emoji to use as the topic icon.
 
 <a name="CreateInvoiceLinkConfig"></a>
-## type [CreateInvoiceLinkConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1811-L1836>)
+## type [CreateInvoiceLinkConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1815-L1840>)
 
 CreateInvoiceLinkConfig contains information for createInvoiceLink request Use this to create a link for an invoice. Returns the created invoice link as String on success.
 
@@ -3148,7 +3158,7 @@ type CreateInvoiceLinkConfig struct {
 ```
 
 <a name="NewCreateInvoiceLinkConfig"></a>
-### func [NewCreateInvoiceLinkConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1047>)
+### func [NewCreateInvoiceLinkConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1090>)
 
 ```go
 func NewCreateInvoiceLinkConfig(chatID any, title, description, payload, providerToken string, prices []LabeledPrice, currency Currency) CreateInvoiceLinkConfig
@@ -3174,7 +3184,7 @@ type Credentials struct {
 ```
 
 <a name="Currency"></a>
-## type [Currency](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3503>)
+## type [Currency](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3622>)
 
 
 
@@ -3380,7 +3390,7 @@ const (
 ```
 
 <a name="Currency.String"></a>
-### func \(Currency\) [String](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3699>)
+### func \(Currency\) [String](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3818>)
 
 ```go
 func (c Currency) String() string
@@ -3403,7 +3413,7 @@ type DataCredentials struct {
 ```
 
 <a name="DeclineChatJoinRequest"></a>
-## type [DeclineChatJoinRequest](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1682-L1685>)
+## type [DeclineChatJoinRequest](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1686-L1689>)
 
 DeclineChatJoinRequest allows you to decline a chat join request.
 
@@ -3415,7 +3425,7 @@ type DeclineChatJoinRequest struct {
 ```
 
 <a name="DeleteChatPhotoConfig"></a>
-## type [DeleteChatPhotoConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2018-L2021>)
+## type [DeleteChatPhotoConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2022-L2025>)
 
 DeleteChatPhotoConfig allows you to delete a group, supergroup, or channel's photo.
 
@@ -3427,7 +3437,7 @@ type DeleteChatPhotoConfig struct {
 ```
 
 <a name="NewDeleteChatPhoto"></a>
-### func [NewDeleteChatPhoto](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L852>)
+### func [NewDeleteChatPhoto](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L895>)
 
 ```go
 func NewDeleteChatPhoto(chatID any) DeleteChatPhotoConfig
@@ -3436,7 +3446,7 @@ func NewDeleteChatPhoto(chatID any) DeleteChatPhotoConfig
 NewDeleteChatPhoto allows you to delete the photo for a chat.
 
 <a name="DeleteChatStickerSetConfig"></a>
-## type [DeleteChatStickerSetConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2321-L2324>)
+## type [DeleteChatStickerSetConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2325-L2328>)
 
 DeleteChatStickerSetConfig allows you to remove a supergroup's sticker set.
 
@@ -3448,7 +3458,7 @@ type DeleteChatStickerSetConfig struct {
 ```
 
 <a name="DeleteForumTopicConfig"></a>
-## type [DeleteForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2811-L2814>)
+## type [DeleteForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2815-L2818>)
 
 DeleteForumTopicConfig configures deleteForumTopic method.
 
@@ -3460,7 +3470,7 @@ type DeleteForumTopicConfig struct {
 ```
 
 <a name="NewDeleteForumTopicConfig"></a>
-### func [NewDeleteForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1201>)
+### func [NewDeleteForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1244>)
 
 ```go
 func NewDeleteForumTopicConfig(chatID any, messageThreadID int) DeleteForumTopicConfig
@@ -3469,7 +3479,7 @@ func NewDeleteForumTopicConfig(chatID any, messageThreadID int) DeleteForumTopic
 NewDeleteForumTopicConfig creates a configuration to delete a forum topic. chatID can be of any type that can be converted to a valid ChatID for the forum topic. messageThreadID is the unique identifier of the forum topic thread to be deleted.
 
 <a name="DeleteMessageConfig"></a>
-## type [DeleteMessageConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1919-L1923>)
+## type [DeleteMessageConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1923-L1927>)
 
 DeleteMessageConfig contains information of a message in a chat to delete.
 
@@ -3491,7 +3501,7 @@ func NewDeleteMessage(chatID int64, messageID int) DeleteMessageConfig
 NewDeleteMessage creates a request to delete a message.
 
 <a name="DeleteMyCommandsConfig"></a>
-## type [DeleteMyCommandsConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2440-L2443>)
+## type [DeleteMyCommandsConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2444-L2447>)
 
 
 
@@ -3503,7 +3513,7 @@ type DeleteMyCommandsConfig struct {
 ```
 
 <a name="NewDeleteMyCommands"></a>
-### func [NewDeleteMyCommands](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L988>)
+### func [NewDeleteMyCommands](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1031>)
 
 ```go
 func NewDeleteMyCommands() DeleteMyCommandsConfig
@@ -3512,7 +3522,7 @@ func NewDeleteMyCommands() DeleteMyCommandsConfig
 NewDeleteMyCommands allows you to delete the registered commands.
 
 <a name="NewDeleteMyCommandsWithScope"></a>
-### func [NewDeleteMyCommandsWithScope](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L994>)
+### func [NewDeleteMyCommandsWithScope](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1037>)
 
 ```go
 func NewDeleteMyCommandsWithScope(scope BotCommandScope) DeleteMyCommandsConfig
@@ -3521,7 +3531,7 @@ func NewDeleteMyCommandsWithScope(scope BotCommandScope) DeleteMyCommandsConfig
 NewDeleteMyCommandsWithScope allows you to delete the registered commands for a given scope.
 
 <a name="NewDeleteMyCommandsWithScopeAndLanguage"></a>
-### func [NewDeleteMyCommandsWithScopeAndLanguage](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1000>)
+### func [NewDeleteMyCommandsWithScopeAndLanguage](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1043>)
 
 ```go
 func NewDeleteMyCommandsWithScopeAndLanguage(scope BotCommandScope, languageCode string) DeleteMyCommandsConfig
@@ -3530,7 +3540,7 @@ func NewDeleteMyCommandsWithScopeAndLanguage(scope BotCommandScope, languageCode
 NewDeleteMyCommandsWithScopeAndLanguage allows you to delete the registered commands for a given scope and language code.
 
 <a name="DeleteStickerConfig"></a>
-## type [DeleteStickerConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2256-L2258>)
+## type [DeleteStickerConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2260-L2262>)
 
 DeleteStickerConfig allows you to delete a sticker from a set.
 
@@ -3552,7 +3562,7 @@ type DeleteWebhookConfig struct {
 ```
 
 <a name="Dice"></a>
-## type [Dice](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1135-L1140>)
+## type [Dice](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1187-L1192>)
 
 Dice represents an animated emoji that displays a random value.
 
@@ -3566,7 +3576,7 @@ type Dice struct {
 ```
 
 <a name="DiceConfig"></a>
-## type [DiceConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2373-L2381>)
+## type [DiceConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2377-L2385>)
 
 DiceConfig contains information about a sendDice request.
 
@@ -3583,7 +3593,7 @@ type DiceConfig struct {
 ```
 
 <a name="NewDice"></a>
-### func [NewDice](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L884>)
+### func [NewDice](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L927>)
 
 ```go
 func NewDice(chatID any) DiceConfig
@@ -3592,7 +3602,7 @@ func NewDice(chatID any) DiceConfig
 NewDice allows you to send a random dice roll.
 
 <a name="NewDiceWithEmoji"></a>
-### func [NewDiceWithEmoji](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L896>)
+### func [NewDiceWithEmoji](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L939>)
 
 ```go
 func NewDiceWithEmoji(chatID any, emoji string) DiceConfig
@@ -3603,7 +3613,7 @@ NewDiceWithEmoji allows you to send a random roll of one of many types.
 Emoji may be 🎲 \(1\-6\), 🎯 \(1\-6\), or 🏀 \(1\-5\).
 
 <a name="Document"></a>
-## type [Document](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1011-L1035>)
+## type [Document](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1063-L1087>)
 
 Document represents a general file.
 
@@ -3661,7 +3671,7 @@ func NewDocument(chatID any, file RequestFileData) DocumentConfig
 NewDocument creates a new sendDocument request. Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
 
 <a name="EditChatInviteLinkConfig"></a>
-## type [EditChatInviteLinkConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1614-L1621>)
+## type [EditChatInviteLinkConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1618-L1625>)
 
 EditChatInviteLinkConfig allows you to edit a non\-primary invite link created by the bot. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
 
@@ -3677,7 +3687,7 @@ type EditChatInviteLinkConfig struct {
 ```
 
 <a name="EditForumTopicConfig"></a>
-## type [EditForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2747-L2752>)
+## type [EditForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2751-L2756>)
 
 EditForumTopicConfig configures editForumTopic method.
 
@@ -3691,7 +3701,7 @@ type EditForumTopicConfig struct {
 ```
 
 <a name="NewEditForumTopicConfig"></a>
-### func [NewEditForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1164>)
+### func [NewEditForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1207>)
 
 ```go
 func NewEditForumTopicConfig(chatID any, messageThreadID int, name string, iconCustomEmojiID string) EditForumTopicConfig
@@ -3700,7 +3710,7 @@ func NewEditForumTopicConfig(chatID any, messageThreadID int, name string, iconC
 NewCreateForumTopicConfig creates a new CreateForumTopicConfig with the specified parameters. chatID can be of any type that can be converted to a valid ChatID for the forum topic. name is the name of the forum topic, which must be between 1 and 128 characters. iconColor is the RGB color of the topic icon and must be one of the allowed values. iconCustomEmojiID is the ID of the custom emoji to use as the topic icon.
 
 <a name="NewEditForumTopicConfigWithotIcon"></a>
-### func [NewEditForumTopicConfigWithotIcon](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1178>)
+### func [NewEditForumTopicConfigWithotIcon](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1221>)
 
 ```go
 func NewEditForumTopicConfigWithotIcon(chatID any, messageThreadID int, name string) EditForumTopicConfig
@@ -3709,7 +3719,7 @@ func NewEditForumTopicConfigWithotIcon(chatID any, messageThreadID int, name str
 NewEditForumTopicConfigWithotIcon creates a new EditForumTopicConfig without specifying an icon. chatID can be of any type that can be converted to a valid ChatID for the forum topic. messageThreadID is the unique identifier of the forum topic thread. name is the name of the forum topic, which must be non\-empty.
 
 <a name="EditGeneralForumTopicConfig"></a>
-## type [EditGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2864-L2868>)
+## type [EditGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2868-L2872>)
 
 
 
@@ -3722,7 +3732,7 @@ type EditGeneralForumTopicConfig struct {
 ```
 
 <a name="NewEditGeneralForumTopicConfig"></a>
-### func [NewEditGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1262>)
+### func [NewEditGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1305>)
 
 ```go
 func NewEditGeneralForumTopicConfig(chatID any, name string, iconCustomEmojiID string) EditGeneralForumTopicConfig
@@ -3927,7 +3937,7 @@ func (e Error) Error() string
 Error message string.
 
 <a name="File"></a>
-## type [File](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1330-L1346>)
+## type [File](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1382-L1398>)
 
 File contains information about a file to download from Telegram.
 
@@ -3952,7 +3962,7 @@ type File struct {
 ```
 
 <a name="File.Link"></a>
-### func \(\*File\) [Link](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1351>)
+### func \(\*File\) [Link](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1403>)
 
 ```go
 func (f *File) Link(token string) string
@@ -4186,7 +4196,7 @@ type Fileable interface {
 ```
 
 <a name="ForceReply"></a>
-## type [ForceReply](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1622-L1638>)
+## type [ForceReply](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1758-L1774>)
 
 ForceReply when receiving a message with this object, Telegram clients will display a reply interface to the user \(act as if the user has selected the bot's message and tapped 'Reply'\). This can be extremely useful if you want to create user\-friendly step\-by\-step interfaces without having to sacrifice privacy mode.
 
@@ -4211,7 +4221,7 @@ type ForceReply struct {
 ```
 
 <a name="ForumTopic"></a>
-## type [ForumTopic](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3714-L3727>)
+## type [ForumTopic](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3833-L3846>)
 
 ForumTopic describes a topic created in a forum supergroup.
 
@@ -4233,7 +4243,7 @@ type ForumTopic struct {
 ```
 
 <a name="ForumTopicClosed"></a>
-## type [ForumTopicClosed](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3744>)
+## type [ForumTopicClosed](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3863>)
 
 ForumTopicClosed represents a service message about a forum topic closed in the chat
 
@@ -4242,7 +4252,7 @@ type ForumTopicClosed struct{}
 ```
 
 <a name="ForumTopicCreated"></a>
-## type [ForumTopicCreated](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3730-L3741>)
+## type [ForumTopicCreated](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3849-L3860>)
 
 ForumTopicCreated represents a service message about a new forum topic created in the chat
 
@@ -4262,7 +4272,7 @@ type ForumTopicCreated struct {
 ```
 
 <a name="ForumTopicEdited"></a>
-## type [ForumTopicEdited](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3750-L3759>)
+## type [ForumTopicEdited](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3869-L3878>)
 
 ForumTopicEdited represents a service message about an edited forum topic
 
@@ -4280,7 +4290,7 @@ type ForumTopicEdited struct {
 ```
 
 <a name="ForumTopicReopened"></a>
-## type [ForumTopicReopened](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3747>)
+## type [ForumTopicReopened](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3866>)
 
 ForumTopicReopened represents a service message about a forum topic reopened in the chat
 
@@ -4314,7 +4324,7 @@ NewForward creates a new forward.
 chatID is where to send it, fromChatID is the source chat, and messageID is the ID of the original message.
 
 <a name="Game"></a>
-## type [Game](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2225-L2247>)
+## type [Game](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2344-L2366>)
 
 Game represents a game. Use BotFather to create and edit games, their short names will act as unique identifiers.
 
@@ -4357,7 +4367,7 @@ type GameConfig struct {
 ```
 
 <a name="GameHighScore"></a>
-## type [GameHighScore](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2250-L2257>)
+## type [GameHighScore](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2369-L2376>)
 
 GameHighScore is a user's score and position on the leaderboard.
 
@@ -4373,7 +4383,7 @@ type GameHighScore struct {
 ```
 
 <a name="GeneralForumTopicHidden"></a>
-## type [GeneralForumTopicHidden](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3762>)
+## type [GeneralForumTopicHidden](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3881>)
 
 GeneralForumTopicHidden represents a service message about General forum topic hidden in the chat
 
@@ -4382,7 +4392,7 @@ type GeneralForumTopicHidden struct{}
 ```
 
 <a name="GeneralForumTopicUnhidden"></a>
-## type [GeneralForumTopicUnhidden](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3765>)
+## type [GeneralForumTopicUnhidden](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3884>)
 
 GeneralForumTopicUnhidden represents a service message about General forum topic unhidden in the chat
 
@@ -4391,7 +4401,7 @@ type GeneralForumTopicUnhidden struct{}
 ```
 
 <a name="GetChatMemberConfig"></a>
-## type [GetChatMemberConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1735-L1737>)
+## type [GetChatMemberConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1739-L1741>)
 
 GetChatMemberConfig is information about getting a specific member in a chat.
 
@@ -4402,7 +4412,7 @@ type GetChatMemberConfig struct {
 ```
 
 <a name="GetChatMenuButtonConfig"></a>
-## type [GetChatMenuButtonConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2482-L2485>)
+## type [GetChatMenuButtonConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2486-L2489>)
 
 
 
@@ -4414,7 +4424,7 @@ type GetChatMenuButtonConfig struct {
 ```
 
 <a name="GetCustomEmojiStickersConfig"></a>
-## type [GetCustomEmojiStickersConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2689-L2691>)
+## type [GetCustomEmojiStickersConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2693-L2695>)
 
 GetCustomEmojiStickersConfig — for methods getCustomEmojiStickers. custom\_emoji\_ids: must be an array, maximum 200 custom emoji identifiers.
 
@@ -4425,7 +4435,7 @@ type GetCustomEmojiStickersConfig struct {
 ```
 
 <a name="NewGetCustomEmojiStickersConfig"></a>
-### func [NewGetCustomEmojiStickersConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1062>)
+### func [NewGetCustomEmojiStickersConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1105>)
 
 ```go
 func NewGetCustomEmojiStickersConfig(val ...string) GetCustomEmojiStickersConfig
@@ -4434,7 +4444,7 @@ func NewGetCustomEmojiStickersConfig(val ...string) GetCustomEmojiStickersConfig
 NewGetCustomEmojiStickersConfig creates a new GetCustomEmojiStickersConfig with the specified custom emoji IDs. It accepts a variable number of string arguments, each representing a custom emoji ID.
 
 <a name="GetForumTopicIconStickersConfig"></a>
-## type [GetForumTopicIconStickersConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2851>)
+## type [GetForumTopicIconStickersConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2855>)
 
 GetForumTopicIconStickersConfig configures getForumTopicIconStickers method.
 
@@ -4458,7 +4468,7 @@ type GetGameHighScoresConfig struct {
 ```
 
 <a name="GetMyCommandsConfig"></a>
-## type [GetMyCommandsConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2399-L2402>)
+## type [GetMyCommandsConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2403-L2406>)
 
 GetMyCommandsConfig gets a list of the currently registered commands.
 
@@ -4470,7 +4480,7 @@ type GetMyCommandsConfig struct {
 ```
 
 <a name="NewGetMyCommandsWithScope"></a>
-### func [NewGetMyCommandsWithScope](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L961>)
+### func [NewGetMyCommandsWithScope](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1004>)
 
 ```go
 func NewGetMyCommandsWithScope(scope BotCommandScope) GetMyCommandsConfig
@@ -4479,7 +4489,7 @@ func NewGetMyCommandsWithScope(scope BotCommandScope) GetMyCommandsConfig
 NewGetMyCommandsWithScope allows you to set the registered commands for a given scope.
 
 <a name="NewGetMyCommandsWithScopeAndLanguage"></a>
-### func [NewGetMyCommandsWithScopeAndLanguage](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L967>)
+### func [NewGetMyCommandsWithScopeAndLanguage](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1010>)
 
 ```go
 func NewGetMyCommandsWithScopeAndLanguage(scope BotCommandScope, languageCode string) GetMyCommandsConfig
@@ -4488,7 +4498,7 @@ func NewGetMyCommandsWithScopeAndLanguage(scope BotCommandScope, languageCode st
 NewGetMyCommandsWithScopeAndLanguage allows you to set the registered commands for a given scope and language code.
 
 <a name="GetMyDefaultAdministratorRightsConfig"></a>
-## type [GetMyDefaultAdministratorRightsConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2517-L2519>)
+## type [GetMyDefaultAdministratorRightsConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2521-L2523>)
 
 
 
@@ -4499,7 +4509,7 @@ type GetMyDefaultAdministratorRightsConfig struct {
 ```
 
 <a name="GetStickerSetConfig"></a>
-## type [GetStickerSetConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2078-L2080>)
+## type [GetStickerSetConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2082-L2084>)
 
 GetStickerSetConfig allows you to get the stickers in a set.
 
@@ -4521,7 +4531,7 @@ type HTTPClient interface {
 ```
 
 <a name="HideGeneralForumTopicConfig"></a>
-## type [HideGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2904-L2906>)
+## type [HideGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2908-L2910>)
 
 
 
@@ -4532,7 +4542,7 @@ type HideGeneralForumTopicConfig struct {
 ```
 
 <a name="NewHideGeneralForumTopicConfig"></a>
-### func [NewHideGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1291>)
+### func [NewHideGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1334>)
 
 ```go
 func NewHideGeneralForumTopicConfig(chatID any) HideGeneralForumTopicConfig
@@ -4612,7 +4622,7 @@ for update := range updates {
 </details>
 
 <a name="InlineKeyboardButton"></a>
-## type [InlineKeyboardButton](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1491-L1544>)
+## type [InlineKeyboardButton](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1614-L1680>)
 
 InlineKeyboardButton represents one button of an inline keyboard. You must use exactly one of the optional fields.
 
@@ -4674,11 +4684,24 @@ type InlineKeyboardButton struct {
     //
     // optional
     Pay bool `json:"pay,omitempty"`
+    // This object defines the criteria used to request suitable users.
+    // Information about the selected users will be shared with the bot when
+    // the corresponding button is pressed.
+    //
+    // optional
+    RequestUser *KeyboardButtonRequestUser `json:"request_user,omitempty"`
+    // This object defines the criteria used to request a suitable chat.
+    // Information about the selected chat will be shared with the bot when
+    // the corresponding button is pressed. The bot will be granted requested rights
+    // in the chat if appropriate.
+    //
+    // optional
+    RequestChat *KeyboardButtonRequestChat `json:"request_chat,omitempty"`
 }
 ```
 
 <a name="NewInlineKeyboardButtonData"></a>
-### func [NewInlineKeyboardButtonData](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L724>)
+### func [NewInlineKeyboardButtonData](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L767>)
 
 ```go
 func NewInlineKeyboardButtonData(text, data string) InlineKeyboardButton
@@ -4687,7 +4710,7 @@ func NewInlineKeyboardButtonData(text, data string) InlineKeyboardButton
 NewInlineKeyboardButtonData creates an inline keyboard button with text and data for a callback.
 
 <a name="NewInlineKeyboardButtonLoginURL"></a>
-### func [NewInlineKeyboardButtonLoginURL](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L742>)
+### func [NewInlineKeyboardButtonLoginURL](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L785>)
 
 ```go
 func NewInlineKeyboardButtonLoginURL(text string, loginURL LoginURL) InlineKeyboardButton
@@ -4696,7 +4719,7 @@ func NewInlineKeyboardButtonLoginURL(text string, loginURL LoginURL) InlineKeybo
 NewInlineKeyboardButtonLoginURL creates an inline keyboard button with text which goes to a LoginURL.
 
 <a name="NewInlineKeyboardButtonSwitch"></a>
-### func [NewInlineKeyboardButtonSwitch](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L760>)
+### func [NewInlineKeyboardButtonSwitch](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L803>)
 
 ```go
 func NewInlineKeyboardButtonSwitch(text, sw string) InlineKeyboardButton
@@ -4705,7 +4728,7 @@ func NewInlineKeyboardButtonSwitch(text, sw string) InlineKeyboardButton
 NewInlineKeyboardButtonSwitch creates an inline keyboard button with text which allows the user to switch to a chat or return to a chat.
 
 <a name="NewInlineKeyboardButtonURL"></a>
-### func [NewInlineKeyboardButtonURL](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L751>)
+### func [NewInlineKeyboardButtonURL](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L794>)
 
 ```go
 func NewInlineKeyboardButtonURL(text, url string) InlineKeyboardButton
@@ -4714,7 +4737,7 @@ func NewInlineKeyboardButtonURL(text, url string) InlineKeyboardButton
 NewInlineKeyboardButtonURL creates an inline keyboard button with text which goes to a URL.
 
 <a name="NewInlineKeyboardButtonWebApp"></a>
-### func [NewInlineKeyboardButtonWebApp](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L733>)
+### func [NewInlineKeyboardButtonWebApp](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L776>)
 
 ```go
 func NewInlineKeyboardButtonWebApp(text string, webapp WebAppInfo) InlineKeyboardButton
@@ -4723,7 +4746,7 @@ func NewInlineKeyboardButtonWebApp(text string, webapp WebAppInfo) InlineKeyboar
 NewInlineKeyboardButtonWebApp creates an inline keyboard button with text which goes to a WebApp.
 
 <a name="NewInlineKeyboardRow"></a>
-### func [NewInlineKeyboardRow](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L768>)
+### func [NewInlineKeyboardRow](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L811>)
 
 ```go
 func NewInlineKeyboardRow(buttons ...InlineKeyboardButton) []InlineKeyboardButton
@@ -4732,7 +4755,7 @@ func NewInlineKeyboardRow(buttons ...InlineKeyboardButton) []InlineKeyboardButto
 NewInlineKeyboardRow creates an inline keyboard row with buttons.
 
 <a name="InlineKeyboardMarkup"></a>
-## type [InlineKeyboardMarkup](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1478-L1482>)
+## type [InlineKeyboardMarkup](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1601-L1605>)
 
 InlineKeyboardMarkup represents an inline keyboard that appears right next to the message it belongs to.
 
@@ -4745,7 +4768,7 @@ type InlineKeyboardMarkup struct {
 ```
 
 <a name="NewInlineKeyboardMarkup"></a>
-### func [NewInlineKeyboardMarkup](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L777>)
+### func [NewInlineKeyboardMarkup](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L820>)
 
 ```go
 func NewInlineKeyboardMarkup(rows ...[]InlineKeyboardButton) InlineKeyboardMarkup
@@ -4754,7 +4777,7 @@ func NewInlineKeyboardMarkup(rows ...[]InlineKeyboardButton) InlineKeyboardMarku
 NewInlineKeyboardMarkup creates a new inline keyboard.
 
 <a name="InlineQuery"></a>
-## type [InlineQuery](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2305-L2326>)
+## type [InlineQuery](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2424-L2445>)
 
 InlineQuery is a Query from Telegram for an inline request.
 
@@ -4784,7 +4807,7 @@ type InlineQuery struct {
 ```
 
 <a name="InlineQueryResultArticle"></a>
-## type [InlineQueryResultArticle](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2614-L2651>)
+## type [InlineQueryResultArticle](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2733-L2770>)
 
 InlineQueryResultArticle represents a link to an article or web page.
 
@@ -4866,7 +4889,7 @@ func NewInlineQueryResultArticleMarkdownV2(id, title, messageText string) Inline
 NewInlineQueryResultArticleMarkdownV2 creates a new inline query article with MarkdownV2 parsing.
 
 <a name="InlineQueryResultAudio"></a>
-## type [InlineQueryResultAudio](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2654-L2694>)
+## type [InlineQueryResultAudio](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2773-L2813>)
 
 InlineQueryResultAudio is an inline query response audio.
 
@@ -4924,7 +4947,7 @@ func NewInlineQueryResultAudio(id, url, title string) InlineQueryResultAudio
 NewInlineQueryResultAudio creates a new inline query audio.
 
 <a name="InlineQueryResultCachedAudio"></a>
-## type [InlineQueryResultCachedAudio](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2329-L2359>)
+## type [InlineQueryResultCachedAudio](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2448-L2478>)
 
 InlineQueryResultCachedAudio is an inline query response with cached audio.
 
@@ -4972,7 +4995,7 @@ func NewInlineQueryResultCachedAudio(id, audioID string) InlineQueryResultCached
 NewInlineQueryResultCachedAudio create a new inline query with cached photo.
 
 <a name="InlineQueryResultCachedDocument"></a>
-## type [InlineQueryResultCachedDocument](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2362-L2400>)
+## type [InlineQueryResultCachedDocument](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2481-L2519>)
 
 InlineQueryResultCachedDocument is an inline query response with cached document.
 
@@ -5028,7 +5051,7 @@ func NewInlineQueryResultCachedDocument(id, documentID, title string) InlineQuer
 NewInlineQueryResultCachedDocument create a new inline query with cached photo.
 
 <a name="InlineQueryResultCachedGIF"></a>
-## type [InlineQueryResultCachedGIF](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2403-L2437>)
+## type [InlineQueryResultCachedGIF](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2522-L2556>)
 
 InlineQueryResultCachedGIF is an inline query response with cached gif.
 
@@ -5080,7 +5103,7 @@ func NewInlineQueryResultCachedGIF(id, gifID string) InlineQueryResultCachedGIF
 NewInlineQueryResultCachedGIF create a new inline query with cached photo.
 
 <a name="InlineQueryResultCachedMPEG4GIF"></a>
-## type [InlineQueryResultCachedMPEG4GIF](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2441-L2476>)
+## type [InlineQueryResultCachedMPEG4GIF](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2560-L2595>)
 
 InlineQueryResultCachedMPEG4GIF is an inline query response with cached H.264/MPEG\-4 AVC video without sound gif.
 
@@ -5133,7 +5156,7 @@ func NewInlineQueryResultCachedMPEG4GIF(id, MPEG4GIFID string) InlineQueryResult
 NewInlineQueryResultCachedMPEG4GIF create a new inline query with cached MPEG4 GIF.
 
 <a name="InlineQueryResultCachedPhoto"></a>
-## type [InlineQueryResultCachedPhoto](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2479-L2517>)
+## type [InlineQueryResultCachedPhoto](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2598-L2636>)
 
 InlineQueryResultCachedPhoto is an inline query response with cached photo.
 
@@ -5189,7 +5212,7 @@ func NewInlineQueryResultCachedPhoto(id, photoID string) InlineQueryResultCached
 NewInlineQueryResultCachedPhoto create a new inline query with cached photo.
 
 <a name="InlineQueryResultCachedSticker"></a>
-## type [InlineQueryResultCachedSticker](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2520-L2537>)
+## type [InlineQueryResultCachedSticker](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2639-L2656>)
 
 InlineQueryResultCachedSticker is an inline query response with cached sticker.
 
@@ -5224,7 +5247,7 @@ func NewInlineQueryResultCachedSticker(id, stickerID, title string) InlineQueryR
 NewInlineQueryResultCachedSticker create a new inline query with cached sticker.
 
 <a name="InlineQueryResultCachedVideo"></a>
-## type [InlineQueryResultCachedVideo](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2540-L2576>)
+## type [InlineQueryResultCachedVideo](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2659-L2695>)
 
 InlineQueryResultCachedVideo is an inline query response with cached video.
 
@@ -5278,7 +5301,7 @@ func NewInlineQueryResultCachedVideo(id, videoID, title string) InlineQueryResul
 NewInlineQueryResultCachedVideo create a new inline query with cached video.
 
 <a name="InlineQueryResultCachedVoice"></a>
-## type [InlineQueryResultCachedVoice](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2579-L2611>)
+## type [InlineQueryResultCachedVoice](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2698-L2730>)
 
 InlineQueryResultCachedVoice is an inline query response with cached voice.
 
@@ -5328,7 +5351,7 @@ func NewInlineQueryResultCachedVoice(id, voiceID, title string) InlineQueryResul
 NewInlineQueryResultCachedVoice create a new inline query with cached photo.
 
 <a name="InlineQueryResultContact"></a>
-## type [InlineQueryResultContact](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2697-L2709>)
+## type [InlineQueryResultContact](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2816-L2828>)
 
 InlineQueryResultContact is an inline query response contact.
 
@@ -5349,7 +5372,7 @@ type InlineQueryResultContact struct {
 ```
 
 <a name="InlineQueryResultDocument"></a>
-## type [InlineQueryResultDocument](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2726-L2765>)
+## type [InlineQueryResultDocument](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2845-L2884>)
 
 InlineQueryResultDocument is an inline query response document.
 
@@ -5406,7 +5429,7 @@ func NewInlineQueryResultDocument(id, url, title, mimeType string) InlineQueryRe
 NewInlineQueryResultDocument creates a new inline query document.
 
 <a name="InlineQueryResultGIF"></a>
-## type [InlineQueryResultGIF](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2768-L2816>)
+## type [InlineQueryResultGIF](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2887-L2935>)
 
 InlineQueryResultGIF is an inline query response GIF.
 
@@ -5472,7 +5495,7 @@ func NewInlineQueryResultGIF(id, url string) InlineQueryResultGIF
 NewInlineQueryResultGIF creates a new inline query GIF.
 
 <a name="InlineQueryResultGame"></a>
-## type [InlineQueryResultGame](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2712-L2723>)
+## type [InlineQueryResultGame](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2831-L2842>)
 
 InlineQueryResultGame is an inline query response game.
 
@@ -5492,7 +5515,7 @@ type InlineQueryResultGame struct {
 ```
 
 <a name="InlineQueryResultLocation"></a>
-## type [InlineQueryResultLocation](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2819-L2871>)
+## type [InlineQueryResultLocation](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2938-L2990>)
 
 InlineQueryResultLocation is an inline query response location.
 
@@ -5562,7 +5585,7 @@ func NewInlineQueryResultLocation(id, title string, latitude, longitude float64)
 NewInlineQueryResultLocation creates a new inline query location.
 
 <a name="InlineQueryResultMPEG4GIF"></a>
-## type [InlineQueryResultMPEG4GIF](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2874-L2922>)
+## type [InlineQueryResultMPEG4GIF](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2993-L3041>)
 
 InlineQueryResultMPEG4GIF is an inline query response MPEG4 GIF.
 
@@ -5628,7 +5651,7 @@ func NewInlineQueryResultMPEG4GIF(id, url string) InlineQueryResultMPEG4GIF
 NewInlineQueryResultMPEG4GIF creates a new inline query MPEG4 GIF.
 
 <a name="InlineQueryResultPhoto"></a>
-## type [InlineQueryResultPhoto](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2925-L2978>)
+## type [InlineQueryResultPhoto](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3044-L3097>)
 
 InlineQueryResultPhoto is an inline query response photo.
 
@@ -5708,7 +5731,7 @@ func NewInlineQueryResultPhotoWithThumb(id, url, thumb string) InlineQueryResult
 NewInlineQueryResultPhotoWithThumb creates a new inline query photo.
 
 <a name="InlineQueryResultVenue"></a>
-## type [InlineQueryResultVenue](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2981-L3031>)
+## type [InlineQueryResultVenue](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3100-L3150>)
 
 InlineQueryResultVenue is an inline query response venue.
 
@@ -5776,7 +5799,7 @@ func NewInlineQueryResultVenue(id, title, address string, latitude, longitude fl
 NewInlineQueryResultVenue creates a new inline query venue.
 
 <a name="InlineQueryResultVideo"></a>
-## type [InlineQueryResultVideo](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3034-L3079>)
+## type [InlineQueryResultVideo](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3153-L3198>)
 
 InlineQueryResultVideo is an inline query response video.
 
@@ -5839,7 +5862,7 @@ func NewInlineQueryResultVideo(id, url string) InlineQueryResultVideo
 NewInlineQueryResultVideo creates a new inline query video.
 
 <a name="InlineQueryResultVoice"></a>
-## type [InlineQueryResultVoice](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3082-L3118>)
+## type [InlineQueryResultVoice](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3201-L3237>)
 
 InlineQueryResultVoice is an inline query response voice.
 
@@ -5893,7 +5916,7 @@ func NewInlineQueryResultVoice(id, url, title string) InlineQueryResultVoice
 NewInlineQueryResultVoice creates a new inline query voice.
 
 <a name="InputContactMessageContent"></a>
-## type [InputContactMessageContent](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3233-L3246>)
+## type [InputContactMessageContent](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3352-L3365>)
 
 InputContactMessageContent contains a contact for displaying as an inline query result.
 
@@ -5915,7 +5938,7 @@ type InputContactMessageContent struct {
 ```
 
 <a name="InputInvoiceMessageContent"></a>
-## type [InputInvoiceMessageContent](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3250-L3329>)
+## type [InputInvoiceMessageContent](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3369-L3448>)
 
 InputInvoiceMessageContent represents the content of an invoice message to be sent as the result of an inline query.
 
@@ -6003,7 +6026,7 @@ type InputInvoiceMessageContent struct {
 ```
 
 <a name="InputLocationMessageContent"></a>
-## type [InputLocationMessageContent](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3174-L3200>)
+## type [InputLocationMessageContent](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3293-L3319>)
 
 InputLocationMessageContent contains a location for displaying as an inline query result.
 
@@ -6038,7 +6061,7 @@ type InputLocationMessageContent struct {
 ```
 
 <a name="InputMediaAnimation"></a>
-## type [InputMediaAnimation](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2063-L2086>)
+## type [InputMediaAnimation](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2182-L2205>)
 
 InputMediaAnimation is an animation to send as part of a media group.
 
@@ -6079,7 +6102,7 @@ func NewInputMediaAnimation(media RequestFileData) InputMediaAnimation
 NewInputMediaAnimation creates a new InputMediaAnimation.
 
 <a name="InputMediaAudio"></a>
-## type [InputMediaAudio](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2089-L2108>)
+## type [InputMediaAudio](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2208-L2227>)
 
 InputMediaAudio is an audio to send as part of a media group.
 
@@ -6116,7 +6139,7 @@ func NewInputMediaAudio(media RequestFileData) InputMediaAudio
 NewInputMediaAudio creates a new InputMediaAudio.
 
 <a name="InputMediaDocument"></a>
-## type [InputMediaDocument](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2111-L2124>)
+## type [InputMediaDocument](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2230-L2243>)
 
 InputMediaDocument is a general file to send as part of a media group.
 
@@ -6147,7 +6170,7 @@ func NewInputMediaDocument(media RequestFileData) InputMediaDocument
 NewInputMediaDocument creates a new InputMediaDocument.
 
 <a name="InputMediaPhoto"></a>
-## type [InputMediaPhoto](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2024-L2030>)
+## type [InputMediaPhoto](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2143-L2149>)
 
 InputMediaPhoto is a photo to send as part of a media group.
 
@@ -6171,7 +6194,7 @@ func NewInputMediaPhoto(media RequestFileData) InputMediaPhoto
 NewInputMediaPhoto creates a new InputMediaPhoto.
 
 <a name="InputMediaVideo"></a>
-## type [InputMediaVideo](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2033-L2060>)
+## type [InputMediaVideo](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2152-L2179>)
 
 InputMediaVideo is a video to send as part of a media group.
 
@@ -6216,7 +6239,7 @@ func NewInputMediaVideo(media RequestFileData) InputMediaVideo
 NewInputMediaVideo creates a new InputMediaVideo.
 
 <a name="InputTextMessageContent"></a>
-## type [InputTextMessageContent](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3152-L3170>)
+## type [InputTextMessageContent](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3271-L3289>)
 
 InputTextMessageContent contains text for displaying as an inline query result.
 
@@ -6243,7 +6266,7 @@ type InputTextMessageContent struct {
 ```
 
 <a name="InputVenueMessageContent"></a>
-## type [InputVenueMessageContent](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3204-L3229>)
+## type [InputVenueMessageContent](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3323-L3348>)
 
 InputVenueMessageContent contains a venue for displaying as an inline query result.
 
@@ -6277,7 +6300,7 @@ type InputVenueMessageContent struct {
 ```
 
 <a name="Invoice"></a>
-## type [Invoice](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3345-L3362>)
+## type [Invoice](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3464-L3481>)
 
 Invoice contains basic information about an invoice.
 
@@ -6303,7 +6326,7 @@ type Invoice struct {
 ```
 
 <a name="InvoiceConfig"></a>
-## type [InvoiceConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1744-L1769>)
+## type [InvoiceConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1748-L1773>)
 
 InvoiceConfig contains information for sendInvoice request.
 
@@ -6337,7 +6360,7 @@ type InvoiceConfig struct {
 ```
 
 <a name="NewInvoice"></a>
-### func [NewInvoice](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L807>)
+### func [NewInvoice](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L850>)
 
 ```go
 func NewInvoice(chatID any, title, description, payload, providerToken, startParameter string, currency Currency, prices []LabeledPrice) InvoiceConfig
@@ -6346,7 +6369,7 @@ func NewInvoice(chatID any, title, description, payload, providerToken, startPar
 NewInvoice creates a new Invoice request to the user.
 
 <a name="KeyboardButton"></a>
-## type [KeyboardButton](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1414-L1441>)
+## type [KeyboardButton](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1466-L1506>)
 
 KeyboardButton represents one button of the reply keyboard. For simple text buttons String can be used instead of this object to specify text of the button. Optional fields request\_contact, request\_location, and request\_poll are mutually exclusive.
 
@@ -6378,6 +6401,19 @@ type KeyboardButton struct {
     //
     // optional
     WebApp *WebAppInfo `json:"web_app,omitempty"`
+    // This object defines the criteria used to request suitable users.
+    // Information about the selected users will be shared with the bot when
+    // the corresponding button is pressed.
+    //
+    // optional
+    RequestUser *KeyboardButtonRequestUser `json:"request_user,omitempty"`
+    // This object defines the criteria used to request a suitable chat.
+    // Information about the selected chat will be shared with the bot when
+    // the corresponding button is pressed. The bot will be granted requested rights
+    // in the chat if appropriate.
+    //
+    // optional
+    RequestChat *KeyboardButtonRequestChat `json:"request_chat,omitempty"`
 }
 ```
 
@@ -6391,7 +6427,7 @@ func NewKeyboardButton(text string) KeyboardButton
 NewKeyboardButton creates a regular keyboard button.
 
 <a name="NewKeyboardButtonContact"></a>
-### func [NewKeyboardButtonContact](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L678>)
+### func [NewKeyboardButtonContact](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L721>)
 
 ```go
 func NewKeyboardButtonContact(text string) KeyboardButton
@@ -6400,7 +6436,7 @@ func NewKeyboardButtonContact(text string) KeyboardButton
 NewKeyboardButtonContact creates a keyboard button that requests user contact information upon click.
 
 <a name="NewKeyboardButtonLocation"></a>
-### func [NewKeyboardButtonLocation](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L687>)
+### func [NewKeyboardButtonLocation](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L730>)
 
 ```go
 func NewKeyboardButtonLocation(text string) KeyboardButton
@@ -6408,8 +6444,26 @@ func NewKeyboardButtonLocation(text string) KeyboardButton
 
 NewKeyboardButtonLocation creates a keyboard button that requests user location information upon click.
 
+<a name="NewKeyboardButtonRequestChat"></a>
+### func [NewKeyboardButtonRequestChat](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L703>)
+
+```go
+func NewKeyboardButtonRequestChat(text string, button KeyboardButtonRequestChat) KeyboardButton
+```
+
+NewKeyboardButtonRequestUser creates a keyboard button with text and RequestUser for a callback.
+
+<a name="NewKeyboardButtonRequestUser"></a>
+### func [NewKeyboardButtonRequestUser](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L681>)
+
+```go
+func NewKeyboardButtonRequestUser(text string, button KeyboardButtonRequestUser) KeyboardButton
+```
+
+NewKeyboardButtonRequestUser creates a keyboard button with text and RequestUser for a callback.
+
 <a name="NewKeyboardButtonRow"></a>
-### func [NewKeyboardButtonRow](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L695>)
+### func [NewKeyboardButtonRow](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L738>)
 
 ```go
 func NewKeyboardButtonRow(buttons ...KeyboardButton) []KeyboardButton
@@ -6418,7 +6472,7 @@ func NewKeyboardButtonRow(buttons ...KeyboardButton) []KeyboardButton
 NewKeyboardButtonRow creates a row of keyboard buttons.
 
 <a name="NewKeyboardButtonWebApp"></a>
-### func [NewKeyboardButtonWebApp](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L669>)
+### func [NewKeyboardButtonWebApp](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L712>)
 
 ```go
 func NewKeyboardButtonWebApp(text string, webapp WebAppInfo) KeyboardButton
@@ -6427,7 +6481,7 @@ func NewKeyboardButtonWebApp(text string, webapp WebAppInfo) KeyboardButton
 NewKeyboardButtonWebApp creates a keyboard button with text which goes to a WebApp.
 
 <a name="KeyboardButtonPollType"></a>
-## type [KeyboardButtonPollType](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1445-L1450>)
+## type [KeyboardButtonPollType](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1568-L1573>)
 
 KeyboardButtonPollType represents type of poll, which is allowed to be created and sent when the corresponding button is pressed.
 
@@ -6439,6 +6493,89 @@ type KeyboardButtonPollType struct {
     Type string `json:"type"`
 }
 ```
+
+<a name="KeyboardButtonRequestChat"></a>
+## type [KeyboardButtonRequestChat](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1529-L1564>)
+
+This object defines the criteria used to request a suitable chat. Information about the selected chat will be shared with the bot when the corresponding button is pressed. The bot will be granted requested rights in the chat if appropriate.
+
+```go
+type KeyboardButtonRequestChat struct {
+    // Signed 32-bit identifier of the request, which will be received back in the ChatShared object.
+    // Must be unique within the message
+    RequestID int `json:"request_id"` // signed 32-bit
+    // Pass True to request a channel chat, pass False to request a group or a supergroup chat.
+    ChatIsChannel bool `json:"chat_is_channel,omitempty"`
+    // Pass True to request a forum supergroup, pass False to request a non-forum chat.
+    // If not specified, no additional restrictions are applied.
+    //
+    // optional
+    ChatIsForum bool `json:"chat_is_forum,omitempty"`
+    // Pass True to request a supergroup or a channel with a username,
+    // pass False to request a chat without a username.
+    // If not specified, no additional restrictions are applied.
+    //
+    // optional
+    ChatHasUsername bool `json:"chat_has_username,omitempty"`
+    // Pass True to request a chat owned by the user. Otherwise, no additional restrictions are applied.
+    //
+    // optional
+    ChatIsCreated bool `json:"chat_is_created,omitempty"`
+    // A JSON-serialized object (ChatAdministratorRights) listing the required administrator rights of the user in the chat.
+    // The rights must be a superset of bot_administrator_rights. If not specified, no additional
+    // restrictions are applied.
+    //
+    // optional
+    UserAdministratorRights *ChatAdministratorRights `json:"user_administrator_rights,omitempty"`
+    // A JSON-serialized object (ChatAdministratorRights) listing the required administrator rights of the bot in the chat.
+    // The rights must be a subset of user_administrator_rights. If not specified, no additional
+    // restrictions are applied.
+    //
+    // optional
+    BotAdministratorRights *ChatAdministratorRights `json:"bot_administrator_rights,omitempty"`
+    // Pass True to request a chat with the bot as a member. Otherwise, no additional restrictions are applied.
+    BotIsMember bool `json:"bot_is_member,omitempty"`
+}
+```
+
+<a name="NewButtonRequestChat"></a>
+### func [NewButtonRequestChat](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L691>)
+
+```go
+func NewButtonRequestChat(request_id int, is_channel bool, is_forum bool, bot_is_member bool) KeyboardButtonRequestChat
+```
+
+
+
+<a name="KeyboardButtonRequestUser"></a>
+## type [KeyboardButtonRequestUser](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1511-L1523>)
+
+This object defines the criteria used to request suitable users. Information about the selected users will be shared with the bot when the corresponding button is pressed.
+
+```go
+type KeyboardButtonRequestUser struct {
+    // Signed 32-bit identifier of the request that will be received back
+    // in the UsersShared object. Must be unique within the message
+    RequestID int `json:"request_id"` // signed 32-bit
+    // Pass True to request bots, pass False to request regular users.
+    // If not specified, no additional restrictions are applied.
+    //
+    // optional
+    UserIsBot bool `json:"user_is_bot,omitempty"`
+    // Pass True to request premium users, pass False to request non-premium users.
+    // If not specified, no additional restrictions are applied.
+    UserIsPremium bool `json:"user_is_premium,omitempty"`
+}
+```
+
+<a name="NewButtonRequestUser"></a>
+### func [NewButtonRequestUser](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L671>)
+
+```go
+func NewButtonRequestUser(request_id int, only_premium bool, only_bots bool) KeyboardButtonRequestUser
+```
+
+NewButton creates a RequestUser keyboard button. request\_id: The user id to be passed to the bot as message.Update. request\_id must be me unic. Else it will be cahshed. only\_prmium: Pass True to request only premium users, pass False to request only non\-premium users or leave empty to request all users. only\_bots: Pass True to request only bot users, pass False to request only regular users or leave empty to request all users.
 
 <a name="KickChatMemberConfig"></a>
 ## type [KickChatMemberConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1364>)
@@ -6452,7 +6589,7 @@ type KickChatMemberConfig = BanChatMemberConfig
 ```
 
 <a name="LabeledPrice"></a>
-## type [LabeledPrice](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3332-L3342>)
+## type [LabeledPrice](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3451-L3461>)
 
 LabeledPrice represents a portion of the price for goods or services.
 
@@ -7098,7 +7235,7 @@ func (l Language) String() string
 String implements fmt.Stringer for logging/debug purposes.
 
 <a name="LeaveChatConfig"></a>
-## type [LeaveChatConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1701-L1704>)
+## type [LeaveChatConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1705-L1708>)
 
 LeaveChatConfig allows you to leave a chat.
 
@@ -7110,7 +7247,7 @@ type LeaveChatConfig struct {
 ```
 
 <a name="Location"></a>
-## type [Location](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1208-L1233>)
+## type [Location](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1260-L1285>)
 
 Location represents a point on the map.
 
@@ -7183,7 +7320,7 @@ type LogOutConfig struct{}
 ```
 
 <a name="LoginURL"></a>
-## type [LoginURL](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1550-L1578>)
+## type [LoginURL](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1686-L1714>)
 
 LoginURL represents a parameter of the inline keyboard button used to automatically authorize a user. Serves as a great replacement for the Telegram Login Widget when the user is coming from Telegram. All the user needs to do is tap/click a button and confirm that they want to log in.
 
@@ -7220,7 +7357,7 @@ type LoginURL struct {
 ```
 
 <a name="MaskPosition"></a>
-## type [MaskPosition](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2207-L2221>)
+## type [MaskPosition](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2326-L2340>)
 
 MaskPosition describes the position on faces where a mask should be placed by default.
 
@@ -7243,7 +7380,7 @@ type MaskPosition struct {
 ```
 
 <a name="MediaGroupConfig"></a>
-## type [MediaGroupConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2341-L2349>)
+## type [MediaGroupConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2345-L2353>)
 
 MediaGroupConfig allows you to send a group of media.
 
@@ -7271,7 +7408,7 @@ func NewMediaGroup(chatID any, files []interface{}) MediaGroupConfig
 NewMediaGroup creates a new media group. Files should be an array of two to ten InputMediaPhoto or InputMediaVideo. Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
 
 <a name="MenuButton"></a>
-## type [MenuButton](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1968-L1979>)
+## type [MenuButton](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2087-L2098>)
 
 MenuButton describes the bot's menu button in a private chat.
 
@@ -7291,7 +7428,7 @@ type MenuButton struct {
 ```
 
 <a name="NewMenuButtonCommands"></a>
-### func [NewMenuButtonCommands](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1364>)
+### func [NewMenuButtonCommands](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1416>)
 
 ```go
 func NewMenuButtonCommands() *MenuButton
@@ -7300,7 +7437,7 @@ func NewMenuButtonCommands() *MenuButton
 
 
 <a name="NewMenuButtonDefault"></a>
-### func [NewMenuButtonDefault](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1363>)
+### func [NewMenuButtonDefault](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1415>)
 
 ```go
 func NewMenuButtonDefault() *MenuButton
@@ -7309,7 +7446,7 @@ func NewMenuButtonDefault() *MenuButton
 NewMenuButtonDefault creates a new MenuButtonDefault.
 
 <a name="NewMenuButtonWebApp"></a>
-### func [NewMenuButtonWebApp](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1365>)
+### func [NewMenuButtonWebApp](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1417>)
 
 ```go
 func NewMenuButtonWebApp(text, url string) *MenuButton
@@ -7318,7 +7455,7 @@ func NewMenuButtonWebApp(text, url string) *MenuButton
 
 
 <a name="Message"></a>
-## type [Message](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L416-L732>)
+## type [Message](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L416-L740>)
 
 Message represents a message.
 
@@ -7639,11 +7776,19 @@ type Message struct {
     //
     // optional
     HasMediaSpoiler bool `json:"has_media_spoiler,omitempty"`
+    // Service message: users were shared with the bot.
+    //
+    // optional
+    UserShared *UserShared `json:"user_shared,omitempty"`
+    // Service message: a chat was shared with the bot.
+    //
+    // optional
+    ChatShared *ChatShared `json:"chat_shared,omitempty"`
 }
 ```
 
 <a name="Message.Command"></a>
-### func \(\*Message\) [Command](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L754>)
+### func \(\*Message\) [Command](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L762>)
 
 ```go
 func (m *Message) Command() string
@@ -7654,7 +7799,7 @@ Command checks if the message was a command and if it was, returns the command. 
 If the command contains the at name syntax, it is removed. Use CommandWithAt\(\) if you do not want that.
 
 <a name="Message.CommandArguments"></a>
-### func \(\*Message\) [CommandArguments](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L788>)
+### func \(\*Message\) [CommandArguments](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L796>)
 
 ```go
 func (m *Message) CommandArguments() string
@@ -7665,7 +7810,7 @@ CommandArguments checks if the message was a command and if it was, returns all 
 Note: The first character after the command name is omitted: \- "/foo bar baz" yields "bar baz", not " bar baz" \- "/foo\-bar baz" yields "bar baz", too Even though the latter is not a command conforming to the spec, the API marks "/foo" as command entity.
 
 <a name="Message.CommandWithAt"></a>
-### func \(\*Message\) [CommandWithAt](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L769>)
+### func \(\*Message\) [CommandWithAt](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L777>)
 
 ```go
 func (m *Message) CommandWithAt() string
@@ -7676,7 +7821,7 @@ CommandWithAt checks if the message was a command and if it was, returns the com
 If the command contains the at name syntax, it is not removed. Use Command\(\) if you want that.
 
 <a name="Message.IsCommand"></a>
-### func \(\*Message\) [IsCommand](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L740>)
+### func \(\*Message\) [IsCommand](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L748>)
 
 ```go
 func (m *Message) IsCommand() bool
@@ -7685,7 +7830,7 @@ func (m *Message) IsCommand() bool
 IsCommand returns true if message starts with a "bot\_command" entity.
 
 <a name="Message.Time"></a>
-### func \(\*Message\) [Time](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L735>)
+### func \(\*Message\) [Time](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L743>)
 
 ```go
 func (m *Message) Time() time.Time
@@ -7694,7 +7839,7 @@ func (m *Message) Time() time.Time
 Time converts the message timestamp into a Time.
 
 <a name="MessageAutoDeleteTimerChanged"></a>
-## type [MessageAutoDeleteTimerChanged](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1283-L1286>)
+## type [MessageAutoDeleteTimerChanged](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1335-L1338>)
 
 MessageAutoDeleteTimerChanged represents a service message about a change in auto\-delete timer settings.
 
@@ -7743,7 +7888,7 @@ NewMessageToChannel creates a new Message that is sent to a channel by username.
 username is the username of the channel, text is the message text, and the username should be in the form of \`@username\`. Or you can use bot.GetUserIDbyUsername\("@username"\) and simple NewMessage
 
 <a name="MessageEntity"></a>
-## type [MessageEntity](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L809-L850>)
+## type [MessageEntity](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L817-L858>)
 
 MessageEntity represents one special entity in a text message.
 
@@ -7793,7 +7938,7 @@ type MessageEntity struct {
 ```
 
 <a name="MessageEntity.IsBold"></a>
-### func \(MessageEntity\) [IsBold](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L897>)
+### func \(MessageEntity\) [IsBold](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L905>)
 
 ```go
 func (e MessageEntity) IsBold() bool
@@ -7802,7 +7947,7 @@ func (e MessageEntity) IsBold() bool
 IsBold returns true if the type of the message entity is "bold" \(bold text\).
 
 <a name="MessageEntity.IsCode"></a>
-### func \(MessageEntity\) [IsCode](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L907>)
+### func \(MessageEntity\) [IsCode](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L915>)
 
 ```go
 func (e MessageEntity) IsCode() bool
@@ -7811,7 +7956,7 @@ func (e MessageEntity) IsCode() bool
 IsCode returns true if the type of the message entity is "code" \(monowidth string\).
 
 <a name="MessageEntity.IsCommand"></a>
-### func \(MessageEntity\) [IsCommand](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L882>)
+### func \(MessageEntity\) [IsCommand](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L890>)
 
 ```go
 func (e MessageEntity) IsCommand() bool
@@ -7820,7 +7965,7 @@ func (e MessageEntity) IsCommand() bool
 IsCommand returns true if the type of the message entity is "bot\_command".
 
 <a name="MessageEntity.IsCustomEmoji"></a>
-### func \(MessageEntity\) [IsCustomEmoji](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L866>)
+### func \(MessageEntity\) [IsCustomEmoji](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L874>)
 
 ```go
 func (e MessageEntity) IsCustomEmoji() bool
@@ -7829,7 +7974,7 @@ func (e MessageEntity) IsCustomEmoji() bool
 
 
 <a name="MessageEntity.IsEmail"></a>
-### func \(MessageEntity\) [IsEmail](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L892>)
+### func \(MessageEntity\) [IsEmail](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L900>)
 
 ```go
 func (e MessageEntity) IsEmail() bool
@@ -7838,7 +7983,7 @@ func (e MessageEntity) IsEmail() bool
 IsEmail returns true if the type of the message entity is "email".
 
 <a name="MessageEntity.IsHashtag"></a>
-### func \(MessageEntity\) [IsHashtag](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L877>)
+### func \(MessageEntity\) [IsHashtag](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L885>)
 
 ```go
 func (e MessageEntity) IsHashtag() bool
@@ -7847,7 +7992,7 @@ func (e MessageEntity) IsHashtag() bool
 IsHashtag returns true if the type of the message entity is "hashtag".
 
 <a name="MessageEntity.IsItalic"></a>
-### func \(MessageEntity\) [IsItalic](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L902>)
+### func \(MessageEntity\) [IsItalic](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L910>)
 
 ```go
 func (e MessageEntity) IsItalic() bool
@@ -7856,7 +8001,7 @@ func (e MessageEntity) IsItalic() bool
 IsItalic returns true if the type of the message entity is "italic" \(italic text\).
 
 <a name="MessageEntity.IsMention"></a>
-### func \(MessageEntity\) [IsMention](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L862>)
+### func \(MessageEntity\) [IsMention](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L870>)
 
 ```go
 func (e MessageEntity) IsMention() bool
@@ -7865,7 +8010,7 @@ func (e MessageEntity) IsMention() bool
 IsMention returns true if the type of the message entity is "mention" \(@username\).
 
 <a name="MessageEntity.IsPre"></a>
-### func \(MessageEntity\) [IsPre](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L912>)
+### func \(MessageEntity\) [IsPre](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L920>)
 
 ```go
 func (e MessageEntity) IsPre() bool
@@ -7874,7 +8019,7 @@ func (e MessageEntity) IsPre() bool
 IsPre returns true if the type of the message entity is "pre" \(monowidth block\).
 
 <a name="MessageEntity.IsTextLink"></a>
-### func \(MessageEntity\) [IsTextLink](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L917>)
+### func \(MessageEntity\) [IsTextLink](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L925>)
 
 ```go
 func (e MessageEntity) IsTextLink() bool
@@ -7883,7 +8028,7 @@ func (e MessageEntity) IsTextLink() bool
 IsTextLink returns true if the type of the message entity is "text\_link" \(clickable text URL\).
 
 <a name="MessageEntity.IsTextMention"></a>
-### func \(MessageEntity\) [IsTextMention](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L872>)
+### func \(MessageEntity\) [IsTextMention](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L880>)
 
 ```go
 func (e MessageEntity) IsTextMention() bool
@@ -7892,7 +8037,7 @@ func (e MessageEntity) IsTextMention() bool
 IsTextMention returns true if the type of the message entity is "text\_mention" \(At this time, the user field exists, and occurs when tagging a member without a username\)
 
 <a name="MessageEntity.IsURL"></a>
-### func \(MessageEntity\) [IsURL](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L887>)
+### func \(MessageEntity\) [IsURL](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L895>)
 
 ```go
 func (e MessageEntity) IsURL() bool
@@ -7901,7 +8046,7 @@ func (e MessageEntity) IsURL() bool
 IsURL returns true if the type of the message entity is "url".
 
 <a name="MessageEntity.ParseURL"></a>
-### func \(MessageEntity\) [ParseURL](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L853>)
+### func \(MessageEntity\) [ParseURL](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L861>)
 
 ```go
 func (e MessageEntity) ParseURL() (*url.URL, error)
@@ -7910,7 +8055,7 @@ func (e MessageEntity) ParseURL() (*url.URL, error)
 ParseURL attempts to parse a URL contained within a MessageEntity.
 
 <a name="MessageID"></a>
-## type [MessageID](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L804-L806>)
+## type [MessageID](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L812-L814>)
 
 MessageID represents a unique message identifier.
 
@@ -7921,7 +8066,7 @@ type MessageID struct {
 ```
 
 <a name="NewStickerSetConfig"></a>
-## type [NewStickerSetConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2122-L2133>)
+## type [NewStickerSetConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2126-L2137>)
 
 NewStickerSetConfig allows creating a new sticker set.
 
@@ -8080,7 +8225,7 @@ func Underline(children ...Node) Node
 Underline underlines: \<u\>...\</u\> \(HTML\), \_\_...\_\_ \(MDV2\). In Markdown \(legacy\), it is a soft degradation \(no underlining\).
 
 <a name="OrderInfo"></a>
-## type [OrderInfo](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3381-L3398>)
+## type [OrderInfo](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3500-L3517>)
 
 OrderInfo represents information about an order.
 
@@ -8504,7 +8649,7 @@ NewPhotoToChannel creates a new photo uploader to send a photo to a channel.
 Note that you must send animated GIFs as a document. Or you can use bot.GetUserIDbyUsername\("@username"\) and simple NewMessage
 
 <a name="PhotoSize"></a>
-## type [PhotoSize](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L922-L938>)
+## type [PhotoSize](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L974-L990>)
 
 PhotoSize represents one size of a photo or a file / sticker thumbnail.
 
@@ -8529,7 +8674,7 @@ type PhotoSize struct {
 ```
 
 <a name="PinChatMessageConfig"></a>
-## type [PinChatMessageConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1939-L1944>)
+## type [PinChatMessageConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1943-L1948>)
 
 PinChatMessageConfig contains information of a message in a chat to pin.
 
@@ -8543,7 +8688,7 @@ type PinChatMessageConfig struct {
 ```
 
 <a name="Poll"></a>
-## type [Poll](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1162-L1205>)
+## type [Poll](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1214-L1257>)
 
 Poll contains information about a poll.
 
@@ -8595,7 +8740,7 @@ type Poll struct {
 ```
 
 <a name="PollAnswer"></a>
-## type [PollAnswer](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1151-L1159>)
+## type [PollAnswer](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1203-L1211>)
 
 PollAnswer represents an answer of a user in a non\-anonymous poll.
 
@@ -8612,7 +8757,7 @@ type PollAnswer struct {
 ```
 
 <a name="PollOption"></a>
-## type [PollOption](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1143-L1148>)
+## type [PollOption](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1195-L1200>)
 
 PollOption contains information about one answer option in a poll.
 
@@ -8626,7 +8771,7 @@ type PollOption struct {
 ```
 
 <a name="PreCheckoutConfig"></a>
-## type [PreCheckoutConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1898-L1902>)
+## type [PreCheckoutConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1902-L1906>)
 
 PreCheckoutConfig contains information for answerPreCheckoutQuery request.
 
@@ -8639,7 +8784,7 @@ type PreCheckoutConfig struct {
 ```
 
 <a name="PreCheckoutQuery"></a>
-## type [PreCheckoutQuery](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3451-L3476>)
+## type [PreCheckoutQuery](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3570-L3595>)
 
 PreCheckoutQuery contains information about an incoming pre\-checkout query.
 
@@ -8673,7 +8818,7 @@ type PreCheckoutQuery struct {
 ```
 
 <a name="PromoteChatMemberConfig"></a>
-## type [PromoteChatMemberConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1390-L1405>)
+## type [PromoteChatMemberConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1392-L1407>)
 
 PromoteChatMemberConfig contains fields to promote members of chat
 
@@ -8697,7 +8842,7 @@ type PromoteChatMemberConfig struct {
 ```
 
 <a name="ProximityAlertTriggered"></a>
-## type [ProximityAlertTriggered](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1272-L1279>)
+## type [ProximityAlertTriggered](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1324-L1331>)
 
 ProximityAlertTriggered represents a service message sent when a user in the chat triggers a proximity alert sent by another user.
 
@@ -8713,7 +8858,7 @@ type ProximityAlertTriggered struct {
 ```
 
 <a name="ReopenForumTopicConfig"></a>
-## type [ReopenForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2791-L2794>)
+## type [ReopenForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2795-L2798>)
 
 ReopenForumTopicConfig configures reopenForumTopic method.
 
@@ -8725,7 +8870,7 @@ type ReopenForumTopicConfig struct {
 ```
 
 <a name="NewReopenForumTopicConfig"></a>
-### func [NewReopenForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1212>)
+### func [NewReopenForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1255>)
 
 ```go
 func NewReopenForumTopicConfig(chatID any, messageThreadID int) ReopenForumTopicConfig
@@ -8734,7 +8879,7 @@ func NewReopenForumTopicConfig(chatID any, messageThreadID int) ReopenForumTopic
 NewReopenForumTopicConfig creates a configuration to reopen a forum topic. chatID can be of any type that can be converted to a valid ChatID for the forum topic. messageThreadID is the unique identifier of the forum topic thread to be reopened.
 
 <a name="ReopenGeneralForumTopicConfig"></a>
-## type [ReopenGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2892-L2894>)
+## type [ReopenGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2896-L2898>)
 
 
 
@@ -8745,7 +8890,7 @@ type ReopenGeneralForumTopicConfig struct {
 ```
 
 <a name="NewReopenGeneralForumTopicConfig"></a>
-### func [NewReopenGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1282>)
+### func [NewReopenGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1325>)
 
 ```go
 func NewReopenGeneralForumTopicConfig(chatID any) ReopenGeneralForumTopicConfig
@@ -8754,7 +8899,7 @@ func NewReopenGeneralForumTopicConfig(chatID any) ReopenGeneralForumTopicConfig
 NewReopenGeneralForumTopicConfig creates a configuration to reopen a general forum topic. chatID can be of any type that can be converted to a valid ChatID for the forum topic.
 
 <a name="ReplyKeyboardMarkup"></a>
-## type [ReplyKeyboardMarkup](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1370-L1408>)
+## type [ReplyKeyboardMarkup](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1422-L1460>)
 
 ReplyKeyboardMarkup represents a custom keyboard with reply options.
 
@@ -8801,7 +8946,7 @@ type ReplyKeyboardMarkup struct {
 ```
 
 <a name="NewOneTimeReplyKeyboard"></a>
-### func [NewOneTimeReplyKeyboard](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L716>)
+### func [NewOneTimeReplyKeyboard](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L759>)
 
 ```go
 func NewOneTimeReplyKeyboard(rows ...[]KeyboardButton) ReplyKeyboardMarkup
@@ -8810,7 +8955,7 @@ func NewOneTimeReplyKeyboard(rows ...[]KeyboardButton) ReplyKeyboardMarkup
 NewOneTimeReplyKeyboard creates a new one time keyboard.
 
 <a name="NewReplyKeyboard"></a>
-### func [NewReplyKeyboard](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L704>)
+### func [NewReplyKeyboard](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L747>)
 
 ```go
 func NewReplyKeyboard(rows ...[]KeyboardButton) ReplyKeyboardMarkup
@@ -8819,7 +8964,7 @@ func NewReplyKeyboard(rows ...[]KeyboardButton) ReplyKeyboardMarkup
 NewReplyKeyboard creates a new regular keyboard with sane defaults.
 
 <a name="ReplyKeyboardRemove"></a>
-## type [ReplyKeyboardRemove](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1457-L1474>)
+## type [ReplyKeyboardRemove](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1580-L1597>)
 
 ReplyKeyboardRemove Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter\-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one\-time keyboards that are hidden immediately after the user presses a button.
 
@@ -8887,7 +9032,7 @@ type RequestFileData interface {
 ```
 
 <a name="ResponseParameters"></a>
-## type [ResponseParameters](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1982-L1992>)
+## type [ResponseParameters](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2101-L2111>)
 
 ResponseParameters are various errors that can be returned in APIResponse.
 
@@ -8906,20 +9051,21 @@ type ResponseParameters struct {
 ```
 
 <a name="RestrictChatMemberConfig"></a>
-## type [RestrictChatMemberConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1367-L1371>)
+## type [RestrictChatMemberConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1367-L1372>)
 
 RestrictChatMemberConfig contains fields to restrict members of chat
 
 ```go
 type RestrictChatMemberConfig struct {
     ChatMemberConfig
-    UntilDate   int64
-    Permissions *ChatPermissions
+    UntilDate                     int64
+    Permissions                   *ChatPermissions
+    UseIndependentChatPermissions bool
 }
 ```
 
 <a name="RevokeChatInviteLinkConfig"></a>
-## type [RevokeChatInviteLinkConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1644-L1647>)
+## type [RevokeChatInviteLinkConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1648-L1651>)
 
 RevokeChatInviteLinkConfig allows you to revoke an invite link created by the bot. If the primary link is revoked, a new link is automatically generated. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights.
 
@@ -8979,7 +9125,7 @@ type SendPollConfig struct {
 ```
 
 <a name="NewPoll"></a>
-### func [NewPoll](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L860>)
+### func [NewPoll](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L903>)
 
 ```go
 func NewPoll(chatID any, question string, options ...string) SendPollConfig
@@ -8988,7 +9134,7 @@ func NewPoll(chatID any, question string, options ...string) SendPollConfig
 NewPoll allows you to create a new poll.
 
 <a name="SentWebAppMessage"></a>
-## type [SentWebAppMessage](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3142-L3148>)
+## type [SentWebAppMessage](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3261-L3267>)
 
 SentWebAppMessage contains information about an inline message sent by a Web App on behalf of a user.
 
@@ -9003,7 +9149,7 @@ type SentWebAppMessage struct {
 ```
 
 <a name="SetChatAdministratorCustomTitle"></a>
-## type [SetChatAdministratorCustomTitle](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1435-L1438>)
+## type [SetChatAdministratorCustomTitle](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1437-L1440>)
 
 SetChatAdministratorCustomTitle sets the title of an administrative user promoted by the bot for a chat.
 
@@ -9015,7 +9161,7 @@ type SetChatAdministratorCustomTitle struct {
 ```
 
 <a name="SetChatDescriptionConfig"></a>
-## type [SetChatDescriptionConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2057-L2062>)
+## type [SetChatDescriptionConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2061-L2066>)
 
 SetChatDescriptionConfig allows you to set the description of a supergroup or channel.
 
@@ -9029,7 +9175,7 @@ type SetChatDescriptionConfig struct {
 ```
 
 <a name="NewChatDescription"></a>
-### func [NewChatDescription](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L830>)
+### func [NewChatDescription](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L873>)
 
 ```go
 func NewChatDescription(chatID any, description string) SetChatDescriptionConfig
@@ -9038,7 +9184,7 @@ func NewChatDescription(chatID any, description string) SetChatDescriptionConfig
 NewChatDescription allows you to update the description of a chat.
 
 <a name="SetChatMenuButtonConfig"></a>
-## type [SetChatMenuButtonConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2460-L2465>)
+## type [SetChatMenuButtonConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2464-L2469>)
 
 SetChatMenuButtonConfig changes the bot's menu button in a private chat, or the default menu button.
 
@@ -9052,19 +9198,20 @@ type SetChatMenuButtonConfig struct {
 ```
 
 <a name="SetChatPermissionsConfig"></a>
-## type [SetChatPermissionsConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1546-L1549>)
+## type [SetChatPermissionsConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1548-L1552>)
 
 SetChatPermissionsConfig allows you to set default permissions for the members in a group. The bot must be an administrator and have rights to restrict members.
 
 ```go
 type SetChatPermissionsConfig struct {
     ChatConfig
-    Permissions *ChatPermissions
+    Permissions                   *ChatPermissions
+    UseIndependentChatPermissions bool
 }
 ```
 
 <a name="SetChatPhotoConfig"></a>
-## type [SetChatPhotoConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2002-L2004>)
+## type [SetChatPhotoConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2006-L2008>)
 
 SetChatPhotoConfig allows you to set a group, supergroup, or channel's photo.
 
@@ -9075,7 +9222,7 @@ type SetChatPhotoConfig struct {
 ```
 
 <a name="NewChatPhoto"></a>
-### func [NewChatPhoto](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L839>)
+### func [NewChatPhoto](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L882>)
 
 ```go
 func NewChatPhoto(chatID any, photo RequestFileData) SetChatPhotoConfig
@@ -9084,7 +9231,7 @@ func NewChatPhoto(chatID any, photo RequestFileData) SetChatPhotoConfig
 NewChatPhoto allows you to update the photo for a chat.
 
 <a name="SetChatStickerSetConfig"></a>
-## type [SetChatStickerSetConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2300-L2305>)
+## type [SetChatStickerSetConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2304-L2309>)
 
 SetChatStickerSetConfig allows you to set the sticker set for a supergroup.
 
@@ -9098,7 +9245,7 @@ type SetChatStickerSetConfig struct {
 ```
 
 <a name="SetChatTitleConfig"></a>
-## type [SetChatTitleConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2036-L2041>)
+## type [SetChatTitleConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2040-L2045>)
 
 SetChatTitleConfig allows you to set the title of something other than a private chat.
 
@@ -9112,7 +9259,7 @@ type SetChatTitleConfig struct {
 ```
 
 <a name="NewChatTitle"></a>
-### func [NewChatTitle](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L821>)
+### func [NewChatTitle](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L864>)
 
 ```go
 func NewChatTitle(chatID any, title string) SetChatTitleConfig
@@ -9139,7 +9286,7 @@ type SetGameScoreConfig struct {
 ```
 
 <a name="SetMyCommandsConfig"></a>
-## type [SetMyCommandsConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2418-L2422>)
+## type [SetMyCommandsConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2422-L2426>)
 
 SetMyCommandsConfig sets a list of commands the bot understands.
 
@@ -9152,7 +9299,7 @@ type SetMyCommandsConfig struct {
 ```
 
 <a name="NewSetMyCommands"></a>
-### func [NewSetMyCommands](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L972>)
+### func [NewSetMyCommands](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1015>)
 
 ```go
 func NewSetMyCommands(commands ...BotCommand) SetMyCommandsConfig
@@ -9161,7 +9308,7 @@ func NewSetMyCommands(commands ...BotCommand) SetMyCommandsConfig
 NewSetMyCommands allows you to set the registered commands.
 
 <a name="NewSetMyCommandsWithScope"></a>
-### func [NewSetMyCommandsWithScope](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L977>)
+### func [NewSetMyCommandsWithScope](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1020>)
 
 ```go
 func NewSetMyCommandsWithScope(scope BotCommandScope, commands ...BotCommand) SetMyCommandsConfig
@@ -9170,7 +9317,7 @@ func NewSetMyCommandsWithScope(scope BotCommandScope, commands ...BotCommand) Se
 NewSetMyCommandsWithScope allows you to set the registered commands for a given scope.
 
 <a name="NewSetMyCommandsWithScopeAndLanguage"></a>
-### func [NewSetMyCommandsWithScopeAndLanguage](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L983>)
+### func [NewSetMyCommandsWithScopeAndLanguage](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1026>)
 
 ```go
 func NewSetMyCommandsWithScopeAndLanguage(scope BotCommandScope, languageCode string, commands ...BotCommand) SetMyCommandsConfig
@@ -9179,7 +9326,7 @@ func NewSetMyCommandsWithScopeAndLanguage(scope BotCommandScope, languageCode st
 NewSetMyCommandsWithScopeAndLanguage allows you to set the registered commands for a given scope and language code.
 
 <a name="SetMyDefaultAdministratorRightsConfig"></a>
-## type [SetMyDefaultAdministratorRightsConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2499-L2502>)
+## type [SetMyDefaultAdministratorRightsConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2503-L2506>)
 
 
 
@@ -9191,7 +9338,7 @@ type SetMyDefaultAdministratorRightsConfig struct {
 ```
 
 <a name="SetStickerPositionConfig"></a>
-## type [SetStickerPositionConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2237-L2240>)
+## type [SetStickerPositionConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2241-L2244>)
 
 SetStickerPositionConfig allows you to change the position of a sticker in a set.
 
@@ -9203,7 +9350,7 @@ type SetStickerPositionConfig struct {
 ```
 
 <a name="SetStickerSetThumbConfig"></a>
-## type [SetStickerSetThumbConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2273-L2277>)
+## type [SetStickerSetThumbConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2277-L2281>)
 
 SetStickerSetThumbConfig allows you to set the thumbnail for a sticker set.
 
@@ -9215,8 +9362,28 @@ type SetStickerSetThumbConfig struct {
 }
 ```
 
+<a name="SharedUser"></a>
+## type [SharedUser](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L945-L956>)
+
+This object contains information about a user that was shared with the bot using a KeyboardButtonRequestUsers button.
+
+```go
+type SharedUser struct {
+    // Identifier of the request
+    RequestID int `json:"request_id"`
+    // Identifier of the shared user.
+    // This number may have more than 32 significant bits and some
+    // programming languages may have difficulty/silent defects in interpreting it.
+    // But it has at most 52 significant bits, so a 64-bit integer
+    // or double-precision float type are safe for storing this identifier.
+    // The bot may not have access to the user and could be unable to use this identifier,
+    // unless the user is already known to the bot by some other means.
+    UserID int64 `json:"user_id"`
+}
+```
+
 <a name="ShippingAddress"></a>
-## type [ShippingAddress](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3365-L3378>)
+## type [ShippingAddress](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3484-L3497>)
 
 ShippingAddress represents a shipping address.
 
@@ -9238,7 +9405,7 @@ type ShippingAddress struct {
 ```
 
 <a name="ShippingConfig"></a>
-## type [ShippingConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1875-L1880>)
+## type [ShippingConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1879-L1884>)
 
 ShippingConfig contains information for answerShippingQuery request.
 
@@ -9252,7 +9419,7 @@ type ShippingConfig struct {
 ```
 
 <a name="ShippingOption"></a>
-## type [ShippingOption](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3401-L3408>)
+## type [ShippingOption](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3520-L3527>)
 
 ShippingOption represents one shipping option.
 
@@ -9268,7 +9435,7 @@ type ShippingOption struct {
 ```
 
 <a name="ShippingQuery"></a>
-## type [ShippingQuery](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3439-L3448>)
+## type [ShippingQuery](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3558-L3567>)
 
 ShippingQuery contains information about an incoming shipping query.
 
@@ -9286,7 +9453,7 @@ type ShippingQuery struct {
 ```
 
 <a name="Sticker"></a>
-## type [Sticker](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2127-L2180>)
+## type [Sticker](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2246-L2299>)
 
 Sticker represents a sticker.
 
@@ -9348,7 +9515,7 @@ type Sticker struct {
 ```
 
 <a name="Sticker.IsCustomEmoji"></a>
-### func \(Sticker\) [IsCustomEmoji](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2183>)
+### func \(Sticker\) [IsCustomEmoji](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2302>)
 
 ```go
 func (s Sticker) IsCustomEmoji() bool
@@ -9377,7 +9544,7 @@ func NewSticker(chatID any, file RequestFileData) StickerConfig
 NewSticker creates a new sendSticker request. Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
 
 <a name="StickerSet"></a>
-## type [StickerSet](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2188-L2203>)
+## type [StickerSet](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2307-L2322>)
 
 StickerSet represents a sticker set.
 
@@ -9401,7 +9568,7 @@ type StickerSet struct {
 ```
 
 <a name="StickerType"></a>
-## type [StickerType](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3702>)
+## type [StickerType](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3821>)
 
 StickerType describes the type of stickers in a set.
 
@@ -9420,7 +9587,7 @@ const (
 ```
 
 <a name="StickerType.String"></a>
-### func \(StickerType\) [String](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3711>)
+### func \(StickerType\) [String](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3830>)
 
 ```go
 func (s StickerType) String() string
@@ -9451,7 +9618,7 @@ type StopPollConfig struct {
 ```
 
 <a name="NewStopPoll"></a>
-### func [NewStopPoll](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L873>)
+### func [NewStopPoll](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L916>)
 
 ```go
 func NewStopPoll(chatID any, messageID int) StopPollConfig
@@ -9460,7 +9627,7 @@ func NewStopPoll(chatID any, messageID int) StopPollConfig
 NewStopPoll allows you to stop a poll.
 
 <a name="SuccessfulPayment"></a>
-## type [SuccessfulPayment](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3411-L3436>)
+## type [SuccessfulPayment](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3530-L3555>)
 
 SuccessfulPayment contains basic information about a successful payment.
 
@@ -9494,7 +9661,7 @@ type SuccessfulPayment struct {
 ```
 
 <a name="ThemeParams"></a>
-## type [ThemeParams](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3479-L3487>)
+## type [ThemeParams](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3598-L3606>)
 
 ThemeParams describes theme colors for Web Apps.
 
@@ -9523,7 +9690,7 @@ type UnbanChatMemberConfig struct {
 ```
 
 <a name="UnbanChatSenderChatConfig"></a>
-## type [UnbanChatSenderChatConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1483-L1487>)
+## type [UnbanChatSenderChatConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1485-L1489>)
 
 UnbanChatSenderChatConfig unbans a previously banned channel chat in a supergroup or channel. The bot must be an administrator for this to work and must have the appropriate administrator rights.
 
@@ -9536,7 +9703,7 @@ type UnbanChatSenderChatConfig struct {
 ```
 
 <a name="UnhideGeneralForumTopicConfig"></a>
-## type [UnhideGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2916-L2918>)
+## type [UnhideGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2920-L2922>)
 
 
 
@@ -9547,7 +9714,7 @@ type UnhideGeneralForumTopicConfig struct {
 ```
 
 <a name="NewUnhideGeneralForumTopicConfig"></a>
-### func [NewUnhideGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1300>)
+### func [NewUnhideGeneralForumTopicConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1343>)
 
 ```go
 func NewUnhideGeneralForumTopicConfig(chatID any) UnhideGeneralForumTopicConfig
@@ -9556,7 +9723,7 @@ func NewUnhideGeneralForumTopicConfig(chatID any) UnhideGeneralForumTopicConfig
 NewUnhideGeneralForumTopicConfig creates a configuration to unhide a general forum topic in a chat. chatID can be of any type that can be converted to a valid ChatID for the forum topic.
 
 <a name="UnpinAllChatMessagesConfig"></a>
-## type [UnpinAllChatMessagesConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1984-L1987>)
+## type [UnpinAllChatMessagesConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1988-L1991>)
 
 UnpinAllChatMessagesConfig contains information of all messages to unpin in a chat.
 
@@ -9568,7 +9735,7 @@ type UnpinAllChatMessagesConfig struct {
 ```
 
 <a name="UnpinAllForumTopicMessagesConfig"></a>
-## type [UnpinAllForumTopicMessagesConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2831-L2834>)
+## type [UnpinAllForumTopicMessagesConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2835-L2838>)
 
 UnpinAllForumTopicMessagesConfig configures unpinAllForumTopicMessages method.
 
@@ -9580,7 +9747,7 @@ type UnpinAllForumTopicMessagesConfig struct {
 ```
 
 <a name="NewUnpinAllForumTopicMessagesConfig"></a>
-### func [NewUnpinAllForumTopicMessagesConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1223>)
+### func [NewUnpinAllForumTopicMessagesConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/helpers.go#L1266>)
 
 ```go
 func NewUnpinAllForumTopicMessagesConfig(chatID any, messageThreadID int) UnpinAllForumTopicMessagesConfig
@@ -9589,7 +9756,7 @@ func NewUnpinAllForumTopicMessagesConfig(chatID any, messageThreadID int) UnpinA
 NewUnpinAllForumTopicMessagesConfig creates a configuration to unpin all pinned messages in a forum topic. chatID can be of any type that can be converted to a valid ChatID for the forum topic. messageThreadID is the unique identifier of the forum topic thread to be unpinned.
 
 <a name="UnpinChatMessageConfig"></a>
-## type [UnpinChatMessageConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1963-L1967>)
+## type [UnpinChatMessageConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L1967-L1971>)
 
 UnpinChatMessageConfig contains information of a chat message to unpin.
 
@@ -9765,7 +9932,7 @@ func (ch UpdatesChannel) Clear()
 Clear discards all unprocessed incoming updates.
 
 <a name="UploadStickerConfig"></a>
-## type [UploadStickerConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2095-L2098>)
+## type [UploadStickerConfig](<https://github.com/jhonroun/telegram-bot-api/blob/context/configs.go#L2099-L2102>)
 
 UploadStickerConfig allows you to upload a sticker for use in a set later.
 
@@ -9846,7 +10013,7 @@ String displays a simple text version of a user.
 It is normally a user's username, but falls back to a first/last name as available.
 
 <a name="UserProfilePhotos"></a>
-## type [UserProfilePhotos](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1322-L1327>)
+## type [UserProfilePhotos](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1374-L1379>)
 
 UserProfilePhotos contains a set of user profile photos.
 
@@ -9883,8 +10050,28 @@ NewUserProfilePhotos gets user profile photos.
 
 userID is the ID of the user you wish to get profile photos from. Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
 
+<a name="UserShared"></a>
+## type [UserShared](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L931-L942>)
+
+This object contains information about the user whose identifier was shared with the bot using a KeyboardButtonRequestUser button.
+
+```go
+type UserShared struct {
+    // Identifier of the request
+    RequestID int `json:"request_id"`
+    // Identifier of the shared user.
+    // This number may have more than 32 significant bits and some
+    // programming languages may have difficulty/silent defects in interpreting it.
+    // But it has at most 52 significant bits, so a 64-bit integer
+    // or double-precision float type are safe for storing this identifier.
+    // The bot may not have access to the user and could be unable to use this identifier,
+    // unless the user is already known to the bot by some other means.
+    UserID int64 `json:"user_id"`
+}
+```
+
 <a name="Venue"></a>
-## type [Venue](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1236-L1259>)
+## type [Venue](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1288-L1311>)
 
 Venue represents a venue.
 
@@ -9944,7 +10131,7 @@ func NewVenue(chatID any, title, address string, latitude, longitude float64) Ve
 NewVenue allows you to send a venue and its location. Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
 
 <a name="Video"></a>
-## type [Video](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1038-L1068>)
+## type [Video](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1090-L1120>)
 
 Video represents a video file.
 
@@ -9983,7 +10170,7 @@ type Video struct {
 ```
 
 <a name="VideoChatEnded"></a>
-## type [VideoChatEnded](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1307-L1310>)
+## type [VideoChatEnded](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1359-L1362>)
 
 VideoChatEnded represents a service message about a voice chat ended in the chat.
 
@@ -9995,7 +10182,7 @@ type VideoChatEnded struct {
 ```
 
 <a name="VideoChatParticipantsInvited"></a>
-## type [VideoChatParticipantsInvited](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1314-L1319>)
+## type [VideoChatParticipantsInvited](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1366-L1371>)
 
 VideoChatParticipantsInvited represents a service message about new members invited to a voice chat.
 
@@ -10009,7 +10196,7 @@ type VideoChatParticipantsInvited struct {
 ```
 
 <a name="VideoChatScheduled"></a>
-## type [VideoChatScheduled](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1290-L1294>)
+## type [VideoChatScheduled](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1342-L1346>)
 
 VideoChatScheduled represents a service message about a voice chat scheduled in the chat.
 
@@ -10022,7 +10209,7 @@ type VideoChatScheduled struct {
 ```
 
 <a name="VideoChatScheduled.Time"></a>
-### func \(\*VideoChatScheduled\) [Time](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1297>)
+### func \(\*VideoChatScheduled\) [Time](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1349>)
 
 ```go
 func (m *VideoChatScheduled) Time() time.Time
@@ -10031,7 +10218,7 @@ func (m *VideoChatScheduled) Time() time.Time
 Time converts the scheduled start date into a Time.
 
 <a name="VideoChatStarted"></a>
-## type [VideoChatStarted](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1303>)
+## type [VideoChatStarted](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1355>)
 
 VideoChatStarted represents a service message about a voice chat started in the chat.
 
@@ -10067,7 +10254,7 @@ func NewVideo(chatID any, file RequestFileData) VideoConfig
 NewVideo creates a new sendVideo request. Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
 
 <a name="VideoNote"></a>
-## type [VideoNote](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1071-L1090>)
+## type [VideoNote](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1123-L1142>)
 
 VideoNote object represents a video message.
 
@@ -10122,7 +10309,7 @@ NewVideoNote creates a new sendVideoNote request.
 chatID is where to send it, file is a string path to the file, FileReader, or FileBytes.
 
 <a name="Voice"></a>
-## type [Voice](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1093-L1110>)
+## type [Voice](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1145-L1162>)
 
 Voice represents a voice note.
 
@@ -10173,7 +10360,7 @@ func NewVoice(chatID any, file RequestFileData) VoiceConfig
 NewVoice creates a new sendVoice request. Now chatID can be int64, BaseChat, ChatConfig, ChatActionConfig, Chat, User
 
 <a name="WebAppData"></a>
-## type [WebAppData](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1262-L1268>)
+## type [WebAppData](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1314-L1320>)
 
 WebAppData Contains data sent from a Web App to the bot.
 
@@ -10188,7 +10375,7 @@ type WebAppData struct {
 ```
 
 <a name="WebAppInfo"></a>
-## type [WebAppInfo](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1356-L1360>)
+## type [WebAppInfo](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L1408-L1412>)
 
 WebAppInfo contains information about a Web App.
 
@@ -10201,7 +10388,7 @@ type WebAppInfo struct {
 ```
 
 <a name="WebAppInitData"></a>
-## type [WebAppInitData](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3490-L3501>)
+## type [WebAppInitData](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3609-L3620>)
 
 WebAppInitData is the data the Web App passes to the bot \(querystring init\_data\).
 
@@ -10308,7 +10495,7 @@ NewWebhookWithCert creates a new webhook with a certificate.
 link is the url you wish to get webhooks, file contains a string to a file, FileReader, or FileBytes.
 
 <a name="WebhookInfo"></a>
-## type [WebhookInfo](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2263-L2297>)
+## type [WebhookInfo](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2382-L2416>)
 
 WebhookInfo is information about a currently set webhook.
 
@@ -10351,7 +10538,7 @@ type WebhookInfo struct {
 ```
 
 <a name="WebhookInfo.IsSet"></a>
-### func \(WebhookInfo\) [IsSet](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2300>)
+### func \(WebhookInfo\) [IsSet](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L2419>)
 
 ```go
 func (info WebhookInfo) IsSet() bool
@@ -10360,7 +10547,7 @@ func (info WebhookInfo) IsSet() bool
 IsSet returns true if a webhook is currently set.
 
 <a name="WriteAccessAllowed"></a>
-## type [WriteAccessAllowed](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3769>)
+## type [WriteAccessAllowed](<https://github.com/jhonroun/telegram-bot-api/blob/context/types.go#L3888>)
 
 WriteAccessAllowed represents a service message: the user allowed the bot added to the attachment menu to write messages 6.4: initially holds no additional information
 

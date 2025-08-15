@@ -4,3 +4,4 @@ tmp/
 book/
 .env
 .env.local
+.bashrc
